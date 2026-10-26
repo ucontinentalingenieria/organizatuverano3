@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="js/cargador.js"></script>
+<title>Cursos de verano · Universidad Continental · Modalidad A Distancia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=DM+Sans:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{margin:0;font-family:'DM Sans',system-ui,sans-serif;font-size:16px;line-height:1.55;color:#000;background:#fff;overflow-x:hidden}
+a{color:#5A00AA}a:hover{color:#3D0075}
+summary{list-style:none}summary::-webkit-details-marker{display:none}
+details[open] .faq-ico{transform:rotate(45deg);background:#5A00AA;color:#fff}
+:focus-visible{outline:3px solid #B9E1FF;outline-offset:2px;box-shadow:0 0 0 2px #000;border-radius:6px}
+@keyframes ucFlecha{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+@keyframes ucFlechaV{0%,100%{transform:translateY(0) rotate(90deg)}50%{transform:translateY(6px) rotate(90deg)}}
+@keyframes ucPulso{0%{box-shadow:0 0 0 0 rgba(90,0,170,.45)}100%{box-shadow:0 0 0 12px rgba(90,0,170,0)}}
+@keyframes ucRes{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+</style>
+<script src="js/config.js"></script>
+<script src="js/reglas-verano.js"></script>
+<script src="js/campana.js"></script>
+<script src="js/terminos.js"></script>
+<script src="js/ayuda-v2.js" defer></script>
+<script src="js/directores.js" defer></script>
+<script src="image-slot.js"></script>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column">
+<a href="#contenido" style="position:absolute;left:-9999px;top:8px;z-index:100;background:#fff;padding:12px 16px;border-radius:8px;font-weight:700" style-focus="left:12px">Saltar al contenido</a>
+
+<div style="background:#000;color:#fff;font-size:clamp(10.5px,2.9vw,12.5px);letter-spacing:.04em;font-weight:700">
+<div style="max-width:1200px;margin:0 auto;padding:0 20px;min-height:34px;display:flex;justify-content:flex-end;align-items:center;gap:clamp(12px,3vw,20px);white-space:nowrap">
+<a href="https://estudiantes.ucontinental.edu.pe/" target="_blank" rel="noopener" style="color:#fff;text-decoration:none;min-height:34px;display:flex;align-items:center" style-hover="color:#B9E1FF">PORTAL DEL ESTUDIANTE ↗</a>
+<a href="https://adistancia.ucontinental.edu.pe/" target="_blank" rel="noopener" style="color:#fff;text-decoration:none;min-height:34px;display:flex;align-items:center" style-hover="color:#B9E1FF">MODALIDAD A DISTANCIA ↗</a>
+</div>
+</div>
+
+<header style="position:sticky;top:0;z-index:40;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid #E3E3E3">
+<div style="max-width:1200px;margin:0 auto;padding:0 20px;min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+<a href="#inicio" aria-label="Universidad Continental · Modalidad A Distancia" style="display:flex;align-items:center;flex-shrink:1;min-width:0"><sc-if value="{{ logoOk }}" hint-placeholder-val="{{ true }}"><img src="https://adistancia.ucontinental.edu.pe/assets/img/logo.svg" alt="Universidad Continental · Modalidad A Distancia" onError="{{ logoFalla }}" style="height:40px;width:auto;max-width:100%"></sc-if><sc-if value="{{ logoNo }}" hint-placeholder-val="{{ false }}"><span style="display:flex;flex-direction:column;line-height:1.1;text-decoration:none"><b style="font:700 17px Sora,sans-serif;color:#5A00AA">Universidad Continental</b><span style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#000">MODALIDAD A DISTANCIA</span></span></sc-if></a>
+<sc-if value="{{ escritorio }}" hint-placeholder-val="{{ true }}">
+<nav aria-label="Secciones" style="display:flex;align-items:center;gap:2px">
+<sc-for list="{{ menu }}" as="m" hint-placeholder-count="4"><a href="{{ m.href }}" style="min-height:44px;padding:0 12px;display:flex;align-items:center;white-space:nowrap;color:#000;text-decoration:none;font-size:15px;font-weight:500;border-radius:8px" style-hover="color:#5A00AA;background:#F5F5F5">{{ m.t }}</a></sc-for>
+<a href="app.html" style="margin-left:10px;white-space:nowrap;min-height:44px;padding:0 20px;border-radius:999px;background:#5A00AA;color:#fff;font-weight:700;font-size:15px;text-decoration:none;display:flex;align-items:center" style-hover="background:#3D0075;color:#fff">Ingresar con mi cuenta</a>
+</nav>
+</sc-if>
+<sc-if value="{{ movil }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuAbierto }}" aria-controls="menu-movil" style="flex:none;min-height:44px;padding:0 16px;border-radius:999px;border:2px solid #5A00AA;background:#fff;color:#5A00AA;font:700 14px 'DM Sans',sans-serif;cursor:pointer">{{ menuTxt }}</button>
+</sc-if>
+</div>
+<sc-if value="{{ menuMovil }}" hint-placeholder-val="{{ false }}">
+<nav id="menu-movil" aria-label="Secciones" style="border-top:1px solid #E3E3E3;padding:4px 20px 16px;display:flex;flex-direction:column;background:#fff">
+<sc-for list="{{ menu }}" as="m" hint-placeholder-count="4"><a href="{{ m.href }}" onClick="{{ cerrarMenu }}" style="min-height:52px;display:flex;align-items:center;color:#000;text-decoration:none;font-weight:500;border-bottom:1px solid #F0F0F0">{{ m.t }}</a></sc-for>
+<a href="app.html" style="margin-top:14px;min-height:52px;border-radius:999px;background:#5A00AA;color:#fff;font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center">Ingresar con mi cuenta</a>
+</nav>
+</sc-if>
+</header>
+
+<main id="contenido" style="flex:1">
+
+<section id="inicio" style="background:#5A00AA;color:#fff">
+<div style="max-width:1200px;margin:0 auto;padding:clamp(40px,7vw,88px) 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:40px 56px;align-items:center">
+<div data-rv="0" style="display:flex;flex-direction:column;gap:22px">
+<span style="align-self:flex-start;max-width:100%;padding:6px 14px;border-radius:14px;background:#B9E1FF;color:#000;font-weight:700;font-size:12.5px;line-height:1.35;letter-spacing:.06em">CURSOS DE VERANO · MODALIDAD A DISTANCIA</span>
+<h1 style="margin:0;font:700 clamp(34px,5.2vw,56px)/1.06 Sora,sans-serif;letter-spacing:-.02em;text-wrap:balance">Organiza tu verano y sigue avanzando en tu carrera</h1>
+<p style="margin:0;font-size:18px;max-width:40ch;text-wrap:pretty">Consulta tu avance, compara tus rutas con y sin veranos y conoce qué cursos de verano podrías llevar.</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px">
+<a href="app.html" style="min-height:56px;padding:0 10px 0 26px;border-radius:999px;background:#fff;color:#5A00AA;font-weight:700;font-size:16.5px;text-decoration:none;display:flex;align-items:center;gap:14px;box-shadow:0 12px 28px rgba(0,0,0,.22);transition:transform .2s,box-shadow .2s,background .2s" style-hover="background:#B9E1FF;color:#000;transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.28)">Consulta tu ruta<span aria-hidden="true" style="width:38px;height:38px;border-radius:99px;background:#5A00AA;color:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;display:block"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></span></a>
+<a href="#como-funciona" style="min-height:56px;padding:0 6px;color:#fff;font-weight:700;font-size:15.5px;display:flex;align-items:center;gap:8px;text-underline-offset:5px" style-hover="color:#B9E1FF">Conoce cómo funciona ↓</a>
+</div>
+</div>
+<div data-rv="150" onMouseMove="{{ mover }}" onMouseLeave="{{ soltar }}" style="position:relative;display:flex;flex-direction:column;gap:0">
+<div ref="{{ fotoRef }}" style="position:relative;border-radius:28px;overflow:hidden;aspect-ratio:{{ fotoAR }};background:#3D0075;box-shadow:0 30px 60px rgba(0,0,0,.28);transition:transform .5s cubic-bezier(.2,.7,.2,1);will-change:transform">
+<image-slot id="portada-verano" shape="rect" fit="cover" src="img/verano-estudiante.png" placeholder="Arrastra aquí una foto de estudiantes en verano" style="position:absolute;inset:0"></image-slot>
+<dl style="position:absolute;top:14px;left:14px;right:14px;margin:0;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none">
+<sc-for list="{{ datos }}" as="d" hint-placeholder-count="3"><div style="display:flex;align-items:baseline;gap:6px;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);color:#fff"><dt style="position:absolute;left:-9999px">{{ d.l }}</dt><dd style="margin:0;font:400 18px/1 'Bebas Neue',sans-serif;letter-spacing:.04em">{{ d.v }}</dd></div></sc-for>
+</dl>
+
+</div>
+<section aria-labelledby="sim-t" style="position:relative;z-index:2;margin:{{ simMargin }};background:#fff;color:#000;border-radius:24px;padding:20px;box-shadow:0 24px 50px rgba(0,0,0,.22);display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2 id="sim-t" style="margin:0;font:700 17px/1.3 Sora,sans-serif">¿Puedes llevar cursos de verano?</h2><span style="padding:3px 10px;border-radius:999px;background:#F5F5F5;color:#5A00AA;font-size:12px;font-weight:700;white-space:nowrap">Pruébalo</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><span id="sim-p" style="font-size:14px;color:#3A3A3A">¿Cuál es tu próximo periodo?</span>
+<div role="radiogroup" aria-labelledby="sim-p" style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
+<sc-for list="{{ periodos }}" as="p" hint-placeholder-count="7"><button type="button" role="radio" aria-checked="{{ p.on }}" aria-label="{{ p.al }}" onClick="{{ p.go }}" style="min-width:0;min-height:44px;padding:0 2px;white-space:nowrap;overflow:hidden;font-size:14px;border-radius:12px;border:2px solid {{ p.bd }};background:{{ p.bg }};color:{{ p.fg }};font:700 15px Sora,sans-serif;cursor:pointer;transition:background .2s,border-color .2s,transform .15s" style-hover="border-color:#5A00AA;transform:translateY(-1px)">{{ p.t }}</button></sc-for>
+</div></div>
+<sc-if value="{{ simHay }}" hint-placeholder-val="{{ false }}"><div role="status" aria-live="polite" style="display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:16px;background:{{ simBg }};animation:ucRes .35s cubic-bezier(.2,.7,.2,1)"><span aria-hidden="true" style="width:32px;height:32px;flex:none;border-radius:99px;background:{{ simIcoBg }};color:{{ simIcoFg }};display:flex;align-items:center;justify-content:center;font:700 16px Sora,sans-serif">{{ simIco }}</span><span style="display:flex;flex-direction:column;gap:2px"><b style="font:700 15px/1.3 Sora,sans-serif">{{ simT }}</b><span style="font-size:14px;color:#3A3A3A">{{ simD }}</span></span></div>
+<a href="app.html" style="align-self:flex-start;min-height:44px;display:flex;align-items:center;gap:8px;color:#5A00AA;font-weight:700;text-decoration:none" style-hover="color:#3D0075">Ingresa y mira tus cursos <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;display:block"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></a></sc-if>
+<sc-if value="{{ simNo }}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:13.5px;color:#555">Elige el periodo que llevarás después del verano y te decimos al instante.</p></sc-if>
+</section>
+</div>
+</div>
+</section>
+
+<section id="que-es" style="padding:clamp(56px,8vw,96px) 0 clamp(40px,5vw,56px)">
+<div style="max-width:1200px;margin:0 auto;padding:0 20px;display:flex;flex-direction:column;gap:36px">
+<div data-rv="0" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px 56px;align-items:end">
+<div><span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#5A00AA">QUÉ SON</span><h2 style="font:700 clamp(28px,4vw,40px)/1.15 Sora,sans-serif;margin:8px 0 0;text-wrap:balance">Cursos de verano en enero y febrero</h2></div>
+<p style="margin:0;font-size:17px;color:#3A3A3A;text-wrap:pretty">Lleva asignaturas de tu plan de estudios, hasta el 6.° periodo, y llega más liviano a tu siguiente periodo.</p>
+</div>
+<div data-rv="0" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(20px,4vw,48px);align-items:center">
+<div style="position:relative;border-radius:24px;overflow:hidden;aspect-ratio:16/10;background:#000"><img src="img/verano-grupo.png" alt="Estudiantes revisando juntos sus cursos de verano" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#fff;border:1px solid #E3E3E3;border-radius:24px;padding:clamp(18px,3vw,28px)"><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12.5px;font-weight:700;letter-spacing:.08em;color:#5A00AA">TU AÑO ACADÉMICO</span><b style="font:700 clamp(19px,2.2vw,22px)/1.25 Sora,sans-serif">El verano abre tu año</b></div>
+<div role="img" aria-label="Línea del año: verano en enero y febrero, luego el periodo regular I y el periodo regular II" style="display:flex;flex-direction:column;gap:8px">
+<div aria-hidden="true" style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px;font-size:11.5px;font-weight:700;color:#555;text-align:center"><sc-for list="{{ meses }}" as="ms" hint-placeholder-count="12"><span style="color:{{ ms.c }}">{{ ms.t }}</span></sc-for></div>
+<div style="display:grid;grid-template-columns:2fr 5fr 5fr;gap:3px;height:14px"><span data-barra="1" style="width:0;height:100%;border-radius:99px 4px 4px 99px;background:#5A00AA;transition:width .7s cubic-bezier(.2,.7,.2,1) .1s"></span><span data-barra="1" style="width:0;height:100%;border-radius:4px;background:#CFC2E3;transition:width .7s cubic-bezier(.2,.7,.2,1) .4s"></span><span data-barra="1" style="width:0;height:100%;border-radius:4px 99px 99px 4px;background:#E6DDF2;transition:width .7s cubic-bezier(.2,.7,.2,1) .7s"></span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:10px;margin-top:6px"><sc-for list="{{ anio }}" as="a" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:14px;background:{{ a.bg }};color:{{ a.fg }}"><span style="display:flex;align-items:center;gap:8px"><i style="width:10px;height:10px;border-radius:3px;flex:none;background:{{ a.dot }}"></i><b style="font:700 15px/1.25 Sora,sans-serif">{{ a.t }}</b></span><span style="font-size:13.5px;color:{{ a.sub }}">{{ a.d }}</span></div></sc-for></div>
+</div>
+<p style="margin:0;display:flex;gap:10px;align-items:center;font-size:14.5px;color:#000;border-top:1px solid #EFEFEF;padding-top:14px"><span aria-hidden="true" style="width:28px;height:28px;flex:none;border-radius:8px;background:#B9E1FF;color:#000;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span>Lo que apruebes en verano ya no lo llevas durante el año.</span></p>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px">
+<sc-for list="{{ beneficios }}" as="b" hint-placeholder-count="3">
+<article data-rv="{{ b.d }}" style="border:1px solid #E3E3E3;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;background:#fff;transition:transform .25s,box-shadow .25s,border-color .25s" style-hover="transform:translateY(-4px);box-shadow:0 16px 32px rgba(90,0,170,.12);border-color:#5A00AA">
+<div aria-hidden="true" style="aspect-ratio:16/10;background:#EFE5F8 url({{ b.foto }}) center/cover no-repeat"></div>
+<div style="padding:20px 22px 24px;display:flex;flex-direction:column;gap:8px"><h3 style="font:700 19px Sora,sans-serif;margin:0">{{ b.t }}</h3>
+<p style="margin:0;color:#555;text-wrap:pretty">{{ b.p }}</p></div>
+</article>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="como-funciona" style="padding:clamp(44px,6vw,72px) 0 clamp(56px,8vw,96px);background:#F5F5F5">
+<div style="max-width:1200px;margin:0 auto;padding:0 20px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:62ch"><span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#5A00AA">CÓMO FUNCIONA</span><h2 style="font:700 clamp(28px,4vw,40px)/1.15 Sora,sans-serif;margin:0;text-wrap:balance">Organiza tu verano en 2 pasos</h2><p style="margin:0;font-size:17px;color:#3A3A3A">Primero, consulta tu ruta de cursos en esta página. Luego, realiza tu matrícula en el Portal del Estudiante.</p></div>
+<ol style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:{{ pasosCols }};gap:14px;align-items:stretch">
+<sc-for list="{{ pasos }}" as="p" hint-placeholder-count="2">
+<sc-if value="{{ p.flecha }}" hint-placeholder-val="{{ false }}"><li aria-hidden="true" data-rv="200" style="position:relative;display:flex;align-items:center;justify-content:center;min-width:72px;min-height:72px"><span style="position:absolute;{{ lineaPos }};background:#D9C9EE;border-radius:9px;overflow:hidden"><span data-barra="1" data-alto="1" style="display:block;{{ lineaFill }};background:#5A00AA;transition:width 1s ease .3s,height 1s ease .3s"></span></span><span style="position:relative;width:40px;height:40px;border-radius:12px;background:#fff;color:#5A00AA;border:1.5px solid #D9C9EE;display:flex;align-items:center;justify-content:center;transform:{{ flechaRot }};box-shadow:0 4px 12px rgba(90,0,170,.12)"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;display:block"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></span></li></sc-if>
+<li data-rv="{{ p.d }}" style="background:{{ p.bg }};color:{{ p.fg }};border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:12px;border:1px solid {{ p.bd }};transition:transform .25s,box-shadow .25s" style-hover="transform:translateY(-4px);box-shadow:0 16px 32px rgba(0,0,0,.10)">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;font:400 26px/1 'Bebas Neue',sans-serif;background:{{ p.nBg }};color:{{ p.nFg }}">{{ p.n }}</span><span style="padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;background:{{ p.tBg }};color:{{ p.tFg }}">{{ p.donde }}</span></div>
+<h3 style="font:700 19px/1.25 Sora,sans-serif;margin:0">{{ p.t }}</h3>
+<p style="margin:0;font-size:15px;color:{{ p.dC }};text-wrap:pretty">{{ p.p }}</p>
+<sc-if value="{{ p.link }}" hint-placeholder-val="{{ false }}"><a href="https://estudiantes.ucontinental.edu.pe/matricula/" target="_blank" rel="noopener" style="margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:#1F1F1F;color:#fff;text-decoration:none;font-size:14px" style-hover="background:#2C2C2C;color:#fff"><span aria-hidden="true" style="width:30px;height:30px;flex:none;border-radius:8px;background:#B9E1FF;color:#000;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path></svg></span><span style="display:flex;flex-direction:column;line-height:1.3"><b style="color:#B9E1FF;font-size:12.5px">Recuerda</b><span>Calendario y fechas oficiales de matrícula ↗</span></span></a></sc-if>
+</li>
+</sc-for>
+</ol>
+<div style="display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;background:#fff;border:1px solid #E3E3E3;border-radius:16px;padding:16px 20px">
+<span style="width:32px;height:32px;flex:none;border-radius:999px;background:#000;color:#B9E1FF;display:flex;align-items:center;justify-content:center;font:700 16px Sora,sans-serif" aria-hidden="true">i</span>
+<p style="margin:0;flex:1 1 320px;font-size:15.5px"><b>Este portal es solo una consulta.</b> No te matricula ni reserva vacante. Las asignaturas son referenciales: <b>tus dudas, a tu director de programa.</b></p><a href="{{ directores }}" target="_blank" rel="noopener" style="min-height:44px;padding:0 18px;border-radius:999px;background:#5A00AA;color:#fff;font-weight:700;font-size:14.5px;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap" style-hover="background:#3F0078;color:#fff">Directores por programa ↗</a>
+</div>
+<div data-rv="0" style="background:#fff;border:1px solid #E3E3E3;border-radius:24px;padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px 20px"><div><span style="font-size:12.5px;font-weight:700;letter-spacing:.08em;color:#5A00AA">EJEMPLO REFERENCIAL</span><h3 style="font:700 clamp(20px,2.4vw,24px)/1.25 Sora,sans-serif;margin:6px 0 0">Así cambia tu ruta según los veranos que aproveches</h3></div></div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px"><span id="ej-ing" style="font-size:14px;font-weight:700;color:#000">¿Cuál es tu próximo periodo?</span><div role="radiogroup" aria-labelledby="ej-ing" style="display:grid;grid-template-columns:repeat(6,minmax(44px,1fr));gap:6px;flex:1 1 300px;max-width:400px;padding:4px;background:#F2F2F2;border-radius:999px;overflow-x:auto"><sc-for list="{{ ejIng }}" as="g" hint-placeholder-count="4"><button type="button" role="radio" aria-checked="{{ g.on }}" onClick="{{ g.go }}" style="min-height:44px;min-width:44px;padding:0 6px;border-radius:999px;border:0;outline:1.5px solid {{ g.bd }};outline-offset:-1.5px;background:{{ g.bg }};color:{{ g.fg }};font:700 14px 'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s">{{ g.t }}</button></sc-for></div></div>
+<div style="display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:16px;background:#FAF7FD;border:1px solid #E6DDF2">
+<div style="display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:13.5px;color:#3A3A3A"><b style="display:inline-block;padding:4px 12px;border-radius:999px;background:#B9E1FF;color:#000;box-shadow:inset 0 0 0 1.5px #5A00AA">Los créditos de cada periodo son referenciales</b><span>Cada fila es una ruta. Empieza con el verano que viene; selecciona una para ver el detalle.</span></div>
+<div style="display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:#3A3A3A;align-items:center"><b style="font-size:12.5px;letter-spacing:.06em;color:#5A00AA">CÓMO LEERLO</b><span style="display:flex;align-items:center;gap:6px"><i style="width:14px;height:14px;border-radius:4px;background:#5A00AA"></i>V = verano (hasta 11 cr)</span><span style="display:flex;align-items:center;gap:6px"><i style="width:14px;height:14px;border-radius:4px;background:#CFC2E3"></i>P = periodo regular</span><span style="display:flex;align-items:center;gap:6px"><i style="width:14px;height:14px;border-radius:4px;background:#EAE3F3;border:1.5px dashed #A88BD0"></i>Periodo más ligero</span><span style="display:flex;align-items:center;gap:6px"><span aria-hidden="true" style="width:18px;height:18px;border-radius:6px;background:#000;color:#B9E1FF;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5 10-5Z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg></span>Culminas tus estudios</span><span>cr = créditos</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ rutasEj }}" as="r" hint-placeholder-count="4">
+<button type="button" onClick="{{ r.go }}" aria-pressed="{{ r.on }}" style="display:grid;grid-template-columns:{{ rutaEjCols }};gap:8px 16px;align-items:center;padding:10px 12px;border-radius:16px;border:1.5px solid {{ r.bd }};background:{{ r.bg }};opacity:{{ r.op }};cursor:pointer;text-align:left;font-family:inherit;transition:background .25s,border-color .25s,opacity .25s" style-hover="opacity:1;border-color:#5A00AA">
+<span style="display:flex;flex-direction:column;gap:2px"><b style="font:700 15px Sora,sans-serif;color:#000">{{ r.t }}</b><span style="font-size:12.5px;color:#555">{{ r.sub }}</span><span style="font-size:12.5px;color:#3A3A3A;font-weight:700">{{ r.nPer }}</span></span>
+<span style="overflow:hidden;border-radius:8px;display:block"><span data-barra="1" style="width:0;transition:width 1.3s cubic-bezier(.2,.7,.2,1) {{ r.delay }};display:flex;gap:3px;align-items:flex-end"><sc-for list="{{ r.seg }}" as="s" hint-placeholder-count="10"><span title="{{ s.t }}" style="flex:{{ s.f }};min-width:0;height:52px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px"><span style="height:{{ s.h }};border-radius:6px;background:{{ s.bg }};color:{{ s.fg }};display:flex;align-items:center;justify-content:center;overflow:hidden;font:400 14px/1 'Bebas Neue',sans-serif;letter-spacing:.03em;white-space:nowrap">{{ s.l }}</span><span style="font-size:10px;font-weight:700;color:#555;text-align:center;white-space:nowrap;overflow:hidden">{{ s.cr }}</span></span></sc-for></span></span>
+<span style="display:flex;align-items:center;gap:10px;justify-self:start"><span aria-hidden="true" style="width:38px;height:38px;flex:none;border-radius:12px;background:{{ r.gBg }};color:{{ r.gFg }};display:flex;align-items:center;justify-content:center;transition:background .25s,transform .25s;transform:{{ r.gSc }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5 10-5Z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg></span><span style="display:flex;flex-direction:column;gap:3px"><b style="font:700 14px Sora,sans-serif;color:#000;white-space:nowrap">{{ r.fin }}</b><span style="align-self:flex-start;white-space:nowrap;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;background:{{ r.tagBg }};color:{{ r.tagFg }}">{{ r.res }}</span></span></span>
+</button>
+</sc-for>
+</div>
+<div data-ejdet="1" role="status" aria-live="polite" style="display:grid;grid-template-columns:{{ ejDetCols }};gap:14px 20px;align-items:center;background:#5A00AA;color:#fff;border-radius:18px;padding:16px 20px">
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12.5px;font-weight:700;color:#B9E1FF;letter-spacing:.04em">{{ ejSelT }}</span><b style="font:400 clamp(26px,3vw,34px)/1 'Bebas Neue',sans-serif;letter-spacing:.03em">{{ ejSelRes }}</b><span style="font-size:13.5px">{{ ejSelD }}</span></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><sc-if value="{{ ejSinV }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px">Llevas todas tus asignaturas en los periodos regulares.</span></sc-if><sc-for list="{{ ejVeranos }}" as="vv" hint-placeholder-count="2"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 10px;border-radius:12px;background:rgba(255,255,255,.12);animation:ucRes .4s ease both;animation-delay:{{ vv.d }}"><b style="padding:2px 9px;border-radius:999px;background:#B9E1FF;color:#000;font:400 15px/1.2 'Bebas Neue',sans-serif;letter-spacing:.04em">{{ vv.t }}</b><sc-for list="{{ vv.c }}" as="cc" hint-placeholder-count="2"><span style="padding:2px 9px;border-radius:999px;background:#fff;color:#3D0075;font-size:12.5px;font-weight:700">{{ cc }}</span></sc-for></div></sc-for></div>
+<sc-if value="{{ ejHayComp }}" hint-placeholder-val="{{ false }}"><div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:8px;border-top:1px solid rgba(255,255,255,.2);padding-top:14px"><span style="grid-column:1/-1;font-size:12.5px;font-weight:700;letter-spacing:.06em;color:#B9E1FF">{{ ejCompT }}</span><sc-for list="{{ ejComp }}" as="cp" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.1)"><span style="font-size:12.5px;color:#E6D9F5">{{ cp.l }}</span><span style="display:flex;align-items:baseline;gap:8px"><span style="font:400 20px/1 'Bebas Neue',sans-serif;color:#E6D9F5;text-decoration:line-through;text-decoration-thickness:1.5px">{{ cp.a }}</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B9E1FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg><b style="font:400 26px/1 'Bebas Neue',sans-serif;color:#fff">{{ cp.b }}</b></span></div></sc-for></div></sc-if>
+<sc-if value="{{ ejMotiva }}" hint-placeholder-val="{{ false }}"><p style="grid-column:1/-1;margin:0;display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:12px;background:#B9E1FF;color:#000;font-size:14px;font-weight:700"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M3 17l6-6 4 4 8-8"></path><path d="M14 7h7v7"></path></svg><span>{{ ejMotiva }}</span></p></sc-if>
+</div>
+<p style="margin:0;font-size:12.5px;color:#555;text-wrap:pretty">En verano: hasta 11 créditos y solo asignaturas hasta el 6.° periodo. Ejemplo con un plan referencial de 10 periodos; al ingresar con tu cuenta verás tu ruta real, calculada con tus créditos y asignaturas.</p>
+</div>
+</div>
+</section>
+
+<section id="requisitos" style="padding:clamp(56px,8vw,96px) 0">
+<div style="max-width:1200px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px">
+<div data-rv="0" style="display:flex;flex-direction:column;gap:18px">
+<div><span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#5A00AA">REQUISITOS Y CONDICIONES</span><h2 style="font:700 clamp(26px,3.4vw,34px)/1.2 Sora,sans-serif;margin:8px 0 0">Antes de tu matrícula</h2></div>
+<ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid #E3E3E3">
+<sc-for list="{{ requisitos }}" as="r" hint-placeholder-count="5"><li style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;align-items:start;padding:14px 0;border-bottom:1px solid #E3E3E3"><span style="width:28px;height:28px;border-radius:99px;background:{{ r.bg }};color:{{ r.fg }};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">{{ r.m }}</span><span style="display:flex;flex-direction:column"><b style="font-weight:700">{{ r.t }}</b><span style="font-size:14px;color:#555">{{ r.d }}</span></span></li></sc-for>
+</ul>
+</div>
+<div data-rv="120" style="background:#000;color:#fff;border-radius:24px;padding:clamp(22px,3vw,32px);display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 14px"><h2 style="font:700 clamp(22px,2.6vw,26px)/1.2 Sora,sans-serif;margin:0;color:#fff">Fechas clave</h2><span style="font-size:13.5px;color:#B9E1FF">Hoy: {{ hoyTxt }}</span></div>
+<ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+<sc-for list="{{ fechas }}" as="f" hint-placeholder-count="4">
+<li style="display:grid;grid-template-columns:16px minmax(0,1fr);gap:0 16px">
+<div style="display:flex;flex-direction:column;align-items:center;padding-top:6px"><span style="width:14px;height:14px;border-radius:99px;background:{{ f.dot }};border:2px solid #B9E1FF;flex:none;animation:{{ f.pulso }}"></span><sc-if value="{{ f.linea }}" hint-placeholder-val="{{ true }}"><span style="flex:1;width:2px;background:#3A3A3A;margin:4px 0"></span></sc-if></div>
+<div style="padding-bottom:20px;display:flex;flex-direction:column;gap:2px"><span style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px"><b style="font:700 16px Sora,sans-serif">{{ f.t }}</b><span style="padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;background:{{ f.eBg }};color:{{ f.eFg }}">{{ f.e }}</span></span><span style="font-size:15px">{{ f.d }}</span><span style="font-size:13px;color:#B9E1FF">{{ f.donde }}</span></div>
+</li>
+</sc-for>
+</ol>
+</div>
+</div>
+</section>
+
+<section id="preguntas" style="padding:clamp(56px,8vw,96px) 0;background:#F5F5F5">
+<div style="max-width:860px;margin:0 auto;padding:0 20px;display:flex;flex-direction:column;gap:24px">
+<div><span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#5A00AA">PREGUNTAS FRECUENTES</span><h2 style="font:700 clamp(28px,4vw,40px)/1.15 Sora,sans-serif;margin:8px 0 0">Resolvemos tus dudas</h2></div>
+<label style="display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #E3E3E3;border-radius:999px;padding:0 8px 0 20px;min-height:54px" style-focus-within="border-color:#5A00AA"><span aria-hidden="true" style="width:14px;height:14px;border:2.5px solid #5A00AA;border-radius:99px;position:relative;flex:none"></span><span style="position:absolute;left:-9999px">Buscar en preguntas frecuentes</span><input type="search" value="{{ q }}" onInput="{{ setQ }}" placeholder="Busca tu duda: créditos, matrícula, horario…" style="flex:1;min-width:0;border:0;outline:none;background:transparent;font:500 16px 'DM Sans',sans-serif;min-height:50px"></label>
+<sc-if value="{{ faqVacio }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin:0;padding:20px;text-align:center;background:#fff;border-radius:16px;color:#555">No encontramos esa duda. Escríbenos con el botón de ayuda.</p></sc-if>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ faqGrupos }}" as="g" hint-placeholder-count="3"><h3 style="margin:14px 0 2px;font:700 13px 'DM Sans',sans-serif;letter-spacing:.08em;color:#5A00AA;text-transform:uppercase">{{ g.t }}</h3>
+<sc-for list="{{ g.items }}" as="q" hint-placeholder-count="3">
+<details style="background:#fff;border:1px solid #E3E3E3;border-radius:16px;transition:border-color .2s" style-hover="border-color:#5A00AA">
+<summary style="min-height:60px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;font:700 16.5px/1.35 'DM Sans',sans-serif">{{ q.t }}<span class="faq-ico" aria-hidden="true" style="width:32px;height:32px;flex:none;border-radius:99px;display:flex;align-items:center;justify-content:center;font:700 20px Sora,sans-serif;background:#F5F5F5;color:#5A00AA;transition:transform .2s,background .2s">+</span></summary>
+<p style="margin:0;padding:0 18px 18px;color:#3A3A3A;font-size:15.5px;text-wrap:pretty">{{ q.p }}</p>
+</details>
+</sc-for></sc-for>
+</div>
+<sc-if value="{{ hayMasFaq }}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{ verMasFaq }}" style="align-self:center;min-height:48px;padding:0 22px;border-radius:999px;border:2px solid #5A00AA;background:#fff;color:#5A00AA;font:700 15px 'DM Sans',sans-serif;cursor:pointer" style-hover="background:#F2F2F2">{{ masFaqTxt }}</button></sc-if>
+</div>
+</section>
+
+<section style="position:relative;overflow:hidden;padding:clamp(56px,8vw,96px) 0;background:#000;color:#fff">
+<img src="img/verano-campus.png" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+<div aria-hidden="true" style="position:absolute;inset:0;background:rgba(0,0,0,.72)"></div>
+<div data-rv="0" style="position:relative;max-width:1200px;margin:0 auto;padding:0 20px;display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center;justify-content:space-between">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:56ch"><h2 style="font:700 clamp(26px,3.6vw,38px)/1.15 Sora,sans-serif;margin:0;color:#fff">Planifica tu verano en pocos minutos</h2><p style="margin:0;font-size:17px">Revisa tu avance y descubre qué cursos de verano puedes llevar.</p></div>
+<a href="app.html" style="min-height:54px;padding:0 28px;border-radius:999px;background:#B9E1FF;color:#000;font-weight:700;font-size:16px;text-decoration:none;display:flex;align-items:center" style-hover="background:#fff;color:#000">Ingresar con mi cuenta</a>
+</div>
+</section>
+</main>
+<sc-if value="{{ ctaMovil }}" hint-placeholder-val="{{ false }}"><div style="position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid #E3E3E3;box-shadow:0 -8px 24px rgba(0,0,0,.08)"><a href="app.html" style="min-height:52px;border-radius:999px;background:#5A00AA;color:#fff;font-weight:700;font-size:16px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:10px">Consulta tu ruta <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;display:block"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></a></div></sc-if>
+
+<footer style="background:#5A00AA;color:#fff;font-size:14px">
+<div style="max-width:1200px;margin:0 auto;padding:28px 20px calc(28px + 64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px 40px;align-items:center">
+<sc-if value="{{ logoOk }}" hint-placeholder-val="{{ true }}"><img src="https://ucontinental.edu.pe/site/wp-content/themes/salient-child/img/logo.svg" alt="Universidad Continental" onError="{{ logoFalla }}" style="height:30px;filter:brightness(0) invert(1)"></sc-if><sc-if value="{{ logoNo }}" hint-placeholder-val="{{ false }}"><span style="display:flex;flex-direction:column;line-height:1.1"><b style="font:700 16px Sora,sans-serif;color:#fff">Universidad Continental</b><span style="font-size:11.5px;font-weight:700;letter-spacing:.06em;color:#B9E1FF">MODALIDAD A DISTANCIA</span></span></sc-if>
+<span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;color:#B9E1FF">¿Tienes dudas sobre tu caso?</span><a href="{{ directores }}" target="_blank" rel="noopener" style="color:#fff;font-weight:700;min-height:44px;display:flex;align-items:center">Consulta a tu director de programa ↗</a></span>
+<span style="display:flex;gap:4px 18px;flex-wrap:wrap"><a href="https://estudiantes.ucontinental.edu.pe/" target="_blank" rel="noopener" style="color:#fff;min-height:44px;display:flex;align-items:center">Portal del Estudiante</a><a href="https://adistancia.ucontinental.edu.pe/" target="_blank" rel="noopener" style="color:#fff;min-height:44px;display:flex;align-items:center">Modalidad A Distancia</a></span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { w: typeof window !== 'undefined' ? window.innerWidth : 1280, menu: false };
+  componentDidMount() {
+    this._r = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this._r);
+    this._s = () => { const b = window.scrollY > 520; if (b !== !!this.state.bajo) this.setState({ bajo: b }); };
+    window.addEventListener('scroll', this._s, { passive: true });
+    let n = 0; const espera = () => { if (window.UCP && UCP.campana) this.forceUpdate(); else if (n++ < 40) this._t = setTimeout(espera, 100); };
+    espera();
+    const quieto = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this._io = 'IntersectionObserver' in window && !quieto ? new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return; const el = e.target;
+      if (el.dataset.barra) { el.style.width = '100%'; if (el.dataset.alto) el.style.height = '100%'; } else { el.style.opacity = '1'; el.style.transform = ''; setTimeout(() => { el.style.transition = el._t0 || ''; }, 900 + (+el.dataset.rv || 0)); }
+      this._io.unobserve(el);
+    }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }) : null;
+    this.prep();
+  }
+  componentDidUpdate(pp, ps) { this.prep();
+    if (ps && (ps.ejIng !== this.state.ejIng || ps.ej !== this.state.ej)) {
+      const quieto = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (quieto) return;
+      if (ps.ejIng !== this.state.ejIng) document.querySelectorAll('[data-barra]').forEach((el) => { const t = el.style.transition; el.style.transition = 'none'; el.style.width = '0'; void el.offsetWidth; el.style.transition = t; requestAnimationFrame(() => { el.style.width = '100%'; }); });
+      const d = document.querySelector('[data-ejdet]'); if (d && d.animate) d.animate([{ opacity: 0.4, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.2,.7,.2,1)' });
+    } }
+  prep() {
+    if (!this._io) { document.querySelectorAll('[data-barra]').forEach((el) => { el.style.width = '100%'; if (el.dataset.alto) el.style.height = '100%'; }); return; }
+    document.querySelectorAll('[data-rv],[data-barra]').forEach((el) => {
+      if (el._rv) return; el._rv = 1;
+      el._t0 = el.style.transition;
+      if (!el.dataset.barra) { el.style.opacity = '0'; el.style.transform = 'translateY(28px)'; el.style.transition = (el.style.transition ? el.style.transition + ',' : '') + 'opacity .7s ease ' + (+el.dataset.rv || 0) + 'ms, transform .7s cubic-bezier(.2,.7,.2,1) ' + (+el.dataset.rv || 0) + 'ms'; }
+      this._io.observe(el);
+    });
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); window.removeEventListener('scroll', this._s); clearTimeout(this._t); this._io && this._io.disconnect(); }
+  renderVals() {
+    const navMovil = this.state.w < 1000;
+    const PASOS = [
+      ['Consulta tu ruta', 'En este portal', 'Revisa tu avance, compara tus rutas con y sin veranos y conoce qué cursos de verano podrías llevar. Descarga tu ruta en PDF.'],
+      ['Matrícula oficial', 'Portal del Estudiante', 'Cuando se abra la matrícula, registra tus asignaturas en el Portal del Estudiante según la oferta disponible. Las fechas oficiales se publican en el calendario de matrícula.']
+    ];
+    const FAQ = [
+      ['¿Este portal me matricula?', 'No. Aquí solo consultas tu avance, tus rutas y los cursos de verano que podrías llevar. La matrícula oficial se realiza en el Portal del Estudiante, en las fechas del calendario académico.'],
+      ['¿Cuántos créditos puedo llevar en verano?', 'Hasta 11 créditos.'],
+      ['¿Puedo recuperar una asignatura desaprobada?', 'Sí, siempre que se ofrezca en verano, cumplas los requisitos académicos y existan vacantes disponibles. Al ingresar verás cuáles puedes recuperar.'],
+      ['¿Puedo llevar cursos para nivelarme en mi plan de estudios?', 'Sí, puedes llevar asignaturas pendientes según tu avance en el plan de estudios, los prerrequisitos y la oferta disponible.'],
+      ['¿Puedo adelantar asignaturas?', 'Puedes hacerlo si cumples los prerrequisitos y las condiciones académicas correspondientes, sujeto a la oferta de verano (asignaturas hasta el 6.° periodo de tu plan).'],
+      ['¿Llevar cursos en verano reduce mi carga del siguiente periodo regular?', 'Puede ayudarte a reducirla, ya que las asignaturas que apruebes en verano no tendrás que llevarlas en el periodo académico regular.'],
+      ['¿Puedo elegir un horario compatible con mis actividades?', 'Sí. Cuando se publique la oferta horaria, en el Portal del Estudiante eliges entre las secciones disponibles según las vacantes. Las sesiones en vivo quedan grabadas: una coincidencia de horario no te impide llevar ambos cursos.'],
+      ['Voy en 7.° periodo o más, ¿puedo llevar cursos de verano?', 'Solo si tienes asignaturas pendientes hasta el 6.° periodo de tu plan, por ejemplo una que desaprobaste o que dejaste atrás: en verano solo se ofrecen asignaturas hasta el 6.° periodo. Al ingresar verás si es tu caso.'],
+      ['¿Culminar antes mis estudios es titularme antes?', 'No necesariamente. Se refiere a completar las asignaturas de tu plan; la titulación tiene sus propios requisitos.'],
+      ['¿Por qué no veo los cursos aquí?', 'La información de tu plan y de la oferta es personal: la ves al ingresar con tu cuenta institucional.']
+    ];
+    const CA = window.UCP && UCP.campana, c = CA ? CA.leer() : null;
+    const fc0 = window.UCP && UCP.config && UCP.config.fechaCorreoAsignaturas;
+    const fCorreo = ['Asignaturas a tu correo', fc0 && CA && CA.fechaLarga ? 'El ' + CA.fechaLarga(fc0) : 'Fecha por confirmar', 'Correo institucional', fc0 || null, fc0 || null];
+    const fClases = ['Clases de verano', 'Enero y febrero · 100 % virtual', 'Aula virtual'];
+    const fechas = c
+      ? [fCorreo, ['Oferta horaria', `Desde el ${CA.fechaLarga(c.horarios)}`, 'Portal del Estudiante', c.horarios, c.matInicio],
+         ['Matrícula oficial', `Del ${CA.rangoFechas(c.matInicio, c.matFin)}`, 'En el Portal del Estudiante', c.matInicio, c.matFin], fClases]
+      : [fCorreo, ['Matrícula oficial', 'En las fechas del calendario académico', 'En el Portal del Estudiante'], fClases];
+    let dias = null;
+    if (c && c.matInicio) { const f = new Date(c.matInicio); if (!isNaN(f)) dias = Math.ceil((f - Date.now()) / 864e5); }
+    const q = (this.state.q || '').trim().toLowerCase();
+    const sinTilde = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const faqF = FAQ.filter(([t, p]) => !q || sinTilde(t + ' ' + p).includes(sinTilde(q)));
+    const fc = window.UCP && UCP.config && UCP.config.fechaCorreoAsignaturas;
+    const correoTxt = 'Las asignaturas para verano te las remitimos a tu correo' + (fc && CA && CA.fechaLarga ? ` el ${CA.fechaLarga(fc)}.` : '.');
+    const per = this.state.per, alto = per != null && per >= 7;
+    const quieto = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return {
+      fotoRef: this.fotoRef || (this.fotoRef = React.createRef()), fotoAR: this.state.w < 600 ? '4/3' : navMovil ? '16/9' : '5/4', simMargin: navMovil ? '-48px 12px 0' : '-96px -24px 0 40px',
+      mover: (e) => { const el = this.fotoRef && this.fotoRef.current; if (!el || quieto || navMovil) return; const r = e.currentTarget.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5; el.style.transform = `perspective(900px) rotateY(${(x * 5).toFixed(2)}deg) rotateX(${(-y * 5).toFixed(2)}deg)`; },
+      soltar: () => { const el = this.fotoRef && this.fotoRef.current; if (el) el.style.transform = ''; },
+      periodos: [1, 2, 3, 4, 5, 6, 7].map((n) => { const on = per === n; return { t: n === 7 ? '7.°+' : n + '.°', al: n === 7 ? '7.° periodo o más' : n + '.° periodo', on, go: () => this.setState({ per: n }), bg: on ? '#5A00AA' : '#fff', fg: on ? '#fff' : '#000', bd: on ? '#5A00AA' : '#E3E3E3' }; }),
+      simHay: per != null, simNo: per == null,
+      simT: alto ? 'Depende de tus asignaturas pendientes' : 'Sí, puedes llevar cursos de verano',
+      simD: alto ? 'En verano solo se ofrecen asignaturas hasta el 6.° periodo. Si tienes alguna pendiente de esos periodos, puedes llevarla.' : 'Puedes adelantar o recuperar asignaturas hasta el 6.° periodo de tu plan, si cumples sus prerrequisitos. Hasta 11 créditos.',
+      simBg: alto ? '#F5F5F5' : '#E3F2EA', simIco: alto ? 'i' : '✓', simIcoBg: alto ? '#000' : '#145C34', simIcoFg: alto ? '#B9E1FF' : '#fff',
+      hayCuenta: dias != null && dias > 0, diasCierre: String(dias || ''), diasTxt: dias === 1 ? 'Mañana empieza la matrícula' : `Faltan ${dias} días para la matrícula`,
+      fechaCierre: c && c.matInicio && CA.fechaLarga ? CA.fechaLarga(c.matInicio) : '',
+      diasCorto: dias === 1 ? 'Mañana' : `días para la matrícula`, cuentaBottom: navMovil ? '60px' : '110px',
+      meses: ['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'].map((t, k) => ({ t, c: k < 2 ? '#5A00AA' : '#555' })),
+      anio: [['Verano', 'Enero y febrero · 100 % virtual', 'v'], ['Periodo regular I', 'Primer periodo del año', 'r1'], ['Periodo regular II', 'Segundo periodo del año', 'r2']].map(([t, d, k]) => ({ t, d, bg: k === 'v' ? '#5A00AA' : '#FAF7FD', fg: k === 'v' ? '#fff' : '#000', sub: k === 'v' ? '#E6D9F5' : '#555', dot: k === 'v' ? '#B9E1FF' : k === 'r1' ? '#CFC2E3' : '#E6DDF2' })),
+      hayMasFaq: false, masFaqTxt: this.state.todas ? 'Ver menos preguntas' : `Ver ${FAQ.length - 4} preguntas más`, verMasFaq: () => this.setState((s) => ({ todas: !s.todas })),
+      directores: (window.UCP && UCP.config && UCP.config.directoresPrograma) || '#',
+      faqGrupos: [['Sobre este portal', [0, 9]], ['Créditos y cursos', [1, 2, 3, 4, 7]], ['Horarios y tu carrera', [5, 6, 8]]].map(([t, ix]) => ({ t, items: ix.map((k) => FAQ[k]).filter((x) => faqF.includes(x)).map(([t2, p]) => ({ t: t2, p })) })).filter((g) => g.items.length),
+      logoOk: !this.state.logoNo, logoNo: !!this.state.logoNo, logoFalla: () => this.setState({ logoNo: true }),
+      q: this.state.q || '', setQ: (e) => this.setState({ q: e.target.value }), faqVacio: faqF.length === 0,
+      escritorio: !navMovil, movil: navMovil, ctaMovil: this.state.w < 760 && this.state.bajo,
+      menuAbierto: this.state.menu, menuMovil: navMovil && this.state.menu, menuTxt: this.state.menu ? 'Cerrar' : 'Menú',
+      toggleMenu: () => this.setState((s) => ({ menu: !s.menu })), cerrarMenu: () => this.setState({ menu: false }),
+      menu: [['#que-es', 'Qué son'], ['#como-funciona', 'Cómo funciona'], ['#requisitos', 'Requisitos y fechas'], ['#preguntas', 'Preguntas']].map(([href, t]) => ({ href, t })),
+      datos: [['Enero y febrero', 'Cuándo'], ['100 % virtual', 'Modalidad'], ['Hasta 11 créditos', 'Por verano']].map(([v, l], i) => ({ v, l, bl: i ? '1px solid #3A3A3A' : '0' })),
+      beneficios: [
+        { foto: 'img/verano-biblioteca.png', icono: 'https://adistancia.ucontinental.edu.pe/assets/img/icon-certificado-uc.svg', t: 'Ponte al día', p: '¿Te quedó una asignatura pendiente? El verano es tu oportunidad para recuperarla sin atrasarte y empezar tu siguiente periodo al día con tu plan.' },
+        { foto: 'img/verano-trabaja.png', icono: 'https://adistancia.ucontinental.edu.pe/assets/img/icon-tutorial-uc.svg', t: 'Equilibra tu carga', p: 'Adelanta una o dos asignaturas y vive periodos más livianos: más tiempo para tu trabajo y tu familia, y para aprender mejor.' },
+        { foto: 'img/verano-cafe.png', icono: 'https://adistancia.ucontinental.edu.pe/assets/img/icon-birrete.svg', t: 'Culmina antes tus estudios', p: 'Cada verano que aprovechas te acerca a tu meta. Sigue tu plan y podrías culminar tus estudios antes de lo previsto.' }
+      ].map((b, i) => Object.assign(b, { d: i * 120 })),
+      rutaEjCols: this.state.w < 640 ? 'minmax(0,1fr)' : '130px minmax(0,1fr) 190px',
+      ...(() => {
+        const PLAN = [23, 24, 21, 19, 23, 23, 22, 20, 20, 20], TOPE = 11, ch = this.state.w < 640;
+        const ING = [1, 2, 3, 4, 5, 6], ing = this.state.ejIng || 1;
+        // El verano llega antes de tu próximo periodo y luego una vez al año (cada 2 periodos); solo hay cursos hasta el 6.° periodo.
+        const S6 = PLAN.slice(ing - 1, 6).reduce((x, y) => x + y, 0);
+        const disp = [ing, ing + 2, ing + 4].filter((p) => p <= 6);
+        const ruta = (s) => { let rem = PLAN.slice(ing - 1).reduce((x, y) => x + y, 0), usados = 0, T = 0; const seg = []; let finTxt = '', finN = 0;
+          for (let p = ing; p <= 10 && rem > 0; p++) {
+            if (usados < s && disp.includes(p)) { const cv = Math.min(TOPE, rem, Math.max(0, S6 - T)); if (cv >= 3) { rem -= cv; T += cv; usados++; seg.push({ tipo: 'v', n: usados, cr: cv, antes: p }); if (!rem) { finTxt = 'V' + usados; finN = p - 0.5; break; } } }
+            const c = Math.min(PLAN[p - 1], rem); rem -= c; T += c; seg.push({ tipo: 'p', n: p, cr: c }); if (!rem) { finTxt = 'P' + p; finN = p; break; } }
+          return { seg, finTxt, finN }; };
+        const base = ruta(0);
+        const R = Array.from({ length: disp.length + 1 }, (_, s) => ruta(s)).map((r) => Object.assign(r, { s: r.seg.filter((x) => x.tipo === 'v').length })).filter((r, i, a) => i === 0 || r.s > a[i - 1].s);
+        const sel = Math.min(this.state.ej == null ? R.length - 1 : this.state.ej, R.length - 1);
+        const ahorro = (r) => base.finN - r.finN;
+        const resTxt = (r) => r.finTxt.startsWith('V') ? 'Culminas en el verano ' + r.finTxt.slice(1) : 'Culminas en P' + r.finTxt.slice(1);
+        const tag = (r) => { const a = ahorro(r); return a >= 1 ? (a === 1 ? '1 periodo antes' : (a % 1 ? a.toString().replace('.', ',') : a) + ' periodos antes') : a > 0 ? 'Medio periodo antes' : r.s ? 'Carga más ligera' : 'Ruta base'; };
+        const finCorto = (r) => r.finTxt.startsWith('V') ? 'En el verano ' + r.finTxt.slice(1) : 'En el ' + r.finTxt.slice(1) + '.° periodo';
+        const nReg = (r) => r.seg.filter((x) => x.tipo === 'p').length, crV = (r) => r.seg.filter((x) => x.tipo === 'v').reduce((x, y) => x + y.cr, 0), ultimo = (r) => { const p = r.seg.filter((x) => x.tipo === 'p'); return p.length ? p[p.length - 1].cr : 0; };
+        const meses = (a) => Math.round(a * 6);
+        const S = R[sel];
+        return {
+          ejIng: ING.map((n) => { const on = n === ing; return { t: n + '.°', on, go: () => this.setState({ ejIng: n, ej: null }), bg: on ? '#5A00AA' : 'transparent', fg: on ? '#fff' : '#5A00AA', bd: on ? '#5A00AA' : 'transparent' }; }),
+          rutasEj: R.map((r, i) => { const on = i === sel, a = ahorro(r); return { fin: finCorto(r), nPer: nReg(r) + ' periodos regulares', gBg: on ? '#000' : '#F2F2F2', gFg: on ? '#B9E1FF' : '#555', gSc: on ? 'scale(1.08)' : 'none', t: r.s === 0 ? 'Sin veranos' : r.s + (r.s === 1 ? ' verano' : ' veranos'), sub: r.s ? r.seg.filter((x) => x.tipo === 'v').reduce((x, y) => x + y.cr, 0) + ' créditos en verano' : 'Solo periodos regulares', res: tag(r), on, go: () => this.setState({ ej: i }), delay: (i * 0.2) + 's', op: on ? '1' : '.5', bd: on ? '#5A00AA' : '#E3E3E3', bg: on ? '#FAF7FD' : '#fff', tagBg: a >= 0.5 ? '#E3F2EA' : r.s ? '#EFE5F8' : '#F2F2F2', tagFg: a >= 0.5 ? '#145C34' : r.s ? '#5A00AA' : '#000',
+            seg: r.seg.map((x) => { const v2 = x.tipo === 'v', lig = !v2 && x.cr < PLAN[x.n - 1]; return { t: (v2 ? 'Verano ' + x.n + ' (antes del ' + x.antes + '.° periodo)' : 'Periodo ' + x.n) + ': ' + x.cr + ' créditos', l: v2 ? 'V' + x.n : 'P' + x.n, cr: x.cr + ' cr', f: v2 ? 2 : 3, h: Math.max(14, Math.round((x.cr / 24) * 36)) + 'px', bg: v2 ? '#5A00AA' : lig ? 'repeating-linear-gradient(135deg,#E6DCF2 0 6px,#F3EEFA 6px 12px)' : '#CFC2E3', fg: v2 ? '#fff' : '#3D0075' }; })
+              .concat(Array.from({ length: Math.max(0, (base.seg.length + 0) - r.seg.length) }, () => ({ t: '', l: '', cr: '', f: 3, h: '0px', bg: 'transparent', fg: 'transparent' }))) }; }),
+          ejSelT: (S.s === 0 ? 'SIN VERANOS' : S.s + (S.s === 1 ? ' VERANO' : ' VERANOS')) + ' · TU PRÓXIMO PERIODO ES EL ' + ing + '.° · REFERENCIAL',
+          ejSelRes: resTxt(S), ejSelD: ahorro(S) > 0 ? tag(S).replace(/^./, (c) => c.toUpperCase()) + ' que sin veranos: unos ' + meses(ahorro(S)) + ' meses antes.' : S.s ? 'Termina tu carrera en el mismo tiempo, pero con menos cursos en tus últimos periodos.' : 'Llevas tu plan solo en los periodos regulares. Prueba sumar un verano y mira la diferencia.',
+          ejComp: (() => { const prev = R[sel - 1]; const filas = [['Periodos regulares', nReg(base), nReg(S)], ['Créditos en verano', 0, crV(S)], ['Tu último periodo', ultimo(base) + ' cr', ultimo(S) + ' cr']]; return filas.map(([l, a, b]) => ({ l, a: String(a), b: String(b) })); })(),
+          ejCompT: S.s ? 'Sin veranos vs. ' + S.s + (S.s === 1 ? ' verano' : ' veranos') : '',
+          ejHayComp: S.s > 0,
+          ejMotiva: (() => { const prev = R[sel - 1], sig = R[sel + 1]; if (!S.s) return sig ? 'Con 1 verano ' + (ahorro(sig) > 0 ? 'culminarías ' + tag(sig) + '.' : 'tus periodos serían más livianos.') : ''; if (prev && prev.s) { const d = prev.finN - S.finN; return d > 0 ? 'Frente a ' + prev.s + (prev.s === 1 ? ' verano' : ' veranos') + ', este verano extra te adelanta ' + (d === 1 ? '1 periodo más' : d + ' periodos más') + '.' : 'Frente a ' + prev.s + (prev.s === 1 ? ' verano' : ' veranos') + ', culminas en el mismo periodo pero tu último periodo baja de ' + ultimo(prev) + ' a ' + ultimo(S) + ' créditos.'; } return ahorro(S) > 0 ? 'Un solo verano ya marca la diferencia.' : 'Tus periodos serían más livianos.'; })(),
+          ejSinV: S.s === 0,
+          ejVeranos: S.seg.filter((x) => x.tipo === 'v').map((x, k) => ({ t: 'Verano ' + x.n + ' · ' + x.cr + ' cr ref.', c: Array.from({ length: Math.max(1, Math.round(x.cr / 3.7)) }, (_, j) => 'Curso ' + (k * 3 + j + 1)), d: (k * 120) + 'ms' })),
+          ejDetCols: ch ? 'minmax(0,1fr)' : 'minmax(240px,auto) minmax(0,1fr)'
+        };
+      })(),
+      pasosCols: navMovil ? 'minmax(0,1fr)' : 'minmax(0,1fr) auto minmax(0,1fr)', flechaAnim: navMovil ? 'ucFlechaV' : 'ucFlecha', flechaRot: navMovil ? 'rotate(90deg)' : 'none', lineaPos: navMovil ? 'left:calc(50% - 1px);top:0;bottom:0;width:2px' : 'top:calc(50% - 1px);left:0;right:0;height:2px', lineaFill: navMovil ? 'width:100%;height:0' : 'height:100%;width:0',
+      pasos: PASOS.map(([t, donde, p], i) => { const portal = i === PASOS.length - 1; return { link: portal, flecha: i > 0, d: i * 400, n: i + 1, t, donde, p, bg: portal ? '#000' : '#fff', fg: portal ? '#fff' : '#000', bd: portal ? '#000' : '#E3E3E3', dC: portal ? '#fff' : '#555', nBg: portal ? '#B9E1FF' : '#5A00AA', nFg: portal ? '#000' : '#fff', tBg: portal ? '#B9E1FF' : '#F5F5F5', tFg: portal ? '#000' : '#5A00AA' }; }),
+      requisitos: [
+        ['Pagos al día', 'Sin deudas pendientes con la universidad.', 'req'],
+        ['Prerrequisitos aprobados', 'De cada asignatura que quieras llevar.', 'req'],
+        ['Revisa tu correo institucional', correoTxt, 'req'],
+        ['Hasta 11 créditos por verano', 'Límite de carga del periodo de verano.', 'cond'],
+        ['Apertura sujeta a demanda', 'Cada curso necesita un mínimo de estudiantes y vacantes disponibles.', 'cond']
+      ].map(([t, d, k]) => ({ t, d, m: k === 'req' ? '✓' : 'i', bg: k === 'req' ? '#5A00AA' : '#F5F5F5', fg: k === 'req' ? '#fff' : '#5A00AA' })),
+      hoyTxt: new Date().toLocaleDateString('es-PE', { day: 'numeric', month: 'long' }),
+      fechas: fechas.map(([t, d, donde, ini, fin], i, a) => { const hoy = new Date().toISOString().slice(0, 10); const est = !ini ? 'p' : hoy < ini ? 'p' : fin && hoy > fin ? 'c' : 'a';
+        const E = { p: ['Próximo', '#3A3A3A', '#fff', 'transparent', 'none'], a: ['En curso', '#B9E1FF', '#000', '#B9E1FF', 'ucPulso 1.6s ease-out infinite'], c: ['Concluido', '#1F1F1F', '#B9E1FF', '#3A3A3A', 'none'] }[est];
+        return { t, d, donde, linea: i < a.length - 1, e: E[0], eBg: E[1], eFg: E[2], dot: E[3], pulso: E[4] }; }),
+      faqs: faqF.map(([t, p]) => ({ t, p }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="js/cargador.js"></script>
+<title>Mi verano · Universidad Continental</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=DM+Sans:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:'DM Sans',system-ui,sans-serif;font-size:16px;line-height:1.55;color:#000000;background:#fff;overflow-x:hidden}
+a{color:#5A00AA}a:hover{color:#3D0075}
+button{font-family:inherit}
+:focus-visible{outline:3px solid #B9E1FF;outline-offset:2px;box-shadow:0 0 0 2px #000000;border-radius:6px}
+@keyframes ucBloque{from{opacity:0;transform:translateY(8px) scaleY(.6)}to{opacity:1;transform:none}}
+@keyframes ucCrece{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes ucIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ucPop{0%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes ucSube{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;background:#fff">
+<header style="position:sticky;top:0;z-index:40;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid #EBEBEB">
+<div style="max-width:1280px;margin:0 auto;padding:0 {{ padX }};min-height:{{ hdrH }};display:flex;align-items:center;justify-content:space-between;gap:16px">
+<a href="index.html" aria-label="Volver a la página de cursos de verano" style="display:flex;align-items:center;min-width:0;flex:0 1 auto"><img src="https://adistancia.ucontinental.edu.pe/assets/img/logo.svg" alt="Universidad Continental · Modalidad A Distancia" style="height:{{ logoH }};width:auto;max-width:100%"></a>
+<sc-if value="{{ sesion }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:12px">
+<sc-if value="{{ escritorio }}" hint-placeholder-val="{{ true }}"><span style="font-size:14px;color:#555555">{{ nombreCompleto }}</span></sc-if>
+<span aria-hidden="true" style="width:40px;height:40px;flex:none;border-radius:999px;background:#5A00AA;color:#fff;display:flex;align-items:center;justify-content:center;font:700 14px Sora,sans-serif">{{ iniciales }}</span>
+<button type="button" onClick="{{ salir }}" style="min-height:44px;padding:0 8px;background:none;border:0;color:#5A00AA;font-weight:700;font-size:14px;text-decoration:underline;cursor:pointer">Cerrar sesión</button>
+</div>
+</sc-if>
+</div>
+</header>
+
+<sc-if value="{{ cargando }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:80px 20px;color:#555555;font-size:15px" role="status">Cargando tu información…</div>
+</sc-if>
+
+<sc-if value="{{ verIngreso }}" hint-placeholder-val="{{ true }}">
+<section style="flex:1;display:grid;grid-template-columns:{{ heroCols }}">
+<div style="background:#5A00AA;color:#fff;padding:{{ heroPad }};display:flex;flex-direction:column;gap:20px;justify-content:center">
+<span style="align-self:flex-start;white-space:nowrap;padding:6px 14px;border-radius:999px;background:#B9E1FF;color:#000000;font-weight:700;font-size:12.5px;letter-spacing:.05em">MI VERANO 2027</span>
+<h1 style="font:700 clamp(32px,4.6vw,48px)/1.12 Sora,sans-serif;margin:0;letter-spacing:-.01em;text-wrap:balance">Ingresa para consultar tu ruta de cursos de verano</h1>
+<p style="font-size:18px;color:#FFFFFF;max-width:46ch;margin:0">Verás tu avance, tu plan de estudios, tus rutas para culminar tus estudios con y sin veranos y los cursos de verano que podrías llevar.</p>
+<p style="margin:0;background:#B9E1FF;color:#000000;border-radius:12px;padding:12px 14px;font-size:15.5px;max-width:52ch"><b>Es una consulta referencial.</b> No registra nada: la <b>matrícula oficial se realiza en el Portal del Estudiante</b>.</p>
+<div><button type="button" onClick="{{ abrirSelector }}" style="min-height:54px;padding:0 26px;border-radius:999px;border:0;background:#fff;color:#5A00AA;font-weight:700;font-size:16px;cursor:pointer;display:inline-flex;align-items:center;gap:12px" style-hover="background:#B9E1FF"><span aria-hidden="true" style="width:28px;height:28px;border-radius:99px;background:#F2F2F2;color:#5A00AA;display:flex;align-items:center;justify-content:center;font:700 14px Sora,sans-serif">G</span><span style="display:flex;flex-direction:column;align-items:flex-start;line-height:1.2"><span>Ingresar con mi cuenta</span><span style="font-size:12.5px;font-weight:500;color:#555555">Google · @continental.edu.pe</span></span></button></div>
+<p style="font-size:14px;color:#B9E1FF;margin:0">Solo tú puedes ver tu información académica.</p>
+<sc-if value="{{ error }}" hint-placeholder-val="{{ false }}"><p style="margin:0;background:#FDE9E7;color:#7A2419;padding:12px 14px;border-radius:12px;font-weight:700">{{ error }}</p></sc-if>
+</div>
+<div style="position:relative;overflow:hidden;background:#000000;color:#fff;padding:{{ heroPad }};display:flex;flex-direction:column;justify-content:center;gap:28px;min-height:380px">
+<img src="img/verano-grupo.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% center">
+<div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.95) 0%,rgba(0,0,0,.86) 55%,rgba(0,0,0,.62) 100%)"></div>
+
+<h2 style="position:relative;margin:0;font:700 clamp(22px,2.4vw,28px)/1.25 Sora,sans-serif;color:#fff">Así consultas tu ruta de verano</h2>
+<ol style="position:relative;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ pasosIngreso }}" as="p" hint-placeholder-count="5"><li style="display:flex;gap:14px;align-items:center;font-size:16px;color:#FFFFFF;padding:12px 16px;border-radius:14px;background:rgba(255,255,255,.08)"><span style="width:36px;height:36px;flex:none;border-radius:99px;background:#B9E1FF;color:#000000;display:flex;align-items:center;justify-content:center;font:400 22px/1 'Bebas Neue',sans-serif">{{ p.n }}</span><span>{{ p.t }}</span></li></sc-for>
+</ol>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{ sesion }}" hint-placeholder-val="{{ false }}">
+<section style="background:#5A00AA;color:#fff">
+<div style="max-width:1280px;margin:0 auto;padding:{{ stripPad }};display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:18px 32px">
+<div style="min-width:0;display:flex;align-items:center;gap:18px"><div role="img" aria-label="Avance de tu carrera: {{ pct }} %" style="position:relative;width:{{ ringS }};height:{{ ringS }};flex:none"><svg viewBox="0 0 80 80" width="100%" height="100%" style="transform:rotate(-90deg);display:block"><circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="8"></circle><circle cx="40" cy="40" r="34" fill="none" stroke="#B9E1FF" stroke-width="8" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="{{ ringOff }}" style="transition:stroke-dashoffset 1.4s cubic-bezier(.2,.7,.2,1)"></circle></svg><span style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1"><b style="font:400 {{ ringFs }} 'Bebas Neue',sans-serif;color:#fff">{{ pct }}%</b><span style="font-size:10.5px;color:#B9E1FF;margin-top:2px">avance</span></span></div><div style="min-width:0"><h1 style="font:700 clamp(24px,3.4vw,32px)/1.15 Sora,sans-serif;margin:0 0 4px;color:#fff">Hola, {{ nombreCorto }}</h1><p style="margin:0;color:#FFFFFF;font-size:14.5px">{{ metaPerfil }}</p><p role="status" aria-live="polite" style="margin:10px 0 0;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:14px;line-height:1.35;background:{{ chipBg }};color:{{ chipFg }};font-weight:700;font-size:13.5px">{{ chipT }}</p></div></div>
+<div style="display:grid;grid-template-columns:{{ kpiCols }};gap:10px 28px">
+<sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4"><div style="min-width:0"><div style="font-size:12.5px;color:#B9E1FF">{{ k.l }}</div><div style="font:400 clamp(24px,6.6vw,32px)/1.05 'Bebas Neue',sans-serif;overflow-wrap:anywhere;letter-spacing:.02em;color:{{ k.c }}">{{ k.v }}</div></div></sc-for>
+</div>
+</div>
+<div role="progressbar" aria-valuenow="{{ pct }}" aria-valuemin="0" aria-valuemax="100" aria-label="Avance de tu carrera" style="height:6px;background:rgba(255,255,255,.22)"><i style="display:block;height:100%;background:#B9E1FF;width:{{ pctW }};transition:width .6s"></i></div>
+</section>
+
+<sc-if value="{{ verAvisoSim }}" hint-placeholder-val="{{ false }}">
+<div role="note" aria-label="Importante" style="background:#B9E1FF;border-bottom:3px solid #B9E1FF;color:#000000">
+<div style="max-width:1280px;margin:0 auto;padding:12px {{ padX }};display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between">
+<p style="margin:0;font-size:16px;line-height:1.45;max-width:90ch"><b style="font-family:Sora,sans-serif">📌 Esta es una consulta referencial.</b> No te matricula ni reserva vacante. La <b>matrícula oficial se realiza en el Portal del Estudiante</b>, en las fechas del calendario académico.</p>
+<a href="{{ intranet }}" target="_blank" rel="noopener" style="min-height:44px;display:inline-flex;align-items:center;padding:0 18px;border-radius:999px;background:#000000;color:#fff;font-weight:700;text-decoration:none;white-space:nowrap">Ir al Portal del Estudiante ↗</a>
+</div></div>
+</sc-if>
+
+<nav aria-label="Pasos del proceso" style="position:sticky;top:{{ hdrH }};z-index:30;background:#fff;border-bottom:1px solid #E3E3E3;box-shadow:0 4px 14px rgba(0,0,0,.05)">
+<div style="max-width:1280px;margin:0 auto;padding:0 {{ padX }}">
+<ol style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))">
+<sc-for list="{{ etapas }}" as="e" hint-placeholder-count="2"><li style="display:flex;min-width:0;position:relative">
+<sc-if value="{{ e.interno }}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{ e.go }}" aria-current="{{ e.cur }}" aria-label="{{ e.aria }}" title="{{ e.motivo }}" style="flex:1;min-width:0;min-height:{{ stepH }};padding:{{ e.pad }};border:0;border-bottom:4px solid {{ e.linea }};background:{{ e.bg }};cursor:{{ e.cursor }};display:flex;flex-direction:{{ e.dir }};align-items:center;justify-content:{{ e.just }};gap:{{ e.gap }};text-align:{{ e.alin }};font-family:inherit;transition:background .2s" style-hover="background:#F5F5F5"><span aria-hidden="true" style="width:30px;height:30px;flex:none;border-radius:99px;display:flex;align-items:center;justify-content:center;font:700 14px Sora,sans-serif;background:{{ e.nBg }};color:{{ e.nFg }};border:2px solid {{ e.nBd }};box-shadow:{{ e.halo }};transition:box-shadow .3s"><b style="font:inherit">{{ e.n }}</b></span><span style="display:flex;flex-direction:column;line-height:1.25;min-width:0;align-items:{{ e.alinItems }}"><b style="font:700 {{ e.fs }} Sora,sans-serif;color:{{ e.fg }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">{{ e.t }}</b><sc-if value="{{ e.haySub }}" hint-placeholder-val="{{ true }}"><span style="font-size:12.5px;color:{{ e.subC }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">{{ e.sub }}</span></sc-if></span></button></sc-if>
+<sc-if value="{{ e.externo }}" hint-placeholder-val="{{ false }}"><a href="{{ intranet }}" target="_blank" rel="noopener" aria-label="{{ e.aria }}" style="flex:1;min-width:0;min-height:{{ stepH }};padding:{{ e.pad }};border-bottom:4px solid transparent;text-decoration:none;display:flex;flex-direction:{{ e.dir }};align-items:center;justify-content:{{ e.just }};gap:{{ e.gap }};text-align:{{ e.alin }};transition:background .2s" style-hover="background:#F5F5F5"><span aria-hidden="true" style="width:30px;height:30px;flex:none;border-radius:99px;display:flex;align-items:center;justify-content:center;font:700 14px Sora,sans-serif;background:#000000;color:#B9E1FF;border:2px solid #000000">{{ e.n }}</span><span style="display:flex;flex-direction:column;line-height:1.25;min-width:0;align-items:{{ e.alinItems }}"><b style="font:700 {{ e.fs }} Sora,sans-serif;color:#000000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">{{ e.t }}</b><sc-if value="{{ e.haySub }}" hint-placeholder-val="{{ true }}"><span style="font-size:12.5px;color:#555555;white-space:nowrap">{{ e.sub }}</span></sc-if></span></a></sc-if>
+</li></sc-for>
+</ol>
+</div>
+</nav>
+
+<main style="flex:1;background:#FAFAFA">
+<div style="max-width:1280px;margin:0 auto;padding:{{ mainPad }}">
+<div style="display:grid;grid-template-columns:{{ gridCols }};gap:28px;align-items:start">
+<div data-col="1" style="display:flex;flex-direction:column;gap:22px;min-width:0">
+<sc-if value="{{ haySubvistas }}" hint-placeholder-val="{{ false }}"><div role="tablist" aria-label="Vistas de este paso" style="position:sticky;top:{{ tabsTop }};z-index:25;align-self:flex-start;display:flex;gap:4px;padding:4px;background:#EFEFEF;border-radius:999px;max-width:100%;overflow-x:auto;scrollbar-width:none;box-shadow:0 0 0 6px #FAFAFA,0 8px 18px rgba(0,0,0,.08)"><sc-for list="{{ subvistas }}" as="s" hint-placeholder-count="2"><button type="button" role="tab" aria-selected="{{ s.on }}" onClick="{{ s.go }}" style="min-height:44px;padding:0 18px;border-radius:999px;border:0;background:{{ s.bg }};color:{{ s.fg }};font:700 14px 'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;box-shadow:{{ s.sh }};transition:background .2s"><span>{{ s.t }}</span></button></sc-for></div></sc-if>
+<sc-if value="{{ haySubvistas }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="height:4px;border-radius:4px;background:#E3E3E3;overflow:hidden;margin-top:-12px;max-width:520px"><i style="display:block;height:100%;background:#5A00AA;border-radius:4px;width:{{ subProg }};transition:width .6s cubic-bezier(.2,.7,.2,1)"></i></div></sc-if>
+
+<!-- 1 · MI AVANCE (informativo) -->
+<sc-if value="{{ esAvance }}" hint-placeholder-val="{{ false }}">
+<div><span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:#F2F2F2;color:#5A00AA;font-size:12.5px;font-weight:700">Paso 1 · Solo consulta</span><h2 style="font:700 clamp(26px,3.4vw,34px)/1.2 Sora,sans-serif;margin:6px 0 6px">Mi avance</h2><p style="margin:0;color:#555555;max-width:70ch">Tu situación según tu historial académico al periodo {{ periodo }}.</p></div>
+<sc-if value="{{ noHabil }}" hint-placeholder-val="{{ false }}"><div role="alert" style="display:flex;gap:12px;align-items:flex-start;background:#FDE9E7;color:#7A2419;border-radius:14px;padding:14px 16px;font-size:15px"><span style="width:26px;height:26px;flex:none;border-radius:99px;background:#B3261E;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">!</span><span><b>Tienes un impedimento de matrícula.</b> {{ habMsg }}</span></div></sc-if>
+<sc-if value="{{ sinCursosVerano }}" hint-placeholder-val="{{ false }}"><div role="status" style="background:#F2F2F2;color:#5A00AA;border-radius:14px;padding:14px 16px;font-size:15px"><b>Por ahora no hay cursos de verano que puedas llevar.</b> {{ sinCursosMotivo }} Revisa tu ruta para saber cuándo podrás llevarlos.</div></sc-if>
+<sc-if value="{{ sinOfertaAviso }}" hint-placeholder-val="{{ false }}"><section role="status" aria-label="Cursos de verano" style="background:#fff;border:1px solid #E3E3E3;border-left:6px solid #145C34;border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:8px"><h3 style="font:700 clamp(19px,2.2vw,22px)/1.3 Sora,sans-serif;margin:0;color:#145C34">🎓 Este verano no tienes cursos de verano disponibles</h3><p style="margin:0;font-size:15.5px;color:#3A3A3A;max-width:75ch">{{ sinOfertaD }}</p><p style="margin:0;font-size:15px;color:#000000;font-weight:700">Lo que sí puedes hacer:</p><ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:15px;color:#3A3A3A"><li>Revisa abajo tu ruta para culminar tus estudios en tus próximos periodos académicos.</li><li>Si tienes un caso especial, consulta con la mesa de ayuda (botón «¿Necesitas ayuda?»).</li><li>Realiza tu matrícula del siguiente periodo académico en el <a href="{{ intranet }}" target="_blank" rel="noopener" style="color:#5A00AA;font-weight:700">Portal del Estudiante</a>.</li></ul></section></sc-if>
+<sc-if value="{{ ofertaSola }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin:0;background:#F2F2F2;border-left:5px solid #5A00AA;border-radius:12px;padding:12px 14px;font-size:15px;color:#000000">{{ ofertaTxt }}</p></sc-if>
+<sc-if value="{{ haySeg }}" hint-placeholder-val="{{ false }}"><section aria-label="Tu caso" style="background:#fff;border:1px solid #E3E3E3;border-left:6px solid #5A00AA;border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:6px">
+<span style="align-self:flex-start;padding:3px 12px;border-radius:999px;background:#F2F2F2;color:#5A00AA;font-weight:700;font-size:13px">{{ segTag }}</span>
+<h3 style="font:700 clamp(19px,2.2vw,22px)/1.3 Sora,sans-serif;margin:0;color:#5A00AA">{{ segT }}</h3>
+<p style="margin:0;font-size:15.5px;color:#3A3A3A;max-width:75ch">{{ segD }}</p>
+<sc-if value="{{ hayOfertaTxt }}" hint-placeholder-val="{{ false }}"><p style="margin:6px 0 0;padding-top:10px;border-top:1px solid #EFEFEF;font-size:14.5px;color:#3A3A3A;max-width:75ch">{{ ofertaTxt }}</p></sc-if>
+</section></sc-if>
+<section aria-label="Tu avance" style="background:#fff;border:1px solid #E3E3E3;border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font:700 18px Sora,sans-serif;margin:0">Tu avance</h3>
+<sc-if value="{{ hayGrado }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14.5px;color:#3A3A3A"><b>Grado:</b> {{ grado }} · <b>Título:</b> {{ tituloProf }}</p></sc-if>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px">
+<sc-for list="{{ historial }}" as="h" hint-placeholder-count="3"><div style="border-radius:14px;padding:12px 14px;background:{{ h.bg }}"><div style="font:400 34px/1 'Bebas Neue',sans-serif;color:{{ h.c }}">{{ h.v }}</div><div style="font-size:14px;color:#3A3A3A">{{ h.l }}</div></div></sc-for>
+</div>
+<sc-if value="{{ hayCredTipo }}" hint-placeholder-val="{{ false }}"><details style="border-top:1px solid #EFEFEF;padding-top:10px"><summary style="cursor:pointer;min-height:36px;display:flex;align-items:center;font-size:14px;font-weight:700;color:#5A00AA">Ver créditos por tipo</summary><div style="display:flex;flex-wrap:wrap;gap:6px;padding-top:8px"><sc-for list="{{ credTipo }}" as="ct" hint-placeholder-count="4"><span style="padding:4px 10px;border-radius:999px;background:{{ ct.bg }};color:{{ ct.fg }};font-size:13px;font-weight:700">{{ ct.t }}</span></sc-for></div></details></sc-if>
+</section>
+<section aria-labelledby="ruta-t" style="background:#fff;border:1px solid #E3E3E3;border-radius:24px;overflow:hidden;display:flex;flex-direction:column">
+<div style="padding:22px 22px 18px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap"><div style="display:flex;flex-direction:column;gap:4px;max-width:60ch"><h3 id="ruta-t" style="font:700 clamp(19px,2.2vw,22px)/1.25 Sora,sans-serif;margin:0">Mi ruta para culminar mis estudios</h3><p style="margin:0;color:#555555;font-size:14.5px">{{ rutaIntro }}</p></div><span style="padding:4px 12px;border-radius:999px;background:#F5F5F5;font-size:12.5px;font-weight:700;color:#555555;white-space:nowrap">Estimación referencial</span></div>
+<sc-if value="{{ escVarios }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:8px"><span id="esc-l" style="font-size:13px;font-weight:700;color:#3A3A3A">¿Cuántos veranos quieres aprovechar?</span><div role="radiogroup" aria-labelledby="esc-l" style="display:flex;gap:6px;padding:5px;background:#F2F2F2;border-radius:18px;overflow-x:auto">
+<sc-for list="{{ escOpc }}" as="e" hint-placeholder-count="3"><button type="button" role="radio" aria-checked="{{ e.on }}" onClick="{{ e.go }}" style="flex:1 0 auto;min-height:60px;border-radius:14px;padding:8px 14px;border:0;background:{{ e.bg }};color:{{ e.fg }};box-shadow:{{ e.sh }};opacity:{{ e.op }};transform:{{ e.sc }};text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:inherit;transition:background .3s,box-shadow .3s,color .3s,opacity .3s,transform .3s cubic-bezier(.2,.7,.2,1)" style-hover="opacity:1"><b style="font:700 14.5px Sora,sans-serif;white-space:nowrap">{{ e.t }}</b><span style="font-size:12.5px;color:{{ e.subC }};white-space:nowrap">{{ e.sub }}</span></button></sc-for>
+</div></div></sc-if>
+<div role="status" aria-live="polite" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:#5A00AA;color:#fff;border-radius:18px;padding:16px 20px"><span aria-hidden="true" style="width:48px;height:48px;flex:none;border-radius:14px;background:#B9E1FF;color:#5A00AA;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5 10-5Z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg></span><span style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 220px"><span style="font-size:13px;color:#B9E1FF;font-weight:700">Culminarías tus estudios</span><b style="font:400 clamp(28px,3.4vw,36px)/1 'Bebas Neue',sans-serif;letter-spacing:.03em">{{ rutaFin }}</b><span style="font-size:13.5px">{{ rutaResumenD }}</span></span></div>
+<sc-if value="{{ hayGana }}" hint-placeholder-val="{{ false }}"><div key="{{ ganaT }}" aria-live="polite" style="display:flex;flex-direction:column;gap:12px;border:2px solid #E6DDF2;background:#FAF7FD;border-radius:18px;padding:16px 18px;animation:ucSube .4s cubic-bezier(.2,.7,.2,1)">
+<div style="display:flex;flex-direction:column;gap:2px"><b style="font:700 16px Sora,sans-serif;color:#000">{{ ganaT }}</b><span style="font-size:13.5px;color:#555">{{ ganaSub }}</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px"><sc-for list="{{ ganaFilas }}" as="g" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid #E3E3E3;border-radius:14px;padding:12px 14px"><span style="font-size:13px;color:#3A3A3A;font-weight:700">{{ g.l }}</span><span style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><sc-if value="{{ g.hayA }}" hint-placeholder-val="{{ true }}"><span style="font:400 22px/1 'Bebas Neue',sans-serif;color:#999;text-decoration:line-through;text-decoration-thickness:1.5px">{{ g.a }}</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5A00AA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></sc-if><b style="font:400 30px/1 'Bebas Neue',sans-serif;color:#5A00AA">{{ g.b }}</b></span><sc-if value="{{ g.d }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start;padding:2px 10px;border-radius:999px;background:{{ g.dBg }};color:{{ g.dFg }};font-size:12.5px;font-weight:700">{{ g.d }}</span></sc-if></div></sc-for></div>
+<p style="margin:0;display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:12px;background:#B9E1FF;color:#000;font-size:14.5px;font-weight:700"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M3 17l6-6 4 4 8-8"></path><path d="M14 7h7v7"></path></svg><span>{{ ganaFrase }}</span></p>
+</div></sc-if>
+<sc-if value="{{ escVarios }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:10px;border:1px solid #E3E3E3;border-radius:18px;padding:16px 18px">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px"><b style="font:700 15.5px Sora,sans-serif">Compara tus rutas</b><span style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:#3A3A3A"><span style="display:flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:3px;background:#CFC2E3"></i>Periodo regular</span><span style="display:flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:3px;background:#5A00AA"></i>Verano</span></span></div>
+<sc-for list="{{ compRutas }}" as="r" hint-placeholder-count="3"><button type="button" onClick="{{ r.go }}" aria-pressed="{{ r.on }}" style="display:grid;grid-template-columns:{{ compCols }};gap:6px 14px;align-items:center;padding:8px 10px;border-radius:12px;border:{{ r.bw }} solid {{ r.bd }};background:{{ r.bg }};opacity:{{ r.op }};box-shadow:{{ r.sh }};cursor:pointer;text-align:left;font-family:inherit;transition:background .3s,border-color .3s,opacity .3s,box-shadow .3s" style-hover="border-color:#5A00AA;opacity:1">
+<b style="font:700 14px Sora,sans-serif;color:#000">{{ r.t }}</b>
+<span style="display:flex;gap:3px"><sc-for list="{{ r.seg }}" as="s" hint-placeholder-count="10"><i title="{{ s.t }}" style="animation:ucBloque .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:{{ s.d }};transform-origin:bottom center;flex:{{ s.f }};min-width:{{ s.mw }};height:44px;border-radius:6px;background:{{ s.bg }};color:{{ s.fg }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;overflow:hidden;font-style:normal;white-space:nowrap;line-height:1"><b style="font:700 12px 'DM Sans',sans-serif">{{ s.l }}</b><span style="font-size:10.5px;opacity:.85">{{ s.s2 }}</span></i></sc-for></span>
+<span style="justify-self:start;display:flex;align-items:center;gap:8px"><span aria-hidden="true" style="width:34px;height:34px;flex:none;border-radius:10px;background:{{ r.tagBg }};color:{{ r.gFg }};display:flex;align-items:center;justify-content:center;transition:background .3s"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5 10-5Z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg></span><span style="display:flex;flex-direction:column;line-height:1.2"><span style="font-size:11.5px;color:#555">Culminas</span><b style="white-space:nowrap;font-size:13px;color:#000">{{ r.fin }}</b></span></span>
+</button></sc-for>
+<span style="font-size:12.5px;color:#555555">Cada bloque muestra el periodo académico (por ejemplo 2027-10) y qué número de periodo es para ti (5.°, 6.°…). Pasa el cursor para ver créditos y asignaturas. Los créditos y periodos son referenciales. Selecciona una ruta para ver su detalle periodo por periodo.</span>
+<p role="note" style="margin:0;display:flex;gap:10px;align-items:flex-start;background:#F5F0FB;border:1px solid #D9C9EE;border-radius:12px;padding:10px 14px;font-size:13.5px;color:#000"><span aria-hidden="true" style="width:22px;height:22px;flex:none;border-radius:99px;background:#5A00AA;color:#fff;display:flex;align-items:center;justify-content:center;font:700 13px Sora,sans-serif">i</span><span><b>¡Vas muy bien!</b> Te mostramos los veranos que te ayudan a avanzar en tu plan. En verano se ofrecen asignaturas hasta el 6.° periodo; cuando las completes, ya habrás aprovechado todos tus veranos y seguirás firme hacia tu meta en tus periodos regulares.</span></p>
+</div></sc-if>
+</div>
+<ol aria-label="Ruta periodo por periodo" style="list-style:none;margin:0;padding:4px 22px 8px;display:flex;flex-direction:column">
+<sc-for list="{{ rutaPer }}" as="r" hint-placeholder-count="4"><li style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:0 14px">
+<span aria-hidden="true" style="display:flex;flex-direction:column;align-items:center"><span style="width:14px;height:14px;margin-top:20px;border-radius:99px;flex:none;background:{{ r.dot }};box-shadow:0 0 0 4px {{ r.halo }}"></span><span style="flex:1;width:2px;background:{{ r.linea }};margin-top:4px"></span></span>
+<details open="{{ r.abierto }}" style="border-bottom:1px solid #EFEFEF;padding:10px 0">
+<summary style="list-style:none;cursor:pointer;min-height:44px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;background:{{ r.tBg }};color:{{ r.tFg }}">{{ r.tipo }}</span><b style="font:700 15.5px Sora,sans-serif">{{ r.et }}</b><sc-if value="{{ r.fin }}" hint-placeholder-val="{{ false }}"><span style="padding:2px 10px;border-radius:999px;background:#E3F2EA;color:#145C34;font-size:12px;font-weight:700">Culminas</span></sc-if><span style="margin-left:auto;font-size:13.5px;color:#555555;white-space:nowrap">{{ r.n }} · {{ r.cr }}</span></summary>
+<ul style="list-style:none;margin:6px 0 4px;padding:0;display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ r.lista }}" as="x" hint-placeholder-count="3"><li style="padding:5px 12px;border-radius:10px;background:{{ r.cBg }};font-size:13.5px;color:#000000">{{ x }}</li></sc-for></ul>
+</details>
+</li></sc-for>
+</ol>
+<div style="padding:16px 22px 22px;display:flex;flex-direction:column;gap:14px;background:#FAFAFA;border-top:1px solid #EFEFEF">
+<sc-if value="{{ hayEscNota }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:13px;color:#555555">{{ escNota }}</p></sc-if>
+<div role="note" style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;background:#fff;color:#000000;border:1px solid #E3E3E3;border-radius:12px;padding:12px 14px;font-size:14.5px"><span aria-hidden="true" style="font-weight:700">ⓘ</span><span style="flex:1 1 260px"><b>Las asignaturas son referenciales.</b> Podrían cambiar según la apertura de cursos de verano y tu avance en el plan de estudios. <b>Tus dudas, a tu director de programa.</b></span><sc-if value="{{ hayDirectores }}" hint-placeholder-val="{{ false }}"><button type="button" data-directores="1" data-solo="1" data-carrera="{{ carreraNombre }}" style="min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid #5A00AA;background:#fff;color:#5A00AA;font:700 14px 'DM Sans',sans-serif;cursor:pointer;white-space:nowrap" style-hover="background:#5A00AA;color:#fff">Contactar a mi director</button></sc-if></div>
+<div style="display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center">
+<sc-if value="{{ rutaArmar }}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{ armarRuta }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;border:0;background:#5A00AA;color:#fff;font-weight:700;font-size:15.5px;cursor:pointer;transition:background .2s,transform .2s" style-hover="background:#3D0075;transform:translateY(-1px)">Simular mi verano con esta ruta <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;display:block"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></button></sc-if>
+<sc-if value="{{ rutaSinVerano }}" hint-placeholder-val="{{ false }}"><span style="font-size:14.5px;color:#3A3A3A">En este escenario no llevas cursos de verano.</span><button type="button" onClick="{{ irVerano }}" style="min-height:44px;padding:0 8px;border:0;background:none;color:#5A00AA;font-weight:700;font-size:14.5px;text-decoration:underline;cursor:pointer">Ver los cursos de verano que puedes llevar</button></sc-if>
+<button type="button" onClick="{{ pdfRuta }}" style="min-height:48px;padding:0 20px;border-radius:999px;border:2px solid #5A00AA;background:#fff;color:#5A00AA;font-weight:700;font-size:14.5px;cursor:pointer" style-hover="background:#F2F2F2">Descargar mi ruta (PDF)</button>
+</div>
+</div>
+</section>
+</sc-if>
+
+<!-- 2 · MI MALLA -->
+<sc-if value="{{ esMalla }}" hint-placeholder-val="{{ false }}">
+<div><span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:#F2F2F2;color:#5A00AA;font-size:12.5px;font-weight:700">Paso 1 · Solo consulta</span><h2 style="font:700 clamp(26px,3.4vw,34px)/1.2 Sora,sans-serif;margin:6px 0 6px">Mi plan de estudios</h2><p style="margin:0;color:#555555">{{ mallaIntro }}</p></div>
+<div style="display:grid;grid-template-columns:{{ mallaCols }};gap:20px;align-items:start">
+<div style="background:#fff;border:1px solid #E3E3E3;border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0">
+<div role="radiogroup" aria-label="Qué asignaturas mostrar" style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ mallaFiltros }}" as="mf" hint-placeholder-count="2"><button type="button" role="radio" aria-checked="{{ mf.on }}" onClick="{{ mf.go }}" style="min-height:44px;padding:0 16px;border-radius:999px;border:2px solid {{ mf.bd }};background:{{ mf.bg }};color:{{ mf.fg }};font-weight:700;font-size:14px;cursor:pointer">{{ mf.t }}</button></sc-for></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13.5px">
+<sc-for list="{{ leyenda }}" as="l" hint-placeholder-count="4"><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:14px;height:14px;border-radius:4px;background:{{ l.bg }};border:1px solid {{ l.bd }}"></i>{{ l.t }}</span></sc-for>
+<sc-if value="{{ haySelMalla }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:14px;height:14px;border-radius:4px;border:3px solid #B9E1FF"></i>Prerrequisito</span><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:14px;height:14px;border-radius:4px;border:3px dashed #5A00AA"></i>Lo habilita</span></sc-if>
+</div>
+<div style="overflow-x:auto;padding-bottom:6px" tabindex="0" aria-label="Plan de estudios por periodos, desplazable horizontalmente">
+<div style="display:flex;gap:10px;min-width:max-content">
+<sc-for list="{{ ciclos }}" as="ci" hint-placeholder-count="10">
+<div style="width:{{ mallaColW }};display:flex;flex-direction:column;gap:8px">
+<div style="font:700 13px Sora,sans-serif;text-align:center;padding:6px;border-radius:8px;background:#F2F2F2;color:#5A00AA">Periodo {{ ci.n }}</div>
+<sc-for list="{{ ci.cursos }}" as="c" hint-placeholder-count="5">
+<button type="button" onClick="{{ c.go }}" aria-pressed="{{ c.pressed }}" style="display:block;width:100%;text-align:left;border-radius:10px;padding:8px 10px;font:500 12.5px/1.3 'DM Sans',sans-serif;cursor:pointer;min-height:48px;transition:opacity .2s,outline-color .2s;background:{{ c.bg }};color:{{ c.fg }};border:1px solid {{ c.bd }};outline:{{ c.ol }};outline-offset:1px;opacity:{{ c.op }}">{{ c.nombre }}<small style="display:block;font-size:11.5px;opacity:.9;margin-top:2px">{{ c.meta }}</small></button>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+<div aria-live="polite" style="position:sticky;top:{{ stickyTop }};background:#fff;border:2px solid #5A00AA;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:12px">
+<sc-if value="{{ sinSelMalla }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:8px"><span style="font:400 22px/1 'Bebas Neue',sans-serif;color:#5A00AA;letter-spacing:.04em">Detalle de la asignatura</span><p style="margin:0;color:#555555;font-size:14.5px">Toca una asignatura para ver sus prerrequisitos.</p></div></sc-if>
+<sc-if value="{{ haySelMalla }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><h3 style="font:700 18px/1.3 Sora,sans-serif;margin:0">{{ md.nombre }}</h3><button type="button" onClick="{{ limpiarMalla }}" aria-label="Cerrar detalle" style="width:44px;height:44px;flex:none;border-radius:99px;border:0;background:#F2F2F2;color:#5A00AA;font:700 18px Sora,sans-serif;cursor:pointer">×</button></div>
+<p style="margin:0;font-size:13.5px;color:#555555">{{ md.meta }}</p>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><span style="padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:700;background:{{ md.eBg }};color:{{ md.eFg }}">{{ md.estado }}</span><sc-if value="{{ md.clave }}" hint-placeholder-val="{{ false }}"><span style="padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:700;background:#B9E1FF;color:#000000">Asignatura clave</span></sc-if></div>
+<div style="border-top:1px solid #E3E3E3;padding-top:12px;display:flex;flex-direction:column;gap:10px;font-size:14.5px">
+<div><b>Prerrequisitos:</b> {{ md.req }}</div>
+<div><b>Habilita:</b> {{ md.habilita }} asignaturas posteriores</div>
+<div><b>En cursos de verano 2027:</b> {{ md.verano }}</div>
+<sc-if value="{{ md.hayRestr }}" hint-placeholder-val="{{ false }}"><div role="note" style="background:#B9E1FF;color:#000000;border-radius:10px;padding:10px 12px;font-size:14px"><b>Con restricción:</b> {{ md.restr }}. Revísala antes de solicitarlo.</div></sc-if>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<!-- 3 · CURSOS DE VERANO (solo consulta) -->
+<sc-if value="{{ esCursos }}" hint-placeholder-val="{{ false }}">
+<div><span style="font-size:12.5px;font-weight:700;letter-spacing:.06em;color:#5A00AA">CURSOS DE VERANO 2027 · SOLO CONSULTA</span><h2 style="font:700 clamp(26px,3.4vw,34px)/1.2 Sora,sans-serif;margin:6px 0 6px">Cursos de verano que podrías llevar</h2><p style="margin:0;color:#555555;max-width:75ch">{{ cursosIntro }}</p></div>
+<p role="note" style="margin:0;background:#F2F2F2;border-left:5px solid #5A00AA;border-radius:12px;padding:12px 14px;font-size:15px;color:#000000">{{ cursosNota }}</p>
+<sc-if value="{{ cursosVacio }}" hint-placeholder-val="{{ false }}"><p style="margin:0;padding:28px;text-align:center;color:#555555;background:#fff;border:1px dashed #CCCCCC;border-radius:16px">{{ cursosVacioTxt }}</p></sc-if>
+<sc-if value="{{ hayCursos }}" hint-placeholder-val="{{ true }}"><div style="background:#fff;border:1px solid #E3E3E3;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px"><b style="font:700 15.5px Sora,sans-serif">Tu ruta sugerida usa {{ credRuta }} de {{ credMaxV }} créditos este verano</b><span style="font-size:13px;color:#555555">Referencial</span></div>
+<div role="meter" aria-valuenow="{{ credRuta }}" aria-valuemin="0" aria-valuemax="{{ credMaxV }}" aria-label="Créditos de tu ruta sugerida" style="display:grid;grid-template-columns:{{ medCols }};gap:3px"><sc-for list="{{ medSegs }}" as="g" hint-placeholder-count="11"><span style="height:10px;border-radius:3px;background:{{ g.bg }};animation:ucIn .4s ease both;animation-delay:{{ g.d }}"></span></sc-for></div>
+<div role="group" aria-label="Filtrar cursos" style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ filtrosC }}" as="f" hint-placeholder-count="4"><button type="button" onClick="{{ f.go }}" aria-pressed="{{ f.on }}" style="min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid {{ f.bd }};background:{{ f.bg }};color:{{ f.fg }};font:700 13.5px 'DM Sans',sans-serif;white-space:nowrap;cursor:pointer;transition:background .2s,color .2s">{{ f.t }} · {{ f.n }}</button></sc-for></div>
+</div></sc-if>
+<div style="display:grid;grid-template-columns:{{ cursosCols }};gap:12px">
+<sc-for list="{{ cursosLista }}" as="c" hint-placeholder-count="4"><article style="background:#fff;border:1px solid {{ c.bd }};border-radius:18px;padding:16px 18px;display:flex;justify-content:space-between;gap:16px;animation:ucSube .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:{{ c.d }};transition:transform .2s,box-shadow .2s" style-hover="transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,.08)"><div style="display:flex;flex-direction:column;gap:8px;min-width:0"><h3 style="font:700 17px/1.3 Sora,sans-serif;margin:0">{{ c.nombre }}</h3><span style="font-size:13px;color:#555555">{{ c.codigo }} · Periodo {{ c.ciclo }} de tu plan</span><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ c.etq }}" as="e" hint-placeholder-count="1"><span style="padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:700;background:{{ e.bg }};color:{{ e.fg }}">{{ e.t }}</span></sc-for></div></div><div style="text-align:right;flex:none"><div style="font:400 40px/0.9 'Bebas Neue',sans-serif;color:#5A00AA">{{ c.cr }}</div><div style="font-size:12px;color:#555555">créditos</div></div></article></sc-for>
+</div>
+<div role="note" style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;background:#FFFFFF;color:#000000;border:1px solid #5A00AA;border-radius:12px;padding:12px 14px;font-size:14.5px"><span aria-hidden="true" style="font-weight:700">ⓘ</span><span style="flex:1 1 260px"><b>Las asignaturas son referenciales.</b> Podrían cambiar según la apertura de cursos de verano y tu avance en el plan de estudios. <b>Tus dudas, a tu director de programa.</b></span><sc-if value="{{ hayDirectores }}" hint-placeholder-val="{{ false }}"><button type="button" data-directores="1" data-solo="1" data-carrera="{{ carreraNombre }}" style="min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid #5A00AA;background:#fff;color:#5A00AA;font:700 14px 'DM Sans',sans-serif;cursor:pointer;white-space:nowrap" style-hover="background:#5A00AA;color:#fff">Contactar a mi director</button></sc-if></div>
+<section aria-labelledby="cierre-t" style="background:#5A00AA;color:#fff;border-radius:22px;padding:clamp(20px,3vw,28px);display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between;animation:ucSube .6s cubic-bezier(.2,.7,.2,1) both;animation-delay:.3s">
+<div style="display:flex;gap:14px;align-items:center;min-width:0;flex:1 1 300px"><span aria-hidden="true" style="width:48px;height:48px;flex:none;border-radius:99px;background:#B9E1FF;color:#000;display:flex;align-items:center;justify-content:center;font:700 22px Sora,sans-serif;animation:ucPop .6s .5s both">✓</span><div><h3 id="cierre-t" style="font:700 clamp(19px,2.2vw,22px)/1.25 Sora,sans-serif;margin:0;color:#fff">Ya conoces tu ruta</h3><p style="margin:4px 0 0;font-size:14.5px;color:#fff">Descárgala para tenerla a mano y matricúlate en el Portal del Estudiante, en las fechas del calendario académico.</p></div></div>
+<div style="display:flex;flex-wrap:wrap;gap:10px">
+<button type="button" onClick="{{ pdfRuta }}" style="min-height:52px;padding:0 20px;border-radius:999px;border:2px solid #fff;background:transparent;color:#fff;font-weight:700;font-size:14.5px;cursor:pointer" style-hover="background:rgba(255,255,255,.12)">Descargar mi ruta (PDF)</button>
+<a href="{{ intranet }}" target="_blank" rel="noopener" style="min-height:52px;padding:0 22px;border-radius:999px;background:#fff;color:#5A00AA;font-weight:700;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap" style-hover="background:#B9E1FF;color:#000">Ir al Portal del Estudiante ↗</a>
+</div>
+</section>
+<button type="button" onClick="{{ irRuta }}" style="align-self:flex-start;min-height:44px;padding:0 4px;border:0;background:none;color:#5A00AA;font-weight:700;font-size:14.5px;text-decoration:underline;text-underline-offset:4px;cursor:pointer">Ver mi ruta para culminar mis estudios</button>
+</sc-if>
+
+
+<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid #E3E3E3;padding-top:20px;margin-top:6px">
+<sc-if value="{{ hayAnt }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ antGo }}" style="min-height:48px;padding:0 18px;border-radius:999px;border:2px solid #B9E1FF;background:#fff;color:#5A00AA;font-weight:700;font-size:14.5px;cursor:pointer" style-hover="background:#F2F2F2">← {{ antT }}</button></sc-if>
+<span></span>
+<sc-if value="{{ haySig }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ sigGo }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:999px;border:2px solid #5A00AA;background:#5A00AA;color:#fff;font-weight:700;font-size:14.5px;cursor:pointer" style-hover="background:#3D0075">Siguiente: {{ sigT }} <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;display:block"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></button></sc-if>
+</div>
+</div>
+
+</div>
+</div>
+</main>
+
+<sc-if value="{{ barraMovil }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;left:0;right:0;bottom:0;z-index:45;background:#000000;color:#fff;padding:10px 14px calc(10px + env(safe-area-inset-bottom));border-radius:18px 18px 0 0;box-shadow:0 -8px 24px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><span style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap"><b style="font:400 26px/1 'Bebas Neue',sans-serif;color:{{ credC }}">{{ credSel }}</b><span style="font:400 18px/1 'Bebas Neue',sans-serif">/ {{ credMax }} créditos</span><span style="font-size:12.5px;color:{{ restC }}">{{ restCorto }}</span></span><sc-if value="{{ hayCruces }}" hint-placeholder-val="{{ false }}"><b style="font-size:13px;color:#B9E1FF">{{ crucesCorto }}</b></sc-if></div>
+<div style="display:grid;grid-template-columns:1fr 1.5fr;gap:8px">
+<button type="button" onClick="{{ verSeleccion }}" style="min-height:44px;border-radius:999px;border:2px solid #fff;background:transparent;color:#fff;font-weight:700;font-size:14px;cursor:pointer">Ver mi selección</button>
+<button type="button" onClick="{{ sigAccion }}" disabled="{{ sigNoActivo }}" style="min-height:44px;border-radius:999px;border:0;background:#B9E1FF;color:#000000;font-weight:700;font-size:14px;line-height:1.2;padding:0 10px;cursor:{{ sigCursor }};opacity:{{ sigOpac }}">{{ sigAccionT }}</button>
+</div>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ hayGuia }}" hint-placeholder-val="{{ false }}">
+<div role="dialog" aria-labelledby="guia-t" aria-describedby="guia-d" style="position:fixed;z-index:65;left:{{ gLeft }};right:16px;bottom:{{ gBottom }};max-width:400px;margin-left:auto;background:#000000;color:#fff;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 24px 60px rgba(0,0,0,.35);animation:ucSube .4s cubic-bezier(.2,.7,.2,1)">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span style="font-size:12.5px;font-weight:700;letter-spacing:.06em;color:#B9E1FF">GUÍA RÁPIDA · {{ guiaN }} DE {{ guiaTot }}</span><button type="button" onClick="{{ guiaCerrar }}" style="min-height:44px;padding:0 6px;border:0;background:none;color:#fff;font-weight:700;font-size:14px;text-decoration:underline;cursor:pointer">Omitir</button></div>
+<h2 id="guia-t" key="{{ guiaN }}" style="margin:0;font:700 20px/1.25 Sora,sans-serif;color:#fff;animation:ucSube .35s cubic-bezier(.2,.7,.2,1)">{{ guiaT }}</h2>
+<p id="guia-d" style="margin:0;font-size:15px;line-height:1.5">{{ guiaD }}</p>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div aria-hidden="true" style="display:flex;gap:6px"><sc-for list="{{ guiaPuntos }}" as="g" hint-placeholder-count="3"><span style="height:8px;border-radius:99px;width:{{ g.w }};background:{{ g.bg }};transition:width .3s,background .3s"></span></sc-for></div><span style="display:flex;gap:8px;align-items:center"><sc-if value="{{ guiaHayAtras }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ guiaAtras }}" style="min-height:48px;padding:0 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.5);background:transparent;color:#fff;font-weight:700;font-size:15px;cursor:pointer" style-hover="border-color:#fff">Atrás</button></sc-if><button type="button" onClick="{{ guiaSig }}" autoFocus="{{ siempre }}" style="min-height:48px;padding:0 22px;border-radius:999px;border:0;background:#B9E1FF;color:#000000;font-weight:700;font-size:15px;cursor:pointer" style-hover="background:#FFFFFF">{{ guiaBtn }}</button></span></div>
+</div>
+</sc-if>
+
+<footer style="background:#5A00AA;color:#FFFFFF;font-size:14px;padding-bottom:{{ pieExtra }}">
+<div style="max-width:1280px;margin:0 auto;padding:22px {{ padX }};display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center">
+<img src="https://ucontinental.edu.pe/site/wp-content/themes/salient-child/img/logo.svg" alt="Universidad Continental" style="height:30px;filter:brightness(0) invert(1)">
+<span>Universidad Continental · Modalidad A Distancia</span>
+</div>
+</footer>
+
+<sc-if value="{{ hayDialogo }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ dlgFondo }}" style="position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:80;display:flex;align-items:center;justify-content:center;padding:16px">
+<div role="dialog" aria-modal="true" aria-labelledby="dlg-t" aria-describedby="dlg-d" style="background:#fff;border-radius:22px;max-width:540px;width:100%;padding:24px;display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - 32px);overflow:auto;animation:ucIn .2s ease-out">
+<h2 id="dlg-t" style="font:700 22px/1.25 Sora,sans-serif;margin:0">{{ dlgT }}</h2>
+<p id="dlg-d" style="margin:0;color:#3A3A3A;font-size:15px">{{ dlgCuerpo }}</p>
+<sc-if value="{{ dlgHayLista }}" hint-placeholder-val="{{ false }}"><ul style="list-style:none;margin:0;padding:0;border:1px solid #E3E3E3;border-radius:14px;overflow:hidden"><sc-for list="{{ dlgLista }}" as="l" hint-placeholder-count="2"><li style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px 12px;padding:10px 14px;border-top:1px solid #EFEFEF"><b style="font-size:14.5px">{{ l.t }}</b><span style="font-size:13.5px;color:#555555">{{ l.d }}</span></li></sc-for></ul></sc-if>
+<sc-if value="{{ dlgHayAviso }}" hint-placeholder-val="{{ false }}"><p style="margin:0;background:#B9E1FF;color:#000000;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:500;line-height:1.45">{{ dlgAviso }}</p></sc-if>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end">
+<button type="button" onClick="{{ dlgCancelar }}" autoFocus="{{ siempre }}" style="min-height:48px;padding:0 20px;border-radius:999px;border:2px solid #5A00AA;background:#fff;color:#5A00AA;font-weight:700;font-size:15px;cursor:pointer" style-hover="background:#F2F2F2">{{ dlgCancelarT }}</button>
+<button type="button" onClick="{{ dlgOk }}" style="min-height:48px;padding:0 22px;border-radius:999px;border:0;background:{{ dlgOkBg }};color:{{ dlgOkFg }};font-weight:700;font-size:15px;cursor:pointer">{{ dlgOkT }}</button>
+</div>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ hayToast }}" hint-placeholder-val="{{ false }}">
+<div role="status" aria-live="polite" style="position:fixed;z-index:70;left:{{ tLeft }};right:{{ tRight }};bottom:{{ tBottom }};transform:{{ tTransform }};width:{{ tWidth }};background:#fff;color:#000000;border:1px solid #E3E3E3;border-left:6px solid {{ tColor }};border-radius:16px;padding:12px 6px 12px 14px;display:flex;gap:12px;align-items:center;box-shadow:0 14px 36px rgba(0,0,0,.20);animation:ucIn .2s ease-out">
+<span aria-hidden="true" style="width:34px;height:34px;flex:none;border-radius:99px;background:{{ tIconBg }};color:{{ tIconFg }};display:flex;align-items:center;justify-content:center;font:700 15px Sora,sans-serif">{{ tIcon }}</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font:700 14.5px/1.3 Sora,sans-serif">{{ toastT }}</b><sc-if value="{{ toastHayDet }}" hint-placeholder-val="{{ false }}"><span style="font-size:13.5px;color:#555555">{{ toastDet }}</span></sc-if></span>
+<sc-if value="{{ toastDeshacer }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ toastUndo }}" style="min-height:44px;padding:0 14px;border-radius:999px;border:2px solid #5A00AA;background:#fff;color:#5A00AA;font-weight:700;font-size:14px;cursor:pointer" style-hover="background:#F2F2F2">Deshacer</button></sc-if>
+<button type="button" onClick="{{ toastCerrar }}" aria-label="Cerrar aviso" style="width:44px;height:44px;flex:none;border:0;background:none;color:#555555;font-size:20px;cursor:pointer">×</button>
+</div>
+</sc-if>
+<sc-if value="{{ modal }}" hint-placeholder-val="{{ false }}">
+<div role="dialog" aria-modal="true" aria-labelledby="m-t" onClick="{{ fondoModal }}" style="position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px">
+<div style="background:#fff;border-radius:22px;max-width:540px;width:100%;padding:24px;display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 32px);overflow:auto;animation:ucIn .25s ease-out">
+<h2 id="m-t" style="font:700 22px Sora,sans-serif;margin:0">Ingresa con tu cuenta</h2>
+<p style="margin:0;color:#555555;font-size:15px">Elige tu cuenta @continental.edu.pe:</p>
+<sc-for list="{{ perfiles }}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{ p.elegir }}" autoFocus="{{ p.foco }}" style="display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:1px solid #E3E3E3;border-radius:16px;padding:14px;background:#fff;cursor:pointer;min-height:64px;transition:border-color .2s,background .2s" style-hover="border-color:#5A00AA;background:#F2F2F2">
+<span style="width:44px;height:44px;flex:none;border-radius:999px;background:#5A00AA;color:#fff;display:flex;align-items:center;justify-content:center;font:700 15px Sora,sans-serif">{{ p.ini }}</span>
+<span style="display:flex;flex-direction:column;min-width:0"><b style="font:700 15.5px Sora,sans-serif;color:#000000">{{ p.nombre }}</b><span style="font-size:13.5px;color:#555555">{{ p.desc }}</span></span>
+</button>
+</sc-for>
+<div style="display:flex;justify-content:flex-end"><button type="button" onClick="{{ cerrarModal }}" style="min-height:44px;padding:0 12px;background:none;border:0;color:#5A00AA;font-weight:700;font-size:14px;text-decoration:underline;cursor:pointer">Cancelar</button></div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { ready: false, sesion: false, modal: false, paso: 'avance', filtro: 'disponible', sel: new Map(), mallaSel: null, solicitud: null, editando: false, celular: '', correo2: '', pref: 'whatsapp', acepta: false, msg: '', enviando: false, w: typeof window !== 'undefined' ? window.innerWidth : 1280, hDia: 1, copiado: false, error: '', toast: null, dialogo: null, escSel: null, avisoRuta: '', mallaFiltro: 'falta' };
+  asideRef = React.createRef();
+
+  componentDidMount() {
+    this._r = () => this.setState({ w: window.innerWidth });
+    this._k = (e) => {
+      if (e.key === 'Escape' && this.state.dialogo) { this.cerrarDialogo(false); return; }
+      if (e.key === 'Escape' && this.state.modal) this.setState({ modal: false });
+      if (e.key === 'Tab' && this.state.dialogo) { // el foco no sale del diálogo
+        const b = [...document.querySelectorAll('[role=dialog] button')]; if (!b.length) return;
+        const i = b.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); b[b.length - 1].focus(); } else if (!e.shiftKey && i === b.length - 1) { e.preventDefault(); b[0].focus(); }
+      }
+    };
+    window.addEventListener('resize', this._r); window.addEventListener('keydown', this._k);
+    this.scripts().then(() => UCP.api.sesion()).then((s) => (s.ok ? this.cargar() : this.setState({ ready: true })))
+      .catch(() => this.setState({ ready: true, error: 'No se pudieron cargar tus datos. Inténtalo en unos minutos.' }));
+  }
+  // El motor solo entrega prevProps: se compara con la última selección guardada
+  componentDidUpdate() {
+    if (this.state.sesion && !this.state.ringListo) this._ringT = this._ringT || setTimeout(() => this.setState({ ringListo: true }), 250);
+    if (!this.state.sesion && this.state.ringListo) { this._ringT = null; this.setState({ ringListo: false }); }
+    if (this.state.sesion && this.state.guia == null) { let vista = false; try { vista = localStorage.getItem('ucv_guia_consulta_v2') === '1'; } catch (e) {} this.setState({ guia: vista ? -1 : 0 }); }
+    if (this._pasoPrev !== this.state.paso) { this._pasoPrev = this.state.paso; const col = document.querySelector('[data-col]'); if (col && col.animate && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) col.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 320, easing: 'cubic-bezier(.2,.7,.2,1)' }); }
+    if (this.state.sel !== this._selGuardada && this.state.sesion && this.D) { this._selGuardada = this.state.sel; UCP.campana.guardarBorrador(this.D.perfil.id, [...this.state.sel.values()]); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); window.removeEventListener('keydown', this._k); }
+
+  scripts() {
+    if (!window.jspdf && !document.getElementById('uc-jspdf')) { const j = document.createElement('script'); j.id = 'uc-jspdf'; j.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js'; document.head.appendChild(j); }
+    if (window.UCP && UCP.sim && UCP.api && UCP.pdfConstancia && UCP.campana && UCP.flujo && UCP.adaptadorApi && UCP.reglasVerano && window.UC_PROTO) return Promise.resolve();
+    const una = (src) => new Promise((ok, ko) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = ko; document.head.appendChild(s); });
+    return ['js/config.js', 'js/datos-prototipo.js', 'js/datos-api-ejemplo.js', 'js/adaptador-api.js', 'js/reglas-verano.js', 'js/campana.js', 'js/api.js', 'js/simulador.js', 'js/flujo.js', 'js/pdf.js'].reduce((p, s) => p.then(() => una(s)), Promise.resolve());
+  }
+
+  async cargar() {
+    const A = UCP.api;
+    const [perfil, historial, mallaApi, ofertaApi, parametros, calendario, habilitacion, solicitud, camp] = await Promise.all([A.perfil(), A.historial(), A.malla(), A.oferta(), A.parametros(), A.calendario(), A.habilitacion(), A.solicitudPrevia(), A.campana()]);
+    // Reglas de Coordinación: cursos que no se dictan en verano (salen de la oferta y la malla muestra el motivo)
+    const { malla, oferta } = UCP.reglasVerano.aplicar(mallaApi, ofertaApi, UCP.campana.reglasVerano(camp));
+    this.D = { perfil, historial, malla, oferta, parametros, calendario, habilitacion };
+    this.Cc = camp;
+    this.M = UCP.sim.preparar({ malla, historial, oferta, parametros });
+    const fase = camp.fase, CA = UCP.campana;
+    // Solo los cursos con todos sus prerrequisitos aprobados; secciones solo cuando Coordinación abre el curso
+    this.OF = UCP.sim.clasificarOferta(this.M).filter((o) => o.disponibilidad.tipo === 'disponible').map((o) => {
+      const ec = CA.estadoCurso(camp, o.codigo), secs = CA.seccionesCurso(camp, o.codigo);
+      const pub = CA.horarioPublicado(camp, o.codigo);
+      return Object.assign({}, o, { estadoCampana: ec, estado: ec === 'abierto' ? 'ofertado' : 'por_confirmar', horarioPub: pub,
+        secciones: pub ? secs.map((x) => ({ seccion: x.seccion, vacantes: x.vacantes || 40, inscritos: 0, sesiones: [{ dia: +x.dia, hora_inicio: x.hora_inicio, hora_fin: x.hora_fin, tipo: 'sincrona' }] })) : [] });
+    });
+    this.E = UCP.sim.escenarios(this.M, { carga: CA.carga(camp, malla), cicloActual: perfil.ciclo_relativo });
+    // Sin cursos de verano posibles por la regla del periodo máximo (Coordinación: hasta el 6.° periodo, 19/10/2026)
+    const tope = +((CA.reglasVerano(camp).reglas.find((r) => r.tipo === 'periodo_mayor_a' && r.activa !== false) || {}).valor) || 0;
+    const pendHastaTope = malla.cursos.filter((c) => !c.es_casilla && c.ciclo <= tope && !this.M.aprob.has(c.codigo) && !this.M.enCurso.has(c.codigo));
+    this.sinOferta = tope && !this.OF.length && perfil.ciclo_relativo > tope ? { tope, completo: !pendHastaTope.length, pendientes: pendHastaTope.map((c) => c.nombre) } : null;
+    if (this.sinOferta) CA.registrarSinOferta(perfil, this.sinOferta.completo);
+    let sel = new Map();
+    if (solicitud) solicitud.cursos.forEach((c) => { const o = this.OF.find((x) => x.codigo === c.codigo); if (o) sel.set(c.codigo, this.itemDe(o, (o.secciones || []).some((x) => x.seccion === c.seccion) ? c.seccion : null, c.turno || null)); });
+    // Borrador sin enviar de una visita anterior (solo en este navegador)
+    let recuperado = false;
+    const bor = CA.leerBorrador(perfil.id);
+    if (bor && bor.length && UCP.flujo.firma(bor) !== UCP.flujo.firma(solicitud ? solicitud.cursos : [])) {
+      const s2 = new Map();
+      bor.forEach((b) => { const o = this.OF.find((x) => x.codigo === b.codigo); if (o) s2.set(b.codigo, this.itemDe(o, b.seccion, b.turno)); });
+      if (s2.size) { sel = s2; recuperado = true; }
+    }
+    const celular = (solicitud && solicitud.contacto && solicitud.contacto.celular) || CA.celularDemo(perfil.id);
+    const pref = (solicitud && solicitud.contacto && solicitud.contacto.preferencia) || 'whatsapp';
+    const correo2 = (solicitud && solicitud.contacto && solicitud.contacto.correo_alterno) || '';
+    this.setState({ ready: true, sesion: true, sel, solicitud, celular, correo2, pref, paso: 'avance', filtro: 'disponible', mallaSel: null, editando: false, acepta: false, msg: '', escSel: UCP.sim.escenarioPorDefecto(this.E), avisoRuta: '' });
+  }
+
+  itemDe(o, seccion, turno) {
+    const sec = (o.secciones || []).find((s) => s.seccion === seccion) || null;
+    return { conSecciones: (o.secciones || []).length > 0, codigo: o.codigo, nombre: o.nombre, creditos: o.creditos, ciclo: o.ciclo, seccion: sec ? sec.seccion : null, sesiones: sec ? sec.sesiones : [], turno: turno || null, disponibilidad: o.disponibilidad, estado: o.estado, recuperacion: o.recuperacion };
+  }
+  ir(paso) { this.setState({ paso }); window.scrollTo({ top: 0 }); }
+  // Diálogo de confirmación dentro de la página (reemplaza window.confirm)
+  abrirDialogo(d) { this._foco = document.activeElement; clearTimeout(this._tt); this.setState({ dialogo: d, toast: null }); }
+  cerrarDialogo(aceptar) {
+    const d = this.state.dialogo, f = this._foco;
+    this.setState({ dialogo: null });
+    setTimeout(() => { try { if (f && f.focus && document.body.contains(f)) f.focus(); } catch (e) {} }, 0);
+    if (aceptar && d && d.alAceptar) d.alAceptar();
+  }
+
+  // "Simular mi verano con esta ruta": precarga los cursos del primer verano que puede solicitar hoy
+  armarConRuta() {
+    const M = this.M, max = this.D.parametros.creditos_max_verano, e = this.E[this.state.escSel || 0];
+    const nombre = (k) => (M.cursos[k] || {}).nombre || k;
+    const explicar = (k) => {
+      const mot = (UCP.sim.disponibilidad(M, k).motivos || [])[0];
+      if (mot) return mot.charAt(0).toLowerCase() + mot.slice(1);
+      const faltan = ((M.cursos[k] || {}).prerrequisitos || []).flat().filter((x) => !M.aprob.has(x));
+      if (faltan.length && faltan.every((x) => M.enCurso.has(x))) return `podrás solicitarlo cuando apruebes ${faltan.map(nombre).join(' y ')}, que llevas ahora`;
+      if (faltan.length) return 'aún te faltan sus prerrequisitos';
+      return 'no está en la oferta de este verano';
+    };
+    const r = UCP.flujo.precarga({ ruta: e.ruta, elegibles: new Set(this.OF.map((o) => o.codigo)), max, explicar });
+    const aplicar = () => {
+      const sel = new Map();
+      r.cursos.forEach((k) => { const o = this.OF.find((x) => x.codigo === k), previo = this.state.sel.get(k); sel.set(k, this.itemDe(o, previo ? previo.seccion : null, previo ? previo.turno : null)); });
+      this.setState({ sel, avisoRuta: r.noSolicitables.map((x) => `${x.nombre}: ${x.motivo}.`).join(' ') });
+      this.ir('verano');
+      if (r.cursos.length) this.toast(`Agregamos ${r.cursos.length} ${r.cursos.length === 1 ? 'curso' : 'cursos'} de tu ruta`, null, 'exito', 'Ahora elige el turno de cada uno.'); else this.toast('Aún no puedes solicitar estos cursos', null, 'aviso', 'Revisa el aviso sobre los cursos de tu ruta.');
+    };
+    const actual = [...this.state.sel.keys()].sort().join('|'), nueva = r.cursos.slice().sort().join('|');
+    if (this.state.sel.size && actual !== nueva) this.abrirDialogo({ titulo: '¿Reemplazar tu selección actual?', cuerpo: 'Cambiaremos los cursos que elegiste por los del primer verano de esta ruta. Los turnos de los cursos que se mantienen no cambian.', ok: 'Sí, reemplazar', cancelar: 'Mantener mi selección', alAceptar: aplicar });
+    else aplicar();
+  }
+
+  // Aviso breve (6 s) con "Deshacer" opcional
+  // tipo: 'exito' (verde) · 'info' (lila) · 'aviso' (ámbar, para lo bloqueado)
+  toast(t, deshacer, tipo, detalle) { clearTimeout(this._tt); this.setState({ toast: { t, deshacer: deshacer || null, tipo: tipo || 'info', detalle: detalle || '' } }); this._tt = setTimeout(() => this.setState({ toast: null }), 6000); }
+  elegir(o, seccion) {
+    const sel = new Map(this.state.sel), previo = sel.get(o.codigo), max = this.D.parametros.creditos_max_verano;
+    const usados = [...sel.values()].reduce((s, i) => s + (i.codigo === o.codigo ? 0 : i.creditos), 0);
+    if (!previo && usados + o.creditos > max) return; // Tope de créditos por verano: no se agrega
+    const anterior = this.state.sel;
+    sel.set(o.codigo, this.itemDe(o, seccion || null, previo ? previo.turno : null)); this.setState({ sel });
+    if (!previo) {
+      const pideTurno = this.Cc.fase === 'solicitudes' && !(o.secciones || []).length, quedan = max - usados - o.creditos;
+      // Aviso flotante desactivado: el contador de créditos y "Mi selección" ya muestran el cambio
+      void pideTurno; void quedan;
+    }
+  }
+  // Horario tentativo (turno) que prefiere el estudiante para un curso sin horario publicado
+  elegirTurno(k, turno) { const sel = new Map(this.state.sel), i = sel.get(k); if (!i) return; sel.set(k, Object.assign({}, i, { turno })); this.setState({ sel, msg: '' }); }
+  quitar(k) { const anterior = this.state.sel, it = anterior.get(k); const sel = new Map(anterior); sel.delete(k); this.setState({ sel }); if (it) this.toast(`${it.nombre} quitado`, () => this.setState({ sel: anterior }), 'info', 'Ya no está en tu selección.'); }
+
+  async enviar() {
+    const { sel, acepta, celular, pref } = this.state, D = this.D, M = this.M, fase = this.Cc.fase;
+    const vc = UCP.flujo.validarCelular(celular, pref === 'whatsapp' || pref === 'llamada'), ve = UCP.flujo.validarCorreo(D.perfil.correo);
+    if (!vc.ok) { this.setState({ msg: vc.error }); document.getElementById('uc-celular')?.focus(); return; }
+    if (!ve.ok) { this.setState({ msg: ve.error }); return; }
+    const va = UCP.flujo.validarCorreoAlterno(this.state.correo2, D.perfil.correo);
+    if (!va.ok) { this.setState({ msg: va.error }); document.getElementById('uc-correo2')?.focus(); return; }
+    if (!acepta) { this.setState({ msg: 'Marca la autorización para enviar tu solicitud.' }); return; }
+    const v = UCP.sim.validar(M, sel, D.habilitacion, fase); if (!v.puedeEnviar) return;
+    const TU = UCP.campana.TURNOS, RG = UCP.campana.TURNO_RANGO, n = sel.size, cambios = !!this.state.solicitud;
+    const contacto = UCP.flujo.textoContacto(pref, vc.mostrar, ve.normalizado, va.normalizado);
+    this.abrirDialogo({
+      titulo: cambios ? '¿Enviar tus cambios?' : '¿Enviar tu solicitud de apertura?',
+      cuerpo: `${n} ${n === 1 ? 'curso' : 'cursos'} · ${v.creditos} ${v.creditos === 1 ? 'crédito' : 'créditos'}. Te contactaremos ${contacto}. Revisa que todo esté bien.`,
+      lista: [...sel.values()].map((i) => ({ t: i.nombre, d: `${i.creditos} ${i.creditos === 1 ? 'crédito' : 'créditos'} · ${i.seccion ? 'Sección ' + i.seccion : 'Turno ' + (TU[i.turno] || '').toLowerCase() + ' (' + (RG[i.turno] || '') + ')'}` })),
+      aviso: '📌 Esto es un simulador de cursos de verano. Enviar tu solicitud no te matricula ni garantiza que el curso se abra. La matrícula oficial se realiza en el Portal del Estudiante, en las fechas del calendario académico.',
+      ok: cambios ? 'Sí, enviar mis cambios' : 'Sí, enviar', cancelar: 'Volver a revisar',
+      alAceptar: () => this.enviarConfirmado(v, vc, ve, va)
+    });
+  }
+
+  async enviarConfirmado(v, vc, ve, va) {
+    const { sel, celular, pref } = this.state, D = this.D, M = this.M;
+    this.setState({ enviando: true, msg: 'Enviando…' });
+    const p = D.perfil;
+    const payload = {
+      estudiante: { id: p.id, nombres: p.nombres, apellidos: p.apellidos, correo: p.correo, carrera: p.carrera.nombre, programa: p.carrera.nombre, facultad: ((window.UC_PANEL && UC_PANEL.programas.find((x) => x.nombre === p.carrera.nombre)) || {}).facultad || '', ciclo: p.ciclo_relativo, reincorporado: !!p.reincorporado, segmento: ((UCP.sim.segmentos(M, this.E, this.OF, p)[0]) || {}).clave || null },
+      contacto: { celular: vc.mostrar, celular_e164: vc.normalizado, correo: ve.normalizado, correo_alterno: va.normalizado || null, preferencia: pref },
+      periodo: D.oferta.periodo, creditos: v.creditos, autorizacion_datos: true, origen: 'portal-verano',
+      cursos: [...sel.values()].map((i) => ({ codigo: i.codigo, nombre: i.nombre, creditos: i.creditos, seccion: i.seccion, sesiones: i.sesiones, turno: i.seccion ? null : i.turno, estado: i.estado }))
+    };
+    try {
+      const r = await UCP.api.enviarSolicitud(payload);
+      if (!r.ok) throw new Error();
+      this.setState({ solicitud: Object.assign({}, payload, { id: r.id, fecha: r.fecha }), editando: false, enviando: false, msg: '', acepta: false });
+      UCP.campana.borrarBorrador(p.id);
+      window.scrollTo({ top: 0 });
+      this.toast('Recibimos tu solicitud de apertura', null, 'exito', 'Recuerda: aún no es tu matrícula oficial.');
+    } catch (e) { this.setState({ enviando: false, msg: 'No se pudo enviar tu solicitud. Inténtalo de nuevo.' }); }
+  }
+
+  retirar() {
+    const c = this.Cc.cierre ? this.Cc.cierre.slice(0, 10).split('-').reverse().join('/') : 'la fecha de cierre';
+    this.abrirDialogo({ titulo: '¿Retirar tu solicitud?', cuerpo: `Ya no contaremos tu interés en estos cursos. Podrás volver a enviarla hasta el ${c}.`, ok: 'Sí, retirar', cancelar: 'Cancelar', peligro: true,
+      alAceptar: async () => {
+        await UCP.api.retirarSolicitud();
+        this.setState({ solicitud: null, sel: new Map(), editando: false, acepta: false });
+        UCP.campana.borrarBorrador(this.D.perfil.id);
+        this.ir('verano');
+        this.toast('Retiraste tu solicitud', null, 'info', 'Puedes volver a enviarla hasta el cierre.');
+      } });
+  }
+
+  // Avance para los PDF: créditos aprobados frente al total del plan
+  avancePdf() {
+    const M = this.M;
+    return { aprobados: M.credAprob, total: M.malla.creditos_totales, porRecuperar: M.desap.size, ciclo: this.D.perfil.ciclo_relativo,
+      pendientes: M.malla.cursos.filter((c) => !M.aprob.has(c.codigo) && !M.enCurso.has(c.codigo)).map((c) => ({ codigo: c.codigo, nombre: c.nombre })) };
+  }
+
+  renderVals() {
+    const st = this.state, w = st.w, movil = w < 760, ancho = w >= 1080;
+    const GUIA = [['avance', 'Mi avance', 'Tus créditos aprobados, lo que te falta y en qué periodo culminarías tus estudios.'], ['avance', 'Compara tus rutas', 'Mira cuándo culminarías con y sin veranos. Cada ruta empieza con el verano que viene.'], ['malla', 'Mi plan de estudios', 'Tus asignaturas por periodo: aprobadas, pendientes y las que se ofrecen en verano (hasta el 6.° periodo).'], ['cursos', 'Cursos de verano', 'Los cursos que podrías llevar, hasta 11 créditos. Es solo una consulta: la matrícula es en el Portal del Estudiante. ¿Dudas? Contacta a tu director de programa.']];
+    const gi = st.sesion && typeof st.guia === 'number' && st.guia >= 0 && st.guia < GUIA.length ? st.guia : -1;
+    const finGuia = () => { try { localStorage.setItem('ucv_guia_consulta_v2', '1'); } catch (e) {} this.setState({ guia: -1 }); };
+    const guiaVals = { hayGuia: gi >= 0, guiaN: gi + 1, guiaTot: GUIA.length, guiaT: gi >= 0 ? GUIA[gi][1] : '', guiaD: gi >= 0 ? GUIA[gi][2] : '', guiaBtn: gi === GUIA.length - 1 ? 'Empezar' : 'Siguiente', guiaHayAtras: gi > 0, guiaAtras: () => this.setState({ guia: gi - 1, paso: GUIA[gi - 1][0] }), guiaCerrar: () => { this.setState({ paso: 'avance' }); finGuia(); }, guiaSig: () => (gi >= GUIA.length - 1 ? (this.setState({ paso: 'avance' }), finGuia()) : this.setState({ guia: gi + 1, paso: GUIA[gi + 1][0] })), guiaPuntos: GUIA.map((_, k) => k).map((k) => ({ w: k === gi ? '24px' : '8px', bg: k === gi ? '#B9E1FF' : 'rgba(255,255,255,.3)' })), gLeft: movil ? '16px' : 'auto', gBottom: movil ? '16px' : '24px' };
+    const titulo = (s) => String(s || '').toLowerCase().replace(/(^|\s)\S/g, (m) => m.toUpperCase());
+    const padX = movil ? '16px' : '32px';
+    const base = {
+      cargando: !st.ready, verIngreso: st.ready && !st.sesion, sesion: st.ready && st.sesion, movil, escritorio: !movil, padX, logoH: movil ? '30px' : '42px', error: st.error,
+      heroCols: ancho ? 'minmax(0,5fr) minmax(0,7fr)' : 'minmax(0,1fr)',
+      heroPad: ancho ? '72px 48px 72px max(32px, calc((100vw - 1280px)/2 + 32px))' : (movil ? '40px 18px' : '56px 32px'),
+      pasosIngreso: ['Revisa tu avance', 'Revisa tu plan de estudios', 'Compara tus rutas con y sin veranos', 'Mira qué cursos de verano podrías llevar'].map((t, i) => ({ n: String(i + 1).padStart(2, '0'), t })),
+      abrirSelector: () => { if (UCP.config.modo !== 'prototipo') { location.href = '/auth/google'; return; } this.setState({ modal: true }); },
+      modal: st.modal, cerrarModal: () => this.setState({ modal: false }),
+      fondoModal: (e) => { if (e.target === e.currentTarget) this.setState({ modal: false }); },
+      perfiles: st.modal && window.UC_PROTO ? UC_PROTO.perfiles.map((p, i) => ({ foco: i === 0, nombre: titulo(p.perfil.nombres + ' ' + p.perfil.apellidos), desc: `${p.titulo} · ${p.perfil.carrera.nombre}`, ini: p.perfil.nombres[0] + p.perfil.apellidos[0], elegir: () => { UCP.api.ingresarDemo(p.clave); this.setState({ modal: false, ready: false }); this.cargar(); } })) : [],
+      pieExtra: '0px'
+    };
+    if (!base.sesion) return base;
+
+    const D = this.D, M = this.M, OF = this.OF, sim = UCP.sim;
+    const soles = (n) => 'S/ ' + Number(n || 0).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const DIAS = ['', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    const DIAS_C = ['', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+    const DL = ['', 'L', 'M', 'X', 'J', 'V', 'S'];
+    const fechaTxt = (iso) => UCP.campana.fechaLarga(iso), HR = (a, b) => UCP.campana.rangoHoras(a, b);
+    const listaDias = (ds) => { const n = ds.slice().sort().map((d) => DIAS[d].toLowerCase()); return n.length > 1 ? n.slice(0, -1).join(', ') + ' y ' + n.at(-1) : n[0]; };
+    const lista = (a) => (a.length > 1 ? a.slice(0, -1).join(', ') + ' y ' + a.at(-1) : a[0] || '');
+    const horarioTxt = (ses) => (ses || []).map((s) => `${DIAS_C[s.dia]} ${HR(s.hora_inicio, s.hora_fin)}`).join(' · ');
+    const lineas = (ses) => { const g = new Map(); (ses || []).forEach((s) => { const k = HR(s.hora_inicio, s.hora_fin); if (!g.has(k)) g.set(k, []); g.get(k).push(DIAS_C[s.dia]); }); return [...g].map(([k, ds]) => lista(ds) + ' · ' + k); };
+    const ESTADO_OFERTA = { ofertado: 'Oferta confirmada', por_confirmar: 'Apertura por confirmar', cerrado: 'Cerrado' };
+    const PILL = { disponible: ['Disponible', '#E3F2EA', '#145C34'], condicional: ['Con condición', '#F2F2F2', '#5A00AA'], bloqueado: ['Bloqueado', '#FDE9E7', '#7A2419'] };
+    const p = D.perfil, max = D.parametros.creditos_max_verano, pct = Math.round((M.credAprob / D.malla.creditos_totales) * 100);
+    const paso = st.paso;
+    const C = this.Cc, fase = C.fase, items = [...st.sel.values()], v = sim.validar(M, st.sel, D.habilitacion, fase), pares = v.pares;
+    const enCruce = new Set(), cruceSet = new Set(pares.flatMap((x) => [x.a, x.b]));
+    const fCierre = fechaTxt(C.cierre), fHor = fechaTxt(C.horarios), editable = fase !== 'evaluacion';
+    // Versión consulta: pestañas Mi avance, Mi plan de estudios y Cursos de verano (solo lectura)
+    const pasosF = UCP.flujo.pasos({ fase, items, creditos: v.creditos, max });
+    const pasosVis = pasosF.length ? pasosF : [{ id: 'solicitud', n: '•', t: 'Tu solicitud', bloqueado: false, motivo: '' }];
+    const est = UCP.flujo.estado({ fase, items, solicitud: st.solicitud, hoyIso: new Date().toISOString().slice(0, 10), cierreIso: C.cierre, fCierre, fHor });
+    const TONO = { neutro: ['#F2F2F2', '#5A00AA'], ambar: ['#B9E1FF', '#000000'], verde: ['#E3F2EA', '#145C34'] }[est.tono];
+    const CORTO = { verano: 'Simula', horario: 'Sección', solicitud: 'Envía' };
+    const atras = { malla: ['avance', 'Mi avance'], cursos: ['malla', 'Mi plan de estudios'] }[paso];
+    // Línea de tiempo de la solicitud: qué pasos están listos y cuánto falta
+    const pendF = UCP.flujo.pendientes({ fase, items, creditos: v.creditos, max });
+    const hecho = { verano: (items.length > 0 && !pendF.sinTurno && !pendF.excede) || est.clave === 'enviada', horario: items.length > 0 && !pendF.sinSeccion, solicitud: est.clave === 'enviada' || (fase === 'evaluacion' && !!st.solicitud) };
+    const nHechos = pasosVis.filter((x) => hecho[x.id]).length, parcial = !hecho.verano && items.length > 0 ? 0.5 : 0;
+    const progPct = Math.round(((nHechos + parcial) / pasosVis.length) * 100);
+
+    const conSel = paso === 'verano' || paso === 'horario';
+    const mark = (x) => (!x.ok ? { m: '!', bg: '#B3261E', fg: '#fff', bgD: '#B3261E', fgD: '#fff', w: 700, tc: '#7A2419' } : x.aviso ? { m: 'i', bg: '#B9E1FF', fg: '#000000', bgD: '#B9E1FF', fgD: '#000000', w: 500, tc: '#000000' } : { m: '✓', bg: '#E3F2EA', fg: '#145C34', bgD: '#2E7D4F', fgD: '#fff', w: 400, tc: '#000000' });
+    const out = Object.assign(base, {
+      _dir: (UCP.carreraActual = p.carrera && p.carrera.nombre) && null, carreraNombre: (p.carrera && p.carrera.nombre) || '', nombreCompleto: titulo(p.nombres + ' ' + p.apellidos), nombreCorto: titulo(p.nombres.split(' ')[0]), intranet: UCP.config.intranet, directores: UCP.config.directoresPrograma || '', hayDirectores: !!UCP.config.directoresPrograma, simCostos: UCP.config.simuladorCostos, iniciales: (p.nombres[0] || '') + (p.apellidos[0] || ''),
+      metaPerfil: `${p.carrera.nombre} · ${p.plan.nombre} · Periodo académico ${p.periodo_actual} · Tu próximo periodo es el ${p.ciclo_relativo}.°`, periodo: p.periodo_actual,
+      salir: () => { UCP.api.salir(); this.setState({ sesion: false, sel: new Map(), solicitud: null, paso: 'avance' }); },
+      ...guiaVals, ringOff: String(st.ringListo ? (213.6 * (1 - Math.min(100, pct) / 100)).toFixed(1) : 213.6), ringS: movil ? '72px' : '88px', ringFs: movil ? '22px' : '26px', pct, pctW: pct + '%', kpiCols: movil ? 'repeat(3,minmax(0,1fr))' : 'repeat(3,auto)',
+      kpis: [{ l: 'Créditos aprobados', v: `${M.credAprob} de ${D.malla.creditos_totales}`, c: '#fff' }, { l: 'Te faltan', v: `${M.credFaltan} créditos`, c: '#fff' }, (M.enCurso.size ? { l: 'Llevas este periodo', v: `${M.enCurso.size} asignaturas`, c: '#fff' } : { l: 'Por recuperar', v: `${M.desap.size} ${M.desap.size === 1 ? 'asignatura' : 'asignaturas'}`, c: '#fff' })],
+      stripPad: movil ? '20px 16px' : '24px 32px',
+      zCabFlex: movil ? '1 1 100%' : '0 0 auto', navPos: 'sticky', stickyTop: '160px', hdrH: movil ? '60px' : '72px', stepH: movil ? '58px' : '68px',
+      zonaInfo: [['avance', 'Mi avance', '📈', movil ? `${pct} % avance` : `${pct} % de tu carrera`], ['malla', 'Mi plan de estudios', '🗺️', `${D.malla.cursos.filter((c) => !M.aprob.has(c.codigo) && !M.enCurso.has(c.codigo)).length} ${movil ? 'por llevar' : 'asignaturas por llevar'}`]].map(([id, t, ico, sub]) => { const cur = paso === id;
+        return { t, ico, sub, go: () => this.ir(id), cur: cur ? 'page' : undefined, bg: cur ? '#5A00AA' : 'transparent', fg: cur ? '#fff' : '#5A00AA', subC: cur ? '#B9E1FF' : '#555555', icoBg: cur ? 'rgba(255,255,255,.16)' : '#F2F2F2', hover: cur ? '#5A00AA' : '#F7F7F7' }; }),
+      // Una sola fila de pestañas, en el orden del recorrido: avance → plan de estudios → simula tu verano → revisa y envía
+      tabsTop: movil ? 'calc(60px + 58px + 8px)' : 'calc(72px + 68px + 10px)',
+      tabs: (() => {
+        const porLlevar = D.malla.cursos.filter((c) => !M.aprob.has(c.codigo) && !M.enCurso.has(c.codigo)).length;
+        const subPaso = {
+          verano: est.clave === 'enviada' ? 'Solicitud enviada' : !items.length ? (fase === 'horarios' ? 'Elige tus cursos' : 'Elige cursos y turno') : pendF.excede ? `Te pasas de ${max} créditos` : pendF.sinTurno ? 'Falta elegir el turno' : `${v.creditos} de ${max} créditos`,
+          horario: !items.length ? 'Elige tu sección' : pendF.sinSeccion ? 'Falta elegir sección' : 'Secciones elegidas',
+          solicitud: est.clave === 'enviada' ? 'Enviada' : fase === 'evaluacion' ? 'En evaluación' : 'Envía tu solicitud de apertura'
+        };
+        const lista = [
+          { id: 'avance', t: 'Mi avance', corto: 'Avance', sub: `${pct} % de tu carrera` },
+          { id: 'malla', t: 'Mi plan de estudios', corto: 'Plan', sub: `${porLlevar} asignaturas por llevar` }
+        ].concat([{ id: 'cursos', t: 'Cursos de verano', corto: 'Cursos', sub: this.OF.length ? `${this.OF.length} que podrías llevar` : 'Sin cursos este verano' }]);
+        return lista.map((x, k) => {
+          const cur = paso === x.id && !x.sinOferta, bl = x.bl && !x.ok;
+          const n = x.paso && x.ok ? '✓' : bl ? '🔒' : String(k + 1);
+          // En el celular, las cuatro pestañas caben en el ancho: número y nombre corto, sin la línea de estado
+          return { t: movil ? x.corto : x.t, sub: movil ? '' : bl ? 'Bloqueado' : x.sub, sep: k > 0 && !movil, flex: '1 1 0', n, pad: movil ? '8px 4px 6px' : '10px 12px 6px', dir: movil ? 'column' : 'row', gap: movil ? '4px' : '10px', alin: movil ? 'center' : 'left', alinItems: movil ? 'center' : 'flex-start',
+            cur: cur ? 'page' : undefined, motivo: x.motivo || '', cursor: bl ? 'not-allowed' : 'pointer',
+            aria: `${k + 1}. ${x.t}: ${bl ? 'bloqueado. ' + x.motivo : x.sub}${cur ? '. Estás aquí' : ''}`,
+            linea: cur ? '#5A00AA' : 'transparent', bg: cur ? '#F2F2F2' : 'transparent',
+            fg: bl ? '#8A8A8A' : cur ? '#5A00AA' : '#000000', subC: x.paso && x.ok ? '#145C34' : bl ? '#8A8A8A' : '#555555',
+            nBg: cur ? '#5A00AA' : x.paso && x.ok ? '#2E7D4F' : bl ? '#F0F0F0' : '#fff', nFg: cur || (x.paso && x.ok) ? '#fff' : bl ? '#8A8A8A' : '#5A00AA',
+            nBd: cur ? '#5A00AA' : x.paso && x.ok ? '#2E7D4F' : bl ? '#E3E3E3' : '#5A00AA',
+            go: () => (bl ? this.toast('Este paso aún está bloqueado', null, 'aviso', x.motivo) : this.ir(x.id)) };
+        });
+      })(),
+      // Pestaña "Cursos de verano": solo lectura (versión consulta)
+      cursosCols: movil ? 'minmax(0,1fr)' : 'repeat(2,minmax(0,1fr))',
+      cursosIntro: `Según tu avance, estas asignaturas ya tienen tus prerrequisitos aprobados y se dictan en verano. Puedes llevar hasta ${max} créditos. Su apertura depende de la demanda, el aforo mínimo y la programación académica.`,
+      cursosNota: `Esto es solo una consulta: no te inscribe ni reserva vacante. La matrícula oficial se realiza en el Portal del Estudiante, del ${UCP.campana.rangoFechas(C.matInicio, C.matFin)}, según tu turno de matrícula. Cada curso se abre si alcanza el grupo mínimo de estudiantes.`,
+      cursosVacio: !this.OF.length,
+      cursosVacioTxt: this.sinOferta ? `Este verano no tienes cursos de verano disponibles: en verano solo se ofrecen asignaturas hasta el ${this.sinOferta.tope}.° periodo de tu plan. Revisa Mi avance para ver tu ruta.` : 'Por ahora no hay cursos de verano que puedas llevar: en Mi plan de estudios verás el motivo de cada asignatura pendiente.',
+      ...(() => {
+        const eR = this.E[UCP.sim.escenarioPorDefecto(this.E)] || this.E[0], v1 = ((eR && eR.ruta) || []).find((r) => r.tipo === 'verano');
+        const enRuta = new Set(v1 ? v1.cursos.map((c) => c.codigo) : []);
+        const todos = this.OF.map((o) => ({ nombre: o.nombre, codigo: o.codigo, ciclo: (M.cursos[o.codigo] || {}).ciclo, cr: o.creditos, rec: !!o.recuperacion, clave: !!o.curso_clave, ruta: enRuta.has(o.codigo),
+          etq: [o.recuperacion ? { t: 'Por recuperar', bg: '#FDE9E7', fg: '#7A2419' } : null, o.curso_clave ? { t: 'Asignatura clave', bg: '#B9E1FF', fg: '#000000' } : null,
+            enRuta.has(o.codigo) ? { t: 'En tu ruta sugerida', bg: '#F2F2F2', fg: '#5A00AA' } : null].filter(Boolean) }));
+        const fc = st.filtroC || 'todos';
+        const F = [['todos', 'Todos', () => true], ['ruta', 'En tu ruta', (c) => c.ruta], ['rec', 'Por recuperar', (c) => c.rec], ['clave', 'Asignatura clave', (c) => c.clave]];
+        const crR = todos.filter((c) => c.ruta).reduce((s, c) => s + (+c.cr || 0), 0), mx = max || 11;
+        const fil = (F.find((x) => x[0] === fc) || F[0])[2];
+        return {
+          hayCursos: todos.length > 0, credRuta: crR, credMaxV: mx, medCols: 'repeat(' + mx + ',minmax(0,1fr))',
+          medSegs: Array.from({ length: mx }, (_, i) => ({ bg: i < crR ? '#5A00AA' : '#E3E3E3', d: (i * 40) + 'ms' })),
+          filtrosC: F.map(([id, t, fn]) => { const n = todos.filter(fn).length, on = fc === id; return { t, n, on, bg: on ? '#5A00AA' : '#fff', fg: on ? '#fff' : '#5A00AA', bd: on ? '#5A00AA' : '#D6D6D6', go: () => this.setState({ filtroC: id }) }; }).filter((f, i) => i === 0 || f.n > 0),
+          cursosLista: todos.filter(fil).map((c, i) => Object.assign(c, { d: Math.min(i, 8) * 70 + 'ms', bd: c.ruta ? '#B9A3DB' : '#E3E3E3' }))
+        };
+      })(),
+      ...(() => {
+        const ids = pasosVis.map((p) => p.id), P = (id) => pasosVis.find((p) => p.id === id) || {};
+        const G = [
+          { t: 'Consulta tu ruta', corto: 'Consulta', vistas: [['avance', 'Mi avance'], ['malla', 'Mi plan de estudios'], ['cursos', 'Cursos de verano']], sub: pct + ' % de tu carrera' },
+          { t: 'Matrícula oficial', corto: 'Matrícula', externo: true, sub: 'Portal del Estudiante ↗' }
+        ];
+        let ci = G.findIndex((g) => g.vistas && g.vistas.some((x) => x[0] === paso)); if (ci < 0) ci = 0;
+        const etapas = G.map((g, i) => {
+          const cur = i === ci, ok = i === 0 ? ci > 0 : false;
+          const pf = g.vistas && g.vistas[0] ? P(g.vistas[0][0]) : {};
+          const bl = !g.externo && !ok && (!g.vistas.length || !!pf.bloqueado);
+          const motivo = !g.vistas || g.vistas.length ? (pf.motivo || '') : 'Este verano no tienes cursos de verano disponibles.';
+          return { interno: !g.externo, externo: !!g.externo, t: movil ? g.corto : g.t, sub: bl ? 'Bloqueado' : g.sub, haySub: !movil, fs: movil ? '12.5px' : '14.5px',
+            n: ok && !cur ? '✓' : String(i + 1), pad: movil ? '8px 2px 6px' : '10px 12px 6px', dir: movil ? 'column' : 'row', gap: movil ? '4px' : '10px', just: movil ? 'center' : 'flex-start', alin: movil ? 'center' : 'left', alinItems: movil ? 'center' : 'flex-start',
+            cur: cur ? 'step' : undefined, motivo, cursor: bl ? 'not-allowed' : 'pointer',
+            aria: 'Paso ' + (i + 1) + ' de ' + G.length + ': ' + g.t + '. ' + (g.externo ? 'Se abre el Portal del Estudiante en otra pestaña' : bl ? 'Bloqueado. ' + motivo : cur ? 'Estás aquí' : ok ? 'Listo' : 'Pendiente'),
+            linea: cur ? '#5A00AA' : 'transparent', bg: gi === i ? '#B9E1FF' : cur ? '#F5F5F5' : 'transparent', fg: bl ? '#8A8A8A' : cur ? '#5A00AA' : '#000000', subC: ok ? '#145C34' : bl ? '#8A8A8A' : '#555555',
+            nBg: cur ? '#5A00AA' : ok ? '#2E7D4F' : bl ? '#F0F0F0' : '#fff', nFg: cur || ok ? '#fff' : bl ? '#8A8A8A' : '#5A00AA', nBd: cur ? '#5A00AA' : ok ? '#2E7D4F' : bl ? '#E3E3E3' : '#5A00AA', halo: cur ? '0 0 0 4px #B9E1FF' : 'none',
+            go: () => (bl ? this.toast('Este paso aún no está disponible', null, 'aviso', motivo) : cur ? null : this.ir(g.vistas[0][0])) };
+        });
+        const vs = G[ci].vistas || [];
+        const si = Math.max(0, vs.findIndex(([id]) => id === paso));
+        return { etapas, subProg: Math.round(((si + 1) / Math.max(1, vs.length)) * 100) + '%', haySubvistas: vs.length > 1, subvistas: vs.map(([id, t]) => { const on = paso === id; return { t, on, bg: on ? '#fff' : 'transparent', fg: on ? '#5A00AA' : '#3A3A3A', sh: on ? '0 1px 4px rgba(0,0,0,.12)' : 'none', go: () => this.ir(id) }; }) };
+      })(),
+      conPasos: !this.sinOferta, sinOfertaNav: !!this.sinOferta, zSolSub: this.sinOferta ? 'Sin cursos este verano' : 'Lo que tienes que hacer',
+      navSinOfertaTxt: this.sinOferta ? `En verano solo se ofrecen asignaturas hasta el ${this.sinOferta.tope}.° periodo.` : '',
+      verPorQue: () => this.ir('avance'),
+      zonaPasos: pasosVis.map((pf, k) => { const cur = paso === pf.id, bl = pf.bloqueado, ok = hecho[pf.id], prevOk = k > 0 && hecho[pasosVis[k - 1].id];
+        const e = ok ? 'hecho' : cur ? 'actual' : bl ? 'bloqueado' : 'pendiente';
+        const C2 = { hecho: ['#2E7D4F', '#fff', '#2E7D4F', '#145C34', 'Listo'], actual: ['#5A00AA', '#fff', '#5A00AA', '#5A00AA', 'Estás aquí'], bloqueado: ['#F0F0F0', '#8A8A8A', '#E3E3E3', '#8A8A8A', 'Bloqueado'], pendiente: ['#fff', '#5A00AA', '#5A00AA', '#555555', 'Pendiente'] }[e];
+        return { sep: k > 0, flex: k > 0 ? '1 1 auto' : '0 0 auto', t: movil ? (CORTO[pf.id] || pf.t) : pf.t, sub: ok && cur ? 'Listo · estás aquí' : C2[4], subC: C2[3],
+          nTxt: ok ? '✓' : bl ? '🔒' : pf.n, nBg: C2[0], nFg: C2[1], nBd: C2[2], halo: cur ? `0 0 0 5px ${ok ? '#D7EEDF' : '#B9E1FF'}` : 'none',
+          fg: bl && !ok ? '#8A8A8A' : '#000000', bg: cur ? '#F2F2F2' : 'transparent', lineaBg: prevOk ? '#2E7D4F' : '#E3E3E3',
+          motivo: pf.motivo, cur: cur ? 'step' : undefined, ariaDis: bl ? 'true' : 'false',
+          aria: `Paso ${pf.n}: ${pf.t}. ${ok ? 'Listo' : bl ? 'Bloqueado: ' + pf.motivo : cur ? 'Estás aquí' : 'Pendiente'}`,
+          go: () => (bl ? this.toast('Este paso aún está bloqueado', null, 'aviso', pf.motivo) : this.ir(pf.id)), cursor: bl ? 'not-allowed' : 'pointer' }; }),
+      progPct, progW: progPct + '%', progBg: progPct >= 100 ? '#2E7D4F' : 'linear-gradient(90deg,#5A00AA,#B9E1FF)', progC: progPct >= 100 ? '#145C34' : '#5A00AA',
+      progTxt: progPct >= 100 ? '✓ ¡Listo! Tu solicitud fue enviada' : `${nHechos} de ${pasosVis.length} pasos completos`,
+      chipT: this.sinOferta ? 'Este verano no tienes cursos de verano disponibles' : `Matrícula de cursos de verano: del ${UCP.campana.rangoFechas(C.matInicio, C.matFin)}`, chipBg: this.sinOferta ? '#E3F2EA' : '#F2F2F2', chipFg: this.sinOferta ? '#145C34' : '#5A00AA',
+      hayAnt: !!atras, antT: atras ? atras[1] : '', antGo: () => atras && this.ir(atras[0]), haySig: false, sigT: '', sigGo: () => {},
+      noHabil: !D.habilitacion.habilitado, habMsg: D.habilitacion.mensaje || 'Resuélvelo antes de la matrícula oficial para poder matricularte en tus cursos de verano.',
+      mainPad: movil ? '20px 16px 40px' : '32px 32px 56px',
+      siempre: true, verAvisoSim: false,
+      gridCols: conSel && ancho ? 'minmax(0,1fr) 380px' : 'minmax(0,1fr)', conSel, asideRef: this.asideRef, asidePos: ancho ? 'sticky' : 'static',
+      esAvance: paso === 'avance', esMalla: paso === 'malla', esVerano: paso === 'verano', esCursos: paso === 'cursos', esHorario: paso === 'horario',
+      irVerano: () => this.ir('cursos'), irMalla: () => this.ir('malla'), irSolicitud: () => this.ir('cursos'), irRuta: () => { this.ir('avance'); setTimeout(() => { const r = document.getElementById('ruta-t'); if (r) r.scrollIntoView({ behavior: 'smooth' }); }, 60); },
+      altTxt: paso === 'verano' ? 'Ver horario' : 'Ver cursos de verano', altGo: () => this.ir(paso === 'verano' ? 'horario' : 'verano'),
+      barraMovil: !ancho && conSel && items.length > 0, pieExtra: !ancho && conSel && items.length > 0 ? '120px' : '0px',
+      ...(() => { const d = st.dialogo || {}; return { hayDialogo: !!st.dialogo, dlgT: d.titulo || '', dlgCuerpo: d.cuerpo || '', dlgHayLista: !!(d.lista && d.lista.length), dlgLista: d.lista || [], dlgHayAviso: !!d.aviso, dlgAviso: d.aviso || '',
+        dlgOkT: d.ok || 'Aceptar', dlgCancelarT: d.cancelar || 'Cancelar', dlgOkBg: d.peligro ? '#B3261E' : '#B9E1FF', dlgOkFg: d.peligro ? '#fff' : '#000000',
+        dlgOk: () => this.cerrarDialogo(true), dlgCancelar: () => this.cerrarDialogo(false), dlgFondo: (e) => { if (e.target === e.currentTarget) this.cerrarDialogo(false); } }; })(),
+      hayToast: !!st.toast, toastT: st.toast ? st.toast.t : '', toastDeshacer: !!(st.toast && st.toast.deshacer),
+      toastHayDet: !!(st.toast && st.toast.detalle), toastDet: st.toast ? st.toast.detalle : '',
+      ...(() => { const T = { exito: ['#2E7D4F', '#E3F2EA', '#145C34', '✓'], info: ['#5A00AA', '#F2F2F2', '#5A00AA', 'i'], aviso: ['#B9E1FF', '#B9E1FF', '#000000', '🔒'] }[(st.toast && st.toast.tipo) || 'info'];
+        return { tColor: T[0], tIconBg: T[1], tIconFg: T[2], tIcon: T[3] }; })(),
+      toastUndo: () => { const f = st.toast && st.toast.deshacer; this.setState({ toast: null }); if (f) f(); }, toastCerrar: () => this.setState({ toast: null }),
+      tBottom: !ancho && conSel && items.length ? '150px' : '20px', tLeft: movil ? '12px' : '50%', tRight: movil ? '12px' : 'auto', tTransform: movil ? 'none' : 'translateX(-50%)', tWidth: movil ? 'auto' : 'min(500px, calc(100vw - 32px))',
+      verSeleccion: () => { const el = this.asideRef.current; if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 150, behavior: 'smooth' }); }
+    });
+
+    // 1 · Avance (informativo) y Mi ruta para culminar mis estudios
+    if (paso === 'avance') {
+      const cont = { aprobado: M.aprob.size, en_curso: M.enCurso.size, desaprobado: M.desap.size };
+      const pendientes = D.malla.cursos.filter((c) => sim.estadoCurso(M, c.codigo) === 'pendiente').length + cont.desaprobado;
+      const iE = Math.min(st.escSel == null ? sim.escenarioPorDefecto(this.E) : st.escSel, this.E.length - 1), eSel = this.E[iE];
+      const rutaIntro = this.E.length > 1 ? 'Elige cuántos veranos quieres llevar y mira qué asignaturas te tocarían en cada periodo.'
+        : this.sinOferta ? 'Como no tienes cursos de verano disponibles, esta es tu ruta en tus próximos periodos académicos hasta culminar tus estudios.'
+        : 'Con tu avance, los cursos de verano no adelantan tu ruta: estas son tus asignaturas por periodo hasta culminar tus estudios.';
+      const escNota = `Esta simulación es una guía: considera que apruebas todas tus asignaturas, con hasta ${UCP.campana.carga(C, D.malla)} créditos por periodo y ${max} por verano. Los cursos de verano (hasta el 6.° periodo) dependen de la oferta de cada año. La fecha indica cuándo culminarías tus estudios, no la de tu titulación.`;
+      Object.assign(out, {
+        // Con el periodo cerrado (supuesto del 15/10/2026) no hay cursos en curso: la tarjeta solo aparece si TI los envía
+        historial: [{ v: cont.aprobado, l: 'asignaturas aprobadas', bg: '#F2F2F2', c: '#5A00AA' }].concat(cont.en_curso ? [{ v: cont.en_curso, l: `asignaturas en curso (${M.credEnCurso} créditos)`, bg: '#B9E1FF', c: '#000000' }] : [], [{ v: pendientes, l: 'asignaturas por llevar', bg: '#F7F7F7', c: '#3A3A3A' }]).concat(cont.desaprobado ? [{ v: cont.desaprobado, l: 'por recuperar', bg: '#FDE9E7', c: '#B3261E' }] : []),
+        ...(() => { const pr = UCP.sim.segmentos(M, this.E, this.OF, D.perfil)[0] || null;
+          return { haySeg: !!pr, ofertaSola: !pr && OF.length > 0, segTag: pr ? pr.tag : '', segT: pr ? pr.t : '', segD: pr ? pr.d : '' }; })(),
+        sinCursosVerano: !OF.length && !this.sinOferta, sinOfertaAviso: !!this.sinOferta,
+        // Registros Académicos: recordar el tope de créditos y cuántos cursos de verano puede elegir hoy
+        hayOfertaTxt: OF.length > 0,
+        ofertaTxt: `En verano puedes llevar hasta ${D.parametros.creditos_max_verano} créditos: hay ${OF.length} ${OF.length === 1 ? 'curso de verano' : 'cursos de verano'} cuyos prerrequisitos ya aprobaste. Los ves en la pestaña «Cursos de verano».`,
+        sinOfertaD: !this.sinOferta ? '' : this.sinOferta.completo
+          ? `En verano solo se ofrecen asignaturas hasta el ${this.sinOferta.tope}.° periodo de tu plan, y ya las completaste. ¡Vas muy bien!`
+          : `En verano solo se ofrecen asignaturas hasta el ${this.sinOferta.tope}.° periodo de tu plan. Las que tienes pendientes de esos periodos (${this.sinOferta.pendientes.slice(0, 3).join(', ')}${this.sinOferta.pendientes.length > 3 ? '…' : ''}) no se dictan en verano o aún tienen requisitos por cumplir: en Mi plan de estudios verás el motivo.`,
+        sinCursosMotivo: D.malla.cursos.some((c) => c.motivo_no_verano && !M.aprob.has(c.codigo) && !M.enCurso.has(c.codigo)) ? 'Algunas de tus asignaturas pendientes no se dictan en verano (por ejemplo, inglés, talleres o las posteriores al 6.° periodo del plan) y otras aún tienen requisitos por cumplir: en Mi plan de estudios verás el motivo de cada una.' : 'Tus asignaturas pendientes aún tienen requisitos por cumplir: en Mi plan de estudios verás el motivo de cada una.',
+        hayGrado: !!D.perfil.grado, grado: titulo(D.perfil.grado).replace(/ (En|De|Del|Y|La|El) /g, (m) => m.toLowerCase()), tituloProf: titulo(D.perfil.titulo).replace(/ (En|De|Del|Y|La|El) /g, (m) => m.toLowerCase()),
+        hayCredTipo: !!D.perfil.creditos,
+        credTipo: D.perfil.creditos ? [['obligatorios', 'Obligatorios'], ['electivos_general', 'Electivos generales'], ['electivos_especialidad', 'Electivos de especialidad'], ['totales', 'Totales']].map(([k, t]) => { const x = D.perfil.creditos[k] || {}, ok = x.aprobados >= x.requeridos; return { t: `${t}: ${x.aprobados} / ${x.requeridos}`, bg: ok ? '#E3F2EA' : '#F2F2F2', fg: ok ? '#145C34' : '#5A00AA' }; }) : [],
+        rutaIntro, escVarios: this.E.length > 1,
+        escCols: movil ? 'repeat(2,minmax(0,1fr))' : `repeat(${Math.min(this.E.length, 5)},minmax(0,1fr))`,
+        // Cada opción dice qué veranos son: "1 verano · 2027", "2 veranos · 2027 y 2028", "3 veranos · 2027 a 2029"
+        escOpc: this.E.map((e, i) => { const on = i === iE, anios = (/\(([^)]+)\)/.exec(e.etiqueta) || [])[1]; return { t: e.n === 0 ? 'Sin veranos' : `${e.n} ${e.n === 1 ? 'verano' : 'veranos'} · ${anios}`, sub: e.termina, on, go: () => this.setState({ escSel: i }),
+          bg: on ? '#5A00AA' : 'transparent', fg: on ? '#fff' : '#3A3A3A', sh: on ? '0 8px 20px rgba(90,0,170,.3)' : 'none', subC: on ? '#E6D9F5' : '#555555', op: on ? '1' : '.6', sc: on ? 'scale(1.02)' : 'scale(1)' }; }),
+        compCols: movil ? 'minmax(0,1fr)' : '120px minmax(0,1fr) auto',
+      compRutas: (() => { const peso = (r) => (r.tipo === 'verano' ? 2 : 3); const tot = Math.max(...this.E.map((e) => e.ruta.reduce((s, r) => s + peso(r), 0)), 1);
+        return this.E.map((e, i) => { const on = i === iE, u = e.ruta.reduce((s, r) => s + peso(r), 0);
+          return { t: e.n === 0 ? 'Sin veranos' : `${e.n} ${e.n === 1 ? 'verano' : 'veranos'}`, fin: e.termina, on, go: () => this.setState({ escSel: i }), d: (i * 250) + 'ms',
+            bg: on ? '#FAF7FD' : '#fff', bd: on ? '#5A00AA' : '#E3E3E3', bw: on ? '2px' : '1.5px', op: on ? '1' : '.55', sh: on ? '0 8px 22px rgba(90,0,170,.14)' : 'none', tagBg: on ? '#000' : '#F2F2F2', gFg: on ? '#B9E1FF' : '#555', tagFg: on ? '#fff' : '#000',
+            seg: (() => { const fo = +((/(\d+)\.° periodo/.exec(e.termina) || [])[1] || 0), nReg = e.ruta.filter((r) => r.tipo !== 'verano').length; let k = 0; return e.ruta.map((r, k2) => { const vr = r.tipo === 'verano'; const ord = !vr && fo ? (fo - nReg + 1 + k++) + '.°' : ''; const anio = (/(\d{4})/.exec(r.etiqueta) || [])[1] || ''; return { t: (vr ? 'Verano ' + anio : r.etiqueta + (ord ? ' · ' + ord + ' periodo' : '')) + ' · ' + r.creditos + ' créditos · ' + r.cursos.length + (r.cursos.length === 1 ? ' asignatura' : ' asignaturas'), l: vr ? 'Verano' : r.etiqueta, s2: vr ? anio : ord ? ord + ' periodo' : '', f: peso(r), d: (i * 180 + k2 * 70) + 'ms', mw: vr ? '50px' : '0', bg: vr ? '#5A00AA' : '#CFC2E3', fg: vr ? '#fff' : '#3D0075' }; }); })().concat(tot > u ? [{ t: '', f: tot - u, bg: 'transparent', d: '0ms' }] : []) }; }); })(),
+      ...(() => { const E = this.E, i = E.indexOf(eSel), base = E[0], prev = E[i - 1];
+          const crV = (e) => e.ruta.filter((r) => r.tipo === 'verano').reduce((s, r) => s + r.creditos, 0);
+          const nV = (e) => e.n === 0 ? 'sin veranos' : e.n + (e.n === 1 ? ' verano' : ' veranos'); const cmp = (e) => e.n === 0 ? 'la ruta sin veranos' : nV(e); const cr = (v) => v === 1 ? '1 crédito' : v + ' créditos';
+          if (!base || i <= 0) return { hayGana: E.length > 1, ganaT: 'Tu punto de partida', ganaSub: 'Así sería tu ruta llevando solo periodos regulares.', ganaFilas: [{ l: 'Periodos que te faltan', a: '', b: String(eSel.ciclosRestantes), d: '', dBg: 'transparent', dFg: '#000', hayA: false }, { l: 'Créditos por periodo', a: '', b: '~' + eSel.promedio, d: '', dBg: 'transparent', dFg: '#000', hayA: false }], ganaFrase: E[1] ? (E[1].acorta ? 'Con 1 verano culminarías ' + E[1].ahorro + (E[1].ahorro === 1 ? ' periodo' : ' periodos') + ' antes. ¡Pruébalo arriba!' : 'Con 1 verano adelantas créditos y tus periodos quedan más livianos. ¡Pruébalo arriba!') : '' };
+          const ref = prev || base, dP = ref.ciclosRestantes - eSel.ciclosRestantes, dC = ref.promedio - eSel.promedio, dV = crV(eSel) - crV(ref);
+          const chip = (v, txtPos, txtCero) => v > 0 ? { d: txtPos, dBg: '#E3F2EA', dFg: '#145C34' } : { d: txtCero, dBg: '#F2F2F2', dFg: '#555' };
+          const filas = [
+            Object.assign({ l: 'Periodos que te faltan', a: String(ref.ciclosRestantes), b: String(eSel.ciclosRestantes), hayA: true }, chip(dP, dP === 1 ? '−1 periodo' : '−' + dP + ' periodos', 'Igual')),
+            Object.assign({ l: 'Créditos por periodo', a: '~' + ref.promedio, b: '~' + eSel.promedio, hayA: true }, chip(dC, '−' + cr(dC), 'Igual')),
+            Object.assign({ l: 'Créditos que adelantas en verano', a: String(crV(ref)), b: String(crV(eSel)), hayA: true }, chip(dV, '+' + cr(dV), 'Igual'))
+          ];
+          const frase = dP > 0 ? 'Culminas ' + (dP === 1 ? '1 periodo' : dP + ' periodos') + ' antes (unos ' + dP * 6 + ' meses) que ' + (ref.n === 0 ? 'en ' : 'con ') + cmp(ref) + '. ¡Un paso más cerca de tu meta!'
+            : dC > 1 ? 'Culminas en el mismo periodo que ' + (ref.n === 0 ? 'en ' : 'con ') + cmp(ref) + ', pero cada periodo sería más liviano: unos ' + cr(dC) + ' menos. Ideal si trabajas o quieres estudiar con más calma.'
+            : dV > 0 ? 'Adelantas ' + cr(dV) + ' en verano: tus periodos quedan un poco más livianos y culminas en el mismo periodo.'
+            : 'Culminas en el mismo periodo que ' + (ref.n === 0 ? 'en ' : 'con ') + cmp(ref) + '. Elige la opción que mejor se ajuste a tu tiempo.';
+          return { hayGana: true, ganaT: 'Qué ganas con ' + nV(eSel), ganaSub: 'Comparado con ' + cmp(ref) + (prev && prev !== base ? ' (la opción anterior)' : ''), ganaFilas: filas, ganaFrase: frase };
+        })(),
+        rutaFin: eSel.termina, rutaResumenT: `Culminarías tus estudios: ${eSel.termina}.`, rutaResumenD: eSel.nota + '.',
+        rutaCols: movil ? 'minmax(0,1fr)' : '130px minmax(0,1fr) 92px', rutaCrAlign: movil ? 'left' : 'right',
+        rutaPer: ((oc) => eSel.ruta.map((r, k, all) => { const ver = r.tipo === 'verano', ord = ver ? '' : ' · ' + (oc.n++) + '.° periodo', fin = eSel.termina !== 'Por confirmar' && k === all.length - 1, n = r.cursos.length;
+          return { et: ver ? r.etiqueta : r.etiqueta + ord, lista: r.cursos.map((c) => c.nombre), n: `${n} ${n === 1 ? 'asignatura' : 'asignaturas'}`, cr: `${r.creditos} cr.`, fin, abierto: k === 0, tipo: ver ? 'Verano' : 'Periodo regular',
+            tBg: ver ? '#B9E1FF' : '#F2F2F2', tFg: ver ? '#000000' : '#5A00AA', cBg: ver ? '#EAF5FF' : '#F5F5F5', dot: fin ? '#2E7D4F' : ver ? '#B9E1FF' : '#5A00AA', halo: fin ? '#D7EEDF' : ver ? '#EAF5FF' : '#EFE5F8', linea: k === all.length - 1 ? 'transparent' : '#E3E3E3' }; }))({ n: +this.D.perfil.ciclo_relativo || 1 }),
+        hayEscNota: !!escNota,
+        escNota,
+        rutaArmar: false, rutaSinVerano: eSel.n === 0 && !this.sinOferta,
+        armarRuta: () => this.armarConRuta(),
+        pdfRuta: () => UCP.pdfRuta({ perfil: D.perfil, escenario: eSel, escenarios: this.E, nota: escNota, avance: this.avancePdf(), maxVerano: max })
+      });
+    }
+
+    // 2 · Malla
+    if (paso === 'malla') {
+      const etiqueta = { aprobado: 'Aprobado', en_curso: 'En curso', desaprobado: 'Por recuperar', pendiente: 'Pendiente' };
+      const EST = { aprobado: ['#5A00AA', '#fff', '#5A00AA'], en_curso: ['#B9E1FF', '#000000', '#B9E1FF'], desaprobado: ['#FDE9E7', '#7A2419', '#F3B8AF'], pendiente: ['#F0F0F0', '#000000', '#F0F0F0'] };
+      const sk = st.mallaSel, sc = sk ? M.cursos[sk] : null;
+      const reqs = new Set(sc ? (sc.prerrequisitos || []).flat() : []);
+      const hijos = new Set(sk ? D.malla.cursos.filter((c) => (c.prerrequisitos || []).flat().includes(sk)).map((c) => c.codigo) : []);
+      const soloFalta = st.mallaFiltro !== 'todo';
+      const porCiclo = {}; D.malla.cursos.filter((c) => !soloFalta || sim.estadoCurso(M, c.codigo) !== 'aprobado').forEach((c) => { (porCiclo[c.ciclo] ||= []).push(c); });
+      out.mallaFiltros = [['falta', 'Solo lo que me falta'], ['todo', 'Todo el plan']].map(([k, t]) => { const on = (st.mallaFiltro || 'falta') === k; return { t, on, go: () => this.setState({ mallaFiltro: k }), bg: on ? '#5A00AA' : '#fff', fg: on ? '#fff' : '#5A00AA', bd: on ? '#5A00AA' : '#B9E1FF' }; });
+      const restricciones = (c) => {
+        const e = sim.estadoCurso(M, c.codigo); if (e === 'aprobado' || e === 'en_curso') return [];
+        const r = [], faltan = (c.prerrequisitos || []).flat().filter((k) => !M.aprob.has(k));
+        if (faltan.length) r.push('requiere aprobar ' + faltan.map((k) => (M.cursos[k] ? M.cursos[k].nombre : k) + (M.enCurso.has(k) ? ' (lo llevas ahora)' : '')).join(', '));
+        (sim.disponibilidad(M, c.codigo).motivos || []).forEach((m) => r.push(m.charAt(0).toLowerCase() + m.slice(1)));
+        if (c.es_casilla) return [`te falta 1 ${c.caracter === 'electivo' ? 'electivo' : 'asignatura'} (${c.creditos} créditos): consulta la oferta de electivos con tu coordinación`];
+        if (!c.se_dicta_en_verano) r.push(c.motivo_no_verano ? c.motivo_no_verano.charAt(0).toLowerCase() + c.motivo_no_verano.slice(1) : 'no se dicta en cursos de verano, solo en el periodo académico regular');
+        return r;
+      };
+      out.ciclos = Object.keys(porCiclo).sort((a, b) => a - b).map((ci) => ({ n: ci, cursos: porCiclo[ci].map((c) => { const e = sim.estadoCurso(M, c.codigo), [bg, fg, bd] = EST[e]; const es = c.codigo === sk, rq = reqs.has(c.codigo), hj = hijos.has(c.codigo), lock = restricciones(c).length > 0; return { nombre: (lock ? '🔒 ' : '') + c.nombre, meta: `${c.creditos} cr. · ${etiqueta[e]}${lock ? ' · Con restricción' : ''}`, bg, fg, bd: lock && e === 'pendiente' ? '#9169FF' : bd, pressed: es, ol: es ? '3px solid #000000' : rq ? '3px solid #B9E1FF' : hj ? '3px dashed #5A00AA' : '0 solid transparent', op: sk && !es && !rq && !hj ? 0.45 : 1, go: () => this.setState({ mallaSel: es ? null : c.codigo }) }; }) }));
+      out.leyenda = ['aprobado', 'en_curso', 'desaprobado', 'pendiente'].map((k) => ({ t: etiqueta[k], bg: EST[k][0], bd: EST[k][2] })).concat([{ t: '🔒 Con restricción', bg: '#F0F0F0', bd: '#9169FF' }]);
+      out.mallaIntro = `${D.malla.nombre} · ${D.malla.ciclos} periodos · ${D.malla.creditos_totales} créditos.`;
+      out.mallaCols = ancho ? 'minmax(0,1fr) 320px' : 'minmax(0,1fr)'; out.mallaColW = movil ? '150px' : '164px';
+      out.haySelMalla = !!sc; out.sinSelMalla = !sc; out.limpiarMalla = () => this.setState({ mallaSel: null });
+      if (sc) {
+        const e = sim.estadoCurso(M, sc.codigo), o = OF.find((x) => x.codigo === sc.codigo), req = [...reqs].map((k) => (M.cursos[k] ? M.cursos[k].nombre : k));
+        out.md = { nombre: sc.nombre, meta: `${sc.codigo} · ${sc.creditos} créditos · Periodo ${sc.ciclo}`, estado: etiqueta[e], eBg: EST[e][0], eFg: EST[e][1], clave: !!sc.curso_clave, req: (() => { const rq = sc.requisitos || {}, l = req.slice(); if (rq.creditos_min) l.push(`${rq.creditos_min} créditos aprobados`); (rq.certificados || []).forEach((x) => l.push(x)); (rq.no_reconocidos || []).forEach((x) => l.push(`"${x}" (por revisar)`)); return l.length ? l.join(' · ') : 'ninguno'; })(), habilita: sim.dependientes(M, sc.codigo), verano: o ? ESTADO_OFERTA[o.estado] : sc.se_dicta_en_verano ? 'No está en la oferta de este verano' : 'No se dicta en cursos de verano', ...(() => { const r = restricciones(sc); return { hayRestr: r.length > 0, restr: r.map((x, i) => i ? x : x[0].toUpperCase() + x.slice(1)).join('; ') }; })() };
+      } else out.md = {};
+    }
+
+    // 3 · Verano
+    if (paso === 'verano') {
+      const hayPub = this.OF.some((o) => o.horarioPub);
+      const FASE = { solicitudes: ['Solicitudes abiertas hasta el ' + fCierre, hayPub ? `Algunos cursos ya tienen horario publicado: elige tu sección. En los demás, pulsa "Seleccionar" y elige el turno; sus horarios se publicarán el ${fHor}.` : `Pulsa "Seleccionar" en los cursos que quieres llevar y elige el turno de cada uno. Los horarios se publicarán el ${fHor}.`, '#F2F2F2', '#5A00AA'],
+        evaluacion: ['Solicitudes cerradas', `Coordinación académica está evaluando qué cursos abrir. Los horarios se publicarán el ${fHor}.`, '#B9E1FF', '#000000'],
+        horarios: ['Horarios publicados', 'Elige la sección de los cursos que se abrieron. Luego realizas tu matrícula oficial en el Portal del Estudiante.', '#E3F2EA', '#145C34'] }[fase];
+      Object.assign(out, { faseT: FASE[0], faseD: FASE[1], faseBg: FASE[2], faseFg: FASE[3],
+        veranoIntro: 'Solo ves los cursos de verano cuyos prerrequisitos ya aprobaste.',
+        vacioTxt: this.sinOferta ? `Este verano no tienes cursos de verano disponibles: en verano solo se ofrecen asignaturas hasta el ${this.sinOferta.tope}.° periodo de tu plan. Revisa Mi avance para ver tu ruta y qué puedes hacer.` : 'Por ahora no hay cursos de verano que puedas llevar. En Mi plan de estudios verás por qué cada asignatura pendiente no está disponible (requisitos o asignaturas que no se dictan en verano).' });
+      const eRuta = this.E[st.escSel == null ? 0 : st.escSel] || this.E[0], veranoRuta = ((eRuta && eRuta.ruta) || []).find((r) => r.tipo === 'verano');
+      const enRuta = new Set(veranoRuta ? veranoRuta.cursos.map((c) => c.codigo) : []);
+      const peso = (o) => (st.sel.has(o.codigo) ? 2 : enRuta.has(o.codigo) ? 1 : 0);
+      const lst = this.OF.slice().sort((a, b) => peso(b) - peso(a)); out.listaVacia = !lst.length;
+      const glo = ((UCP.terminos && UCP.terminos.glosario) || []).find((g) => g[0] === 'Solicitud de apertura');
+      Object.assign(out, {
+        totalPasos: pasosF.length || 1, p1Titulo: fase === 'horarios' ? 'Elige tus cursos' : 'Elige tus cursos y turno',
+        defSolicitud: glo ? glo[1] : 'Tu interés en que se abra un curso. Nos ayuda a programar la oferta. No es una matrícula ni reserva una vacante.',
+        hayNoEnviado: editable && items.length > 0 && (est.clave === 'borrador' || est.clave === 'cambios'),
+        hayAvisoRuta: !!st.avisoRuta, avisoRuta: st.avisoRuta, cerrarAvisoRuta: () => this.setState({ avisoRuta: '' })
+      });
+      const quedan = Math.max(0, max - v.creditos), lleno = quedan === 0, seleccionable = editable && (fase === 'solicitudes' || fase === 'horarios');
+      Object.assign(out, {
+        limVer: seleccionable,
+        limT: lleno ? `Completaste el máximo de ${max} créditos para el verano` : v.creditos ? `Te quedan ${quedan} de ${max} créditos` : `Puedes solicitar hasta ${max} créditos en el verano`,
+        limD: lleno ? 'Ya no puedes agregar más cursos. Si quieres cambiar uno, quítalo de tu selección y elige otro.' : v.creditos ? `Solo puedes agregar cursos de hasta ${quedan} ${quedan === 1 ? 'crédito' : 'créditos'}. Los que no entran quedan bloqueados 🔒.` : 'Elige los cursos que quieres llevar. Los que superen tu límite se bloquearán automáticamente.',
+        limCuenta: `${v.creditos} / ${max}`,
+        limBg: lleno ? '#B9E1FF' : '#fff', limFg: lleno ? '#000000' : '#000000', limBd: lleno ? '#B9E1FF' : '#E3E3E3',
+        limCols: `repeat(${max},minmax(0,1fr))`, limSegs: Array.from({ length: max }, (_, i) => ({ bg: i < v.creditos ? (lleno ? '#B9E1FF' : '#5A00AA') : '#EEEEEE' }))
+      });
+      const cruceCon = (k) => pares.filter((x) => x.a === k || x.b === k).map((x) => `${M.cursos[x.a === k ? x.b : x.a].nombre} (${listaDias(x.dias)})`).join('; ');
+      out.cursos = lst.map((o) => {
+        const el = st.sel.get(o.codigo), ec = o.estadoCampana, noAbierto = fase === 'horarios' && ec === 'no_abierto';
+        const cabe = !!el || o.creditos <= quedan;
+        const pills = [];
+        if (fase === 'horarios') pills.push(ec === 'abierto' ? { t: 'Abierto', bg: '#E3F2EA', fg: '#145C34', bd: '#E3F2EA' } : ec === 'no_abierto' ? { t: 'No abierto', bg: '#FDE9E7', fg: '#7A2419', bd: '#FDE9E7' } : { t: 'En evaluación', bg: '#F0F0F0', fg: '#3A3A3A', bd: '#F0F0F0' });
+        if (fase !== 'horarios' && o.horarioPub) pills.push({ t: 'Horario publicado', bg: '#E3F2EA', fg: '#145C34', bd: '#E3F2EA' });
+        if (el) pills.push({ t: 'Seleccionado', bg: '#5A00AA', fg: '#fff', bd: '#5A00AA' });
+        if (enRuta.has(o.codigo)) pills.push({ t: 'En tu ruta', bg: '#F2F2F2', fg: '#5A00AA', bd: '#B9E1FF' });
+        if (o.curso_clave) pills.push({ t: 'Asignatura clave', bg: '#B9E1FF', fg: '#000000', bd: '#B9E1FF' });
+        if (o.recuperacion) pills.push({ t: 'Recuperación', bg: '#fff', fg: '#7A2419', bd: '#E4A59B' });
+        const sinSecT = fase === 'solicitudes' ? 'Horario por publicar' : fase === 'evaluacion' ? (el ? 'Solicitado' : 'Solicitudes cerradas') : ec === 'no_abierto' ? 'No se abrió' : 'Apertura en evaluación';
+        const sinSecD = fase === 'solicitudes' ? `Se abrirá si alcanza el mínimo de estudiantes. Horarios desde el ${fHor}.` : fase === 'evaluacion' ? 'Coordinación está evaluando qué cursos abrir.' : ec === 'no_abierto' ? 'No alcanzó el mínimo de estudiantes.' : 'Aún no se define su apertura.';
+        return {
+          nombre: o.nombre, codigo: o.codigo, ciclo: o.ciclo, cr: o.creditos, crC: noAbierto ? '#8A8A8A' : '#5A00AA', pills,
+          ofertaTxt: o.horarioPub ? 'Curso abierto · elige tu sección' : fase === 'solicitudes' ? 'Solicitud de apertura' : (ESTADO_OFERTA[o.estado] || 'Por confirmar'), dot: o.estado === 'ofertado' ? '#5A00AA' : '#fff',
+          fondo: noAbierto || (!cabe && seleccionable) ? '#FBFBFB' : '#fff', borde: el ? '2px solid #5A00AA' : '1px solid #E3E3E3', sombra: el ? '0 8px 24px rgba(90,0,170,.10)' : 'none',
+          cond: false, condTxt: '', bloq: noAbierto && !!el, bloqTxt: 'Este curso no se abrió porque no alcanzó el mínimo de estudiantes. La mesa de ayuda puede orientarte sobre alternativas.',
+          sinSec: !(o.secciones || []).length, sinSecT, sinSecD, sinSecBg: el ? '#F2F2F2' : '#F7F7F7',
+          sinSecElegir: fase === 'solicitudes' && !el && cabe, sinSecLleno: fase === 'solicitudes' && !el && !cabe,
+          noCabe: seleccionable && !cabe && !noAbierto,
+          noCabeTxt: lleno ? `No entra: ya completaste tus ${max} créditos. Quita un curso de tu selección para poder agregar este.` : `No entra: este curso tiene ${o.creditos} créditos y te ${quedan === 1 ? 'queda' : 'quedan'} ${quedan}. Quita un curso de tu selección para poder agregarlo.`, sinSecQuitar: (fase === 'solicitudes' || (fase === 'horarios' && noAbierto)) && !!el,
+          apertura: () => this.elegir(o, ''), quitar: () => this.quitar(o.codigo),
+          turnoVer: !!el && !el.seccion && fase === 'solicitudes' && !(o.secciones || []).length,
+          turnoAviso: el && el.turno ? 'Es una preferencia: el horario final se publicará el ' + fHor + '.' : 'Elige un turno para enviar tu solicitud.',
+          turnoAvisoC: el && el.turno ? '#555555' : '#7A2419',
+          turnos: Object.keys(UCP.campana.TURNOS).map((k) => { const on = !!el && el.turno === k; return { t: UCP.campana.TURNOS[k], rango: UCP.campana.TURNO_RANGO[k], on, go: () => this.elegirTurno(o.codigo, k), bg: on ? '#5A00AA' : '#fff', fg: on ? '#fff' : '#5A00AA', bd: on ? '#5A00AA' : '#B9E1FF' }; }),
+          secciones: (o.secciones || []).map((s) => {
+            const act = !!(el && el.seccion === s.seccion), on = new Set(s.sesiones.map((x) => x.dia)), fill = '#5A00AA';
+            return { sec: s.seccion, lines: lineas(s.sesiones), libres: s.vacantes - s.inscritos, tot: s.vacantes, act, prim: editable && !act && cabe, lleno: editable && !act && !cabe, btn: el && el.seccion ? 'Cambiar a esta' : 'Elegir', aria: `${el && el.seccion ? 'Cambiar a la sección' : 'Elegir la sección'} ${s.seccion} de ${o.nombre}`,
+              cruce: act && cruceSet.has(o.codigo), cruceTxt: act ? cruceCon(o.codigo) : '', qBd: '#5A00AA', qFg: '#5A00AA',
+              rowBg: act ? '#F2F2F2' : 'transparent', rowSh: act ? `inset 4px 0 0 ${fill}` : 'none',
+              elegir: () => this.elegir(o, s.seccion), quitar: () => this.quitar(o.codigo),
+              dias: [1, 2, 3, 4, 5, 6].map((d) => ({ l: DL[d], bg: on.has(d) ? fill : '#F0F0F0', fg: on.has(d) ? '#fff' : '#5C5C5C' })) };
+          })
+        };
+      });
+    }
+
+    // Panel Mi selección
+    if (conSel) {
+      const fr = (h) => (h < 12 ? 0 : h < 18 ? 1 : 2), excede = v.creditos > max, pr2 = sim.proyeccion(M, v.creditos);
+      const nSeg = Math.max(max, v.creditos);
+      Object.assign(out, {
+        selCuenta: `${items.length} ${items.length === 1 ? 'curso' : 'cursos'}`, selVacia: !items.length,
+        credSel: v.creditos, credMax: max, credC: excede ? '#FF8A80' : '#B9E1FF', segCols: `repeat(${nSeg},minmax(0,1fr))`,
+        segs: Array.from({ length: nSeg }, (_, i) => ({ bg: i < v.creditos ? (excede ? '#E5534B' : '#B9E1FF') : 'rgba(255,255,255,.15)' })),
+        restTxt: excede ? `Te pasas por ${v.creditos - max} ${v.creditos - max === 1 ? 'crédito' : 'créditos'}: quita un curso` : v.creditos === max ? `Completaste el máximo de ${max} créditos` : `Te quedan ${max - v.creditos} ${max - v.creditos === 1 ? 'crédito disponible' : 'créditos disponibles'}`,
+        restCorto: excede ? 'excede el límite' : v.creditos === max ? 'completo' : `quedan ${max - v.creditos}`, restC: excede ? '#FFB4AB' : '#B9E1FF',
+        ...(() => {
+          const sig = UCP.flujo.siguienteAccion({ fase, paso, items, creditos: v.creditos, max, estado: est.clave });
+          return { sigAccionT: sig.t, sigNoActivo: !sig.activo, sigOpac: sig.activo ? 1 : 0.55, sigCursor: sig.activo ? 'pointer' : 'not-allowed',
+            sigAccion: () => {
+              if (!sig.activo) return;
+              if (sig.accion === 'turno') { const i = items.find((x) => !x.conSecciones && !x.turno), el = i && document.getElementById('curso-' + i.codigo); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); else this.ir('verano'); }
+              else if (sig.accion === 'ir_horario') this.ir('horario');
+              else if (sig.accion === 'ir_solicitud') this.ir('solicitud');
+            },
+            altVer: fase === 'horarios' };
+        })(),
+        selItems: items.map((i) => ({ nombre: i.nombre, est: i.seccion ? '✓ Sección elegida' : i.conSecciones ? '! Falta elegir sección' : fase !== 'solicitudes' ? 'Solicitud de apertura' : i.turno ? '✓ Turno ' + UCP.campana.TURNOS[i.turno].toLowerCase() : '! Falta elegir el turno', estC: i.seccion || i.turno || (!i.conSecciones && fase !== 'solicitudes') ? '#9FE0B8' : '#FFB4AB', meta: `${i.creditos} ${i.creditos === 1 ? 'crédito' : 'créditos'} · ${i.seccion ? 'Sección ' + i.seccion : 'Solicitud de apertura'}`, cruce: enCruce.has(i.codigo), quitar: () => this.quitar(i.codigo) })),
+        haySemana: items.some((i) => i.sesiones && i.sesiones.length), diasC: DIAS_C.slice(1, 7),
+        semana: ['Mañana', 'Tarde', 'Noche'].map((n, fi) => ({ n, cells: [1, 2, 3, 4, 5, 6].map((d) => { const k = items.filter((i) => (i.sesiones || []).some((x) => x.dia === d && fr(+x.hora_inicio.slice(0, 2)) === fi)).length; return { t: k > 1 ? k : '', bg: k > 1 ? '#B3261E' : k ? '#5A00AA' : 'rgba(255,255,255,.08)' }; }) })),
+        validSel: v.validaciones.slice(1).map((x) => Object.assign({ t: x.texto }, mark(x))),
+
+        prSelSin: pr2.sinVerano, prSelCon: pr2.conVerano, hayCruces: pares.length > 0,
+        crucesCorto: `${pares.length} ${pares.length === 1 ? 'cruce' : 'cruces'} de horario`
+      });
+    }
+
+    // 4 · Horario
+    if (paso === 'horario') {
+      const PAL = ['#5A00AA', '#000000', '#5A00AA', '#9169FF', '#000000', '#5A00AA'];
+      const color = {}; items.forEach((i, k) => { color[i.codigo] = PAL[k % PAL.length]; });
+      const H0 = 7, H1 = 23, alto = 36, min = (h) => { const [a, b] = h.split(':').map(Number); return a * 60 + b; };
+      const hDias = [1, 2, 3, 4, 5, 6].map((d) => {
+        const ses = items.flatMap((i) => (i.sesiones || []).filter((s) => s.dia === d).map((s) => ({ i, s, a: min(s.hora_inicio), b: min(s.hora_fin) }))).sort((x, y) => x.a - y.a);
+        ses.forEach((x, k) => { const usados = ses.slice(0, k).filter((y) => y.a < x.b && x.a < y.b).map((y) => y.carril); x.carril = 0; while (usados.includes(x.carril)) x.carril++; });
+        ses.forEach((x) => { x.total = 1 + Math.max(...ses.filter((y) => y.a < x.b && x.a < y.b).map((y) => y.carril)); });
+        const on = st.hDia === d, hayCr = ses.some((x) => enCruce.has(x.i.codigo));
+        return { d, nombre: DIAS[d], corto: DIAS_C[d], cuenta: ses.length ? `${ses.length} ${ses.length === 1 ? 'clase' : 'clases'}` : '—', fondo: hayCr ? '#FFF7F6' : '#fff', on, go: () => this.setState({ hDia: d }),
+          tBg: on ? '#5A00AA' : '#fff', tFg: on ? '#fff' : '#3A3A3A', tBd: on ? '#5A00AA' : '#E3E3E3', dot: hayCr ? '#E5534B' : ses.length ? (on ? '#B9E1FF' : '#5A00AA') : 'transparent',
+          blocks: ses.map((x) => { const c = enCruce.has(x.i.codigo); return { top: ((x.a - H0 * 60) / 60) * alto + 1 + 'px', height: ((x.b - x.a) / 60) * alto - 3 + 'px', left: `calc(${(100 / x.total) * x.carril}% + 3px)`, width: `calc(${100 / x.total}% - 6px)`, bg: c ? '#B3261E' : color[x.i.codigo], nombre: x.i.nombre, hora: HR(x.s.hora_inicio, x.s.hora_fin), sec: x.i.seccion, cruce: c }; }),
+          agenda: ses.map((x) => { const c = enCruce.has(x.i.codigo); return { nombre: x.i.nombre, sec: x.i.seccion, hora: HR(x.s.hora_inicio, x.s.hora_fin), cruce: c, bg: c ? '#B3261E' : color[x.i.codigo], hc: c ? '#B3261E' : '#5A00AA' }; }) };
+      });
+      const dsel = hDias.find((x) => x.d === st.hDia) || hDias[0], sinH = items.filter((i) => !i.seccion);
+      Object.assign(out, {
+        hDias, agenda: dsel.agenda, diaVacio: !dsel.agenda.length,
+        horas: Array.from({ length: H1 - H0 }, (_, k) => String(H0 + k).padStart(2, '0') + ':00'),
+        leyendaH: items.filter((i) => i.seccion).map((i) => ({ t: `${i.nombre} · ${i.seccion}`, bg: enCruce.has(i.codigo) ? '#B3261E' : color[i.codigo] })),
+        hEspera: fase !== 'horarios' && !items.some((i) => i.seccion),
+        hEsperaT: this.OF.some((o) => o.horarioPub) ? 'Ya hay cursos con horario publicado' : `Los horarios se publicarán el ${fHor}`,
+        hEsperaD: this.OF.some((o) => o.horarioPub) ? 'Elige su sección en "Cursos de verano" y aquí verás tu semana. El resto se publicará el ' + fHor + '.' : 'Cuando Coordinación abra tus cursos, aquí podrás elegir tu sección y ver tu semana.',
+        hIntro: 'Así quedaría tu semana con las secciones que elegiste. Si dos sesiones en vivo coinciden, ambas quedan grabadas.',
+        hayCruces: pares.length > 0,
+        hayItems: items.some((i) => i.seccion), sinItems: fase === 'horarios' && !items.some((i) => i.seccion), sinCruces: items.some((i) => i.seccion) && !pares.length,
+        crucesTxt: pares.map((x) => `${M.cursos[x.a].nombre} y ${M.cursos[x.b].nombre} (${listaDias(x.dias)})`).join('; '),
+        haySinH: sinH.length > 0, sinHTxt: sinH.map((i) => i.nombre).join(', ')
+      });
+    }
+
+    // 5 · Solicitud
+    if (paso === 'solicitud') {
+      // Sin cambios respecto de lo enviado se muestra la solicitud enviada (aunque haya entrado a modificar)
+      const confirm = !!(st.solicitud && (!st.editando || !editable || est.clave === 'enviada'));
+      out.esConfirmacion = confirm; out.esSolVacia = !confirm && (!items.length || !editable); out.esSolRevision = !confirm && editable && items.length > 0;
+      out.solVaciaTxt = editable ? 'Todavía no elegiste cursos.' : `Las solicitudes cerraron el ${fCierre}.`;
+      out.solCols = ancho ? 'minmax(0,1fr) 380px' : 'minmax(0,1fr)';
+      out.totalPasos = pasosF.length || 1; out.pasoEnviarN = pasosF.length ? (pasosF.find((x) => x.id === 'solicitud') || {}).n : 1;
+      const E0 = this.E[0] || {}, E1 = this.E[1] || E0;
+      if (out.esSolRevision) {
+        const pideCel = st.pref === 'whatsapp' || st.pref === 'llamada';
+        const vc = UCP.flujo.validarCelular(st.celular, pideCel), ve = UCP.flujo.validarCorreo(D.perfil.correo);
+        const celVacio = !String(st.celular || '').trim();
+        const va = UCP.flujo.validarCorreoAlterno(st.correo2, D.perfil.correo), c2Vacio = !String(st.correo2 || '').trim();
+        const puede = v.puedeEnviar && vc.ok && ve.ok && va.ok && !st.enviando;
+        const PREF = UCP.campana.PREFERENCIAS;
+        Object.assign(out, {
+          solCuenta: `${items.length} ${items.length === 1 ? 'curso' : 'cursos'}`, credSel: v.creditos,
+          solItems: items.map((i) => ({ nombre: i.nombre, cr: i.creditos, sub: `${i.codigo}${i.recuperacion ? ' · recuperación' : ''}`, secTxt: i.seccion ? 'Sección ' + i.seccion : i.conSecciones ? 'Falta elegir sección' : i.turno ? 'Turno tentativo: ' + UCP.campana.TURNOS[i.turno].toLowerCase() : 'Falta elegir el turno', horario: i.seccion ? horarioTxt(i.sesiones) : i.conSecciones ? 'Horario publicado: elige tu sección' : i.turno ? `${UCP.campana.TURNO_RANGO[i.turno]} · horario final desde el ${fHor}` : `Horario final desde el ${fHor}`, oferta: i.conSecciones ? 'Curso abierto' : 'Apertura por confirmar' })),
+          validAll: v.validaciones.map((x) => Object.assign({ t: x.texto }, mark(x))).concat([
+            Object.assign({ t: vc.ok ? `Te contactaremos ${UCP.flujo.textoContacto(st.pref, vc.mostrar, ve.normalizado, va.ok ? va.normalizado : '')}` : vc.error }, mark({ ok: vc.ok })),
+            ...(va.ok ? [] : [Object.assign({ t: va.error }, mark({ ok: false }))]),
+            Object.assign({ t: ve.ok ? 'Correo institucional verificado' : ve.error }, mark({ ok: ve.ok }))]),
+          correoInst: D.perfil.correo, correoEstado: ve.ok ? '✓ Verificado' : '! No institucional', correoBg: ve.ok ? '#E3F2EA' : '#FDE9E7', correoFg: ve.ok ? '#145C34' : '#7A2419',
+          correo2: st.correo2, setCorreo2: (e) => this.setState({ correo2: e.target.value, msg: '' }), c2Invalido: va.ok ? 'false' : 'true',
+          c2Bd: va.ok && !c2Vacio ? '#9FE0B8' : !va.ok ? '#FFB4AB' : 'rgba(255,255,255,.35)',
+          c2Msg: !va.ok ? va.error : c2Vacio ? 'Por si no revisas seguido tu correo institucional.' : '✓ También te escribiremos a este correo.', c2MsgC: !va.ok ? '#FFB4AB' : c2Vacio ? '#B9E1FF' : '#9FE0B8',
+          celReqTxt: pideCel ? '(obligatorio para WhatsApp o llamada)' : '(opcional)',
+          celInvalido: vc.ok ? 'false' : 'true', celBd: vc.ok && !celVacio ? '#9FE0B8' : !vc.ok && !celVacio ? '#FFB4AB' : 'rgba(255,255,255,.35)',
+          celMsg: !vc.ok ? vc.error : celVacio ? 'Te escribiremos solo a tu correo institucional.' : `✓ ${vc.mostrar}`, celMsgC: !vc.ok ? '#FFB4AB' : celVacio ? '#B9E1FF' : '#9FE0B8',
+          prSin: E0.termina, prCon: E1.termina,
+          celular: st.celular, setCelular: (e) => this.setState({ celular: e.target.value, msg: '' }),
+          prefs: Object.keys(PREF).map((k) => { const on = st.pref === k; return { t: PREF[k], on, go: () => this.setState({ pref: k, msg: '' }), bg: on ? '#B9E1FF' : 'transparent', fg: on ? '#000000' : '#fff', bd: on ? '#B9E1FF' : 'rgba(255,255,255,.35)' }; }),
+          editableTxt: `Podrás modificarla o retirarla hasta el ${fCierre}.`,
+          acepta: st.acepta, toggleAcepta: (e) => this.setState({ acepta: e.target.checked, msg: '' }),
+          msgSol: st.msg || (puede || st.enviando ? '' : 'Corrige lo marcado con ! para poder enviar.'),
+          noEnviar: !puede, enviarOp: puede ? 1 : 0.5, enviarTxt: st.enviando ? 'Enviando…' : st.solicitud ? 'Enviar mis cambios' : 'Enviar mi solicitud de apertura',
+          enviar: () => this.enviar()
+        });
+      }
+      if (confirm) {
+        const s = st.solicitud, CA = UCP.campana;
+        const estadoTxt = (k) => ({ abierto: 'Abierto', no_abierto: 'No se abrió', por_decidir: fase === 'solicitudes' ? 'Apertura solicitada' : 'En evaluación' })[CA.estadoCurso(C, k)];
+        const avisos = [];
+        // Experiencia Estudiantil: recordar los requisitos al final del recorrido
+        const recordatorio = { t: 'Recuerda antes de tu matrícula', d: `Solo puedes matricularte en cursos de verano cuyos prerrequisitos ya aprobaste, hasta ${D.parametros.creditos_max_verano} créditos, del ${UCP.campana.rangoFechas(C.matInicio, C.matFin)} en el Portal del Estudiante.`, bg: '#F2F2F2', fg: '#000000' };
+        s.cursos.forEach((c) => {
+          const ec = CA.estadoCurso(C, c.codigo);
+          if (ec === 'abierto') avisos.push({ t: `${c.nombre} se abrió.`, d: CA.horarioPublicado(C, c.codigo) ? (c.seccion ? `Te enviamos un correo. Elegiste la sección ${c.seccion}.` : 'Te enviamos un correo. Ya puedes elegir tu sección.') : `Te enviamos un correo. Su horario se publicará el ${fHor}.`, bg: '#E3F2EA', fg: '#145C34' });
+          if (ec === 'no_abierto') avisos.push({ t: `${c.nombre} no se abrió.`, d: 'No alcanzó el mínimo de estudiantes. Te enviamos un correo y la mesa de ayuda puede orientarte.', bg: '#FDE9E7', fg: '#7A2419' });
+        });
+        const pasosS = fase === 'horarios'
+          ? [{ t: 'Solicitud de apertura recibida', fecha: fechaTxt(s.fecha), d: `Número ${s.id}.`, hecho: true },
+             { t: 'Elige tu sección', fecha: '', d: 'En los cursos que se abrieron, desde "Cursos de verano".' },
+             { t: 'Revisa tus pagos', fecha: '', d: 'Con Acompañamiento al estudiante si tienes algún pendiente.' },
+             { t: 'Matrícula oficial en el Portal del Estudiante', fecha: `${UCP.campana.rangoFechas(C.matInicio, C.matFin)}`, d: 'Con estos cursos y secciones.', clave: true }]
+          : [{ t: 'Solicitud de apertura recibida', fecha: fechaTxt(s.fecha), d: `Número ${s.id}. Puedes modificarla hasta el ${fCierre}.`, hecho: true },
+             { t: 'Orientación', fecha: '', d: 'La mesa de ayuda podrá contactarte por el medio que elegiste.' },
+             { t: 'Publicación de horarios', fecha: fHor, d: 'Te avisaremos por correo qué cursos se abren y podrás elegir tu sección aquí.' },
+             { t: 'Matrícula oficial en el Portal del Estudiante', fecha: `${UCP.campana.rangoFechas(C.matInicio, C.matFin)}`, d: 'En las fechas del calendario académico.', clave: true }];
+        const ev = (k) => (D.calendario.eventos.find((e) => e.evento === k) || {});
+        if (ev('inicio_clases').inicio) pasosS.push({ t: 'Inicio de clases de los cursos de verano', fecha: fechaTxt(ev('inicio_clases').inicio), d: 'En los cursos en los que te matricules.' });
+        pasosS.splice(1, 0, ...(fase === 'solicitudes' ? [{ t: 'Cierre de solicitudes', fecha: fCierre, d: 'Hasta esta fecha puedes modificar o retirar tu solicitud.' }] : []));
+        const conSes = s.cursos.some((c) => (c.sesiones || []).length);
+        Object.assign(out, {
+          solId: s.id, confResumen: `${s.cursos.length} ${s.cursos.length === 1 ? 'curso' : 'cursos'} · ${s.creditos} créditos · enviada el ${fechaTxt(s.fecha)}`,
+          confPad: movil ? '22px' : '32px', confCols: ancho ? 'minmax(0,1fr) 400px' : 'minmax(0,1fr)',
+          copiarTxt: st.copiado ? '✓ Copiado' : 'Copiar número',
+          copiar: () => { try { navigator.clipboard.writeText(s.id); } catch (e) {} this.setState({ copiado: true }); setTimeout(() => this.setState({ copiado: false }), 2000); },
+          avisos: avisos.concat([recordatorio]), hayAvisos: true,
+          sigue: pasosS.map((x, i) => ({ n: x.hecho ? '✓' : i, t: x.t, d: x.d, fecha: x.fecha, linea: i < pasosS.length - 1, nBg: x.hecho ? '#145C34' : x.clave ? '#B9E1FF' : '#fff', nFg: x.hecho ? '#fff' : x.clave ? '#000000' : '#5A00AA', nBd: x.hecho ? '#145C34' : x.clave ? '#B9E1FF' : '#5A00AA', lBg: x.hecho ? '#145C34' : '#E3E3E3', fBg: x.clave ? '#B9E1FF' : '#F2F2F2', fFg: x.clave ? '#000000' : '#5A00AA' })),
+          confCursos: s.cursos.map((c) => ({ nombre: c.nombre, cr: c.creditos, meta: `${estadoTxt(c.codigo)}${c.seccion ? ' · Sección ' + c.seccion : c.turno ? ' · Turno ' + UCP.campana.TURNOS[c.turno].toLowerCase() + ' (' + UCP.campana.TURNO_RANGO[c.turno] + ')' : ''}` })),
+          intranet: UCP.config.intranet,
+          confContacto: s.contacto ? UCP.flujo.textoContacto(s.contacto.preferencia, s.contacto.celular, s.contacto.correo || D.perfil.correo, s.contacto.correo_alterno) : D.perfil.correo,
+          pdfTxt: conSes ? 'Descargar resumen de mi simulación (PDF)' : 'Descargar resumen de mi simulación (PDF)',
+          pdf: () => UCP.pdfConstancia({ perfil: D.perfil, solicitud: s, calendario: D.calendario, parametros: D.parametros, escenarios: this.E, campana: C, avance: this.avancePdf() }),
+          // Modificar o retirar se permite hasta el cierre (regla 4.3), pero de forma discreta; elegir sección sí es una acción pendiente
+          hayCambiosPend: editable && est.clave === 'cambios', revisarCambios: () => { this.setState({ editando: true }); this.ir('solicitud'); },
+          accionSeccion: editable && (fase === 'horarios' || s.cursos.some((c) => CA.horarioPublicado(C, c.codigo))), cambiosDiscretos: fase === 'solicitudes', fCierreTxt: fCierre,
+          retirar: () => this.retirar(),
+          editar: () => { this.setState({ editando: true }); this.ir('verano'); }
+        });
+      }
+    }
+    return out;
+  }
+}
+</script>
+<script src="js/terminos.js"></script>
+<script src="js/ayuda-v2.js" defer></script>
+<script src="js/directores.js" defer></script>
+</body>
+</html>

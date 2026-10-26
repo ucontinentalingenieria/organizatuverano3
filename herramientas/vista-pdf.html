@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vista previa de los PDF</title>
+<!-- Herramienta de desarrollo: genera los PDF del portal (resumen de solicitud y ruta para egresar)
+     con datos de prueba y los dibuja en la página para revisar su diseño sin descargarlos. -->
+<style>
+  body { margin: 0; font: 14px system-ui, sans-serif; background: #E9E6EF; color: #000000; }
+  header { position: sticky; top: 0; z-index: 1; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 10px 16px; background: #000000; color: #fff; }
+  select, label { font: inherit; }
+  main { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 16px; }
+  canvas { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.18); max-width: 100%; height: auto; }
+  h2 { margin: 8px 0 0; font-size: 15px; }
+</style>
+</head>
+<body>
+<header>
+  <b>Vista previa de los PDF</b>
+  <label>Estudiante <select id="est"></select></label>
+  <label>Documento <select id="doc"><option value="ruta">Mi ruta para culminar mis estudios</option></select></label>
+</header>
+<main id="paginas"></main>
+<script>
+  // Sin caché: cada recarga usa la última versión de los scripts del prototipo
+  ['config', 'datos-prototipo', 'datos-api-ejemplo', 'adaptador-api', 'reglas-verano', 'campana', 'simulador', 'flujo', 'pdf']
+    .forEach((n) => document.write(`<script src="../js/${n}.js?v=${Date.now()}"><\/script>`));
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+  const P = UC_PROTO, $ = (id) => document.getElementById(id);
+  $('est').innerHTML = P.perfiles.map((p) => `<option value="${p.clave}">${p.titulo}</option>`).join('');
+
+  // Mismos datos que arma el portal al enviar una solicitud: hasta 11 créditos de cursos disponibles
+  function datos(clave, conSecciones) {
+    const pf = P.perfiles.find((p) => p.clave === clave);
+    const { malla, oferta } = UCP.reglasVerano.aplicar(pf.malla || P.malla, pf.oferta || P.oferta, UCP.reglasVerano.POR_DEFECTO);
+    const M = UCP.sim.preparar({ malla, historial: { cursos: pf.historial }, oferta, parametros: P.parametros });
+    const carga = UCP.campana.cargaPlan(malla);
+    const E = UCP.sim.escenarios(M, { carga, cicloActual: pf.perfil.ciclo_relativo });
+    const cursos = []; let cr = 0;
+    UCP.sim.clasificarOferta(M).filter((o) => o.disponibilidad.tipo === 'disponible').forEach((o) => {
+      if (cr + o.creditos > P.parametros.creditos_max_verano) return;
+      const sec = conSecciones && (o.secciones || [])[0];
+      cr += o.creditos;
+      cursos.push({ codigo: o.codigo, nombre: o.nombre, creditos: o.creditos, estado: sec ? 'ofertado' : o.estado,
+        turno: sec ? null : ['noche', 'manana', 'tarde'][cursos.length % 3], seccion: sec ? sec.seccion : null, sesiones: sec ? sec.sesiones : [] });
+    });
+    const campana = Object.assign(UCP.campana.leer(), conSecciones ? { fase: 'horarios' } : {});
+    const solicitud = { id: 'SV-2027-483920', periodo: P.calendario.periodo, fecha: new Date().toISOString().slice(0, 10), cursos, creditos: cr,
+      estudiante: { id: pf.perfil.id }, contacto: { preferencia: 'whatsapp', celular: '+51987654321', correo_alterno: 'mi.correo.personal@gmail.com' } };
+    const eSel = E[UCP.sim.escenarioPorDefecto(E)] || E[0];
+    const avance = { aprobados: M.credAprob, total: malla.creditos_totales, porRecuperar: M.desap.size, ciclo: pf.perfil.ciclo_relativo,
+      pendientes: malla.cursos.filter((c) => !M.aprob.has(c.codigo) && !M.enCurso.has(c.codigo)).map((c) => ({ codigo: c.codigo, nombre: c.nombre })) };
+    return { perfil: pf.perfil, solicitud, calendario: P.calendario, parametros: P.parametros, escenarios: E, campana, escenario: eSel, avance, maxVerano: P.parametros.creditos_max_verano,
+      nota: `Simulación referencial: supone que apruebas todas tus asignaturas de cada periodo, con hasta ${carga} créditos por periodo académico y ${P.parametros.creditos_max_verano} en cada verano. En verano solo se ofrecen asignaturas hasta el 6.° periodo del plan y depende de la oferta de cursos de verano de cada año. No es la fecha de titulación.` };
+  }
+
+  // Captura el PDF en lugar de descargarlo
+  function generar(fn) {
+    const Orig = window.jspdf.jsPDF; let bytes = null;
+    window.jspdf.jsPDF = function (...a) { const d = new Orig(...a); d.save = () => { bytes = d.output('arraybuffer'); }; return d; };
+    try { fn(); } finally { window.jspdf.jsPDF = Orig; }
+    return bytes;
+  }
+
+  let turno = 0;
+  async function mostrar() {
+    const mio = ++turno;
+    const d = datos($('est').value, false);
+    const bytes = generar(() => ($('doc').value === 'ruta' ? UCP.pdfRuta(d) : UCP.pdfConstancia(d)));
+    const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+    const cont = $('paginas'); cont.innerHTML = `<h2>${pdf.numPages} ${pdf.numPages === 1 ? 'página' : 'páginas'}</h2>`;
+    for (let i = 1; i <= pdf.numPages; i++) {
+      if (mio !== turno) return; // otra vista previa más reciente
+      const pag = await pdf.getPage(i), vp = pag.getViewport({ scale: 2 }), c = document.createElement('canvas');
+      c.width = vp.width; c.height = vp.height; c.style.width = (vp.width / 2) + 'px';
+      cont.appendChild(c);
+      await pag.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+    }
+    document.title = 'Vista previa de los PDF · listo';
+  }
+  ['est', 'doc'].forEach((id) => $(id).addEventListener('change', mostrar));
+  window.addEventListener('load', mostrar);
+</script>
+</body>
+</html>
